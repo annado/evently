@@ -22,7 +22,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wBH-hy-T51">
-                    <rect key="frame" x="89" y="269" width="143" height="30"/>
+                    <rect key="frame" x="89" y="463" width="143" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
                     <state key="normal" title="Sign in with Facebook">
@@ -33,8 +33,8 @@
             </subviews>
             <color key="backgroundColor" red="1" green="0.50196081399917603" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="wBH-hy-T51" secondAttribute="bottom" constant="75" id="9gQ-qy-HEj"/>
                 <constraint firstAttribute="centerX" secondItem="wBH-hy-T51" secondAttribute="centerX" id="DKW-0K-Jry"/>
-                <constraint firstAttribute="centerY" secondItem="wBH-hy-T51" secondAttribute="centerY" id="LhQ-oC-sqx"/>
                 <constraint firstAttribute="centerX" secondItem="V2B-XZ-0bx" secondAttribute="centerX" id="ZZq-b0-Oew"/>
                 <constraint firstAttribute="centerY" secondItem="V2B-XZ-0bx" secondAttribute="centerY" constant="50" id="bM0-sl-AGM"/>
             </constraints>
