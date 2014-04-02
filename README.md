@@ -9,7 +9,9 @@ Other features we're considering:
 - Find friends inside event venue (iBeacon)
 - Share content with attendees (photos, videos, etc.)
 
+Wireframe screenshots: https://github.com/annado/evently/tree/master/Screenshots
+
 ## Benchmark apps
 
 1. Facebook
-2. Woovent
+2. [Woovent](https://www.woovent.com/)
