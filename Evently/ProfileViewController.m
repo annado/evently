@@ -1,20 +1,22 @@
 //
-//  SignInViewController.m
+//  ProfileViewController.m
 //  Evently
 //
-//  Created by Anna Do on 4/1/14.
+//  Created by Anna Do on 4/2/14.
 //  Copyright (c) 2014 Evently. All rights reserved.
 //
 
-#import "SignInViewController.h"
+#import "ProfileViewController.h"
 #import "User.h"
 
-@interface SignInViewController ()
-- (IBAction)onSignInButton:(id)sender;
+@interface ProfileViewController ()
+
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+- (IBAction)onLogOutButton:(id)sender;
 
 @end
 
-@implementation SignInViewController
+@implementation ProfileViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -37,8 +39,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)onSignInButton:(id)sender
-{
-    [User logInWithFacebook];
+- (IBAction)onLogOutButton:(id)sender {
+    [User logOut];
 }
 @end
