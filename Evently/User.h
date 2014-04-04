@@ -12,7 +12,9 @@ extern NSString *const UserDidLoginNotification;
 extern NSString *const UserDidLogoutNotification;
 
 @interface User : PFUser<PFSubclassing>
-+ (void)logInWithFacebook;
++ (void)logInWithCompletion:(void (^)(User *user, NSError *error))block;
 - (BOOL)isLoggedIn;
 + (User *)currentUser;
+- (void)requestFacebookProfileWithCompletion:(void (^)(NSError *error))block;
+- (NSURL *)avatarURL;
 @end

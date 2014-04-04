@@ -11,6 +11,7 @@
 
 @interface SignInViewController ()
 - (IBAction)onSignInButton:(id)sender;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -39,6 +40,22 @@
 
 - (IBAction)onSignInButton:(id)sender
 {
-    [User logInWithFacebook];
+    [_activityIndicator startAnimating];
+    [User logInWithCompletion:^(User *user, NSError *error) {
+        [_activityIndicator stopAnimating];
+        if (!user) {
+            if (!error) {
+                NSLog(@"Uh oh. The user cancelled the Facebook login.");
+            }
+        } else if (error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[[UIAlertView alloc] initWithTitle:@"Error"
+                                            message:[NSString stringWithFormat:@"Uh oh. An error occurred: %@", error]
+                                           delegate:self
+                                  cancelButtonTitle:@"Dismiss"
+                                  otherButtonTitles:nil] show];
+            });
+        }
+    }];
 }
 @end

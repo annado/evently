@@ -25,38 +25,53 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
     [PFFacebookUtils isLinkedWithUser:[User currentUser]];
 }
 
-+ (void)logInWithFacebook
++ (void)logInWithCompletion:(void (^)(User *user, NSError *error))block
 {
     [PFFacebookUtils initializeFacebook];
     
     // The permissions requested from the user
-    NSArray *permissionsArray = @[ @"user_about_me", @"user_relationships", @"user_birthday", @"user_location"];
+    NSArray *permissionsArray = @[ @"email", @"user_about_me", @"user_location", @"user_events"];
     
     // Login PFUser using Facebook
     [PFFacebookUtils logInWithPermissions:permissionsArray block:^(PFUser *user, NSError *error) {
-        //        [_activityIndicator stopAnimating]; // Hide loading indicator
-        
         if (!user) {
-            if (!error) {
-                NSLog(@"Uh oh. The user cancelled the Facebook login.");
-            } else {
-                NSLog(@"Uh oh. An error occurred: %@", error);
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [[[UIAlertView alloc] initWithTitle:@"Error"
-                                                message:[NSString stringWithFormat:@"Uh oh. An error occurred: %@", error]
-                                               delegate:self
-                                      cancelButtonTitle:@"Dismiss"
-                                      otherButtonTitles:nil] show];
-                });
-            }
+            // callback used only for error case
+            block(nil, error);
         } else if (user.isNew) {
             NSLog(@"User with facebook signed up and logged in!");
-            [[NSNotificationCenter defaultCenter] postNotificationName:UserDidLoginNotification object:nil];
+            [[User currentUser] requestFacebookProfileWithCompletion:^(NSError *error) {
+                block([User currentUser], error);
+                [[NSNotificationCenter defaultCenter] postNotificationName:UserDidLoginNotification object:nil];
+            }];
         } else {
             NSLog(@"User with facebook logged in!");
-            [[NSNotificationCenter defaultCenter] postNotificationName:UserDidLoginNotification object:nil];
+            [[User currentUser] requestFacebookProfileWithCompletion:^(NSError *error) {
+                block([User currentUser], error);
+                [[NSNotificationCenter defaultCenter] postNotificationName:UserDidLoginNotification object:nil];
+            }];
         }
     }];
+}
+
+- (void)requestFacebookProfileWithCompletion:(void (^)(NSError *error))block
+{
+    FBRequest *request = [FBRequest requestForMe];
+    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (!error) {
+            NSDictionary *userData = (NSDictionary *)result;
+            // NSLog(@"userData: %@", userData);
+            
+            self[@"name"] = userData[@"name"];
+            self[@"facebookID"] = userData[@"id"];
+            [self saveInBackground];
+        }
+        block(error);
+    }];
+}
+
+- (NSURL *)avatarURL
+{
+    return [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", self[@"facebookID"]]];
 }
 
 + (void)logOut

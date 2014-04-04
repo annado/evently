@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SignInViewController">
             <connections>
+                <outlet property="activityIndicator" destination="Ny1-3c-eME" id="5HU-hd-ddl"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -33,13 +34,19 @@
                         <action selector="onSignInButton:" destination="-1" eventType="touchUpInside" id="ktt-Vi-Ea8"/>
                     </connections>
                 </button>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Ny1-3c-eME">
+                    <rect key="frame" x="142" y="265" width="37" height="37"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" red="1" green="0.50196081399917603" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="wBH-hy-T51" secondAttribute="bottom" constant="75" id="9gQ-qy-HEj"/>
                 <constraint firstAttribute="centerX" secondItem="wBH-hy-T51" secondAttribute="centerX" id="DKW-0K-Jry"/>
+                <constraint firstAttribute="centerY" secondItem="Ny1-3c-eME" secondAttribute="centerY" id="IVk-ne-ogv"/>
                 <constraint firstAttribute="centerX" secondItem="V2B-XZ-0bx" secondAttribute="centerX" id="ZZq-b0-Oew"/>
                 <constraint firstAttribute="centerY" secondItem="V2B-XZ-0bx" secondAttribute="centerY" constant="50" id="bM0-sl-AGM"/>
+                <constraint firstAttribute="centerX" secondItem="Ny1-3c-eME" secondAttribute="centerX" id="sOI-TA-6ee"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>

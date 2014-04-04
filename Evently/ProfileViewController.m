@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Evently. All rights reserved.
 //
 
+#import <AFNetworking/UIImageView+AFNetworking.h>
 #import "ProfileViewController.h"
 #import "User.h"
 
@@ -13,6 +14,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 - (IBAction)onLogOutButton:(id)sender;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 @end
 
@@ -30,7 +32,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    User *user = [User currentUser];
+    self.nameLabel.text = user[@"name"];
+    [self.imageView setImageWithURL:[user avatarURL]];
 }
 
 - (void)didReceiveMemoryWarning

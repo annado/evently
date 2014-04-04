@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProfileViewController">
             <connections>
+                <outlet property="imageView" destination="QtY-bv-VbS" id="5eZ-RG-UPp"/>
                 <outlet property="nameLabel" destination="bVk-1g-CeR" id="eow-Y6-2gG"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -41,11 +42,21 @@
                         <action selector="onLogOutButton:" destination="-1" eventType="touchUpInside" id="OU5-PZ-Gvo"/>
                     </connections>
                 </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QtY-bv-VbS">
+                    <rect key="frame" x="123" y="155" width="75" height="75"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="75" id="KBC-cG-YCQ"/>
+                        <constraint firstAttribute="width" constant="75" id="P6g-Gf-0Py"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="bVk-1g-CeR" firstAttribute="top" secondItem="fSU-mO-DUh" secondAttribute="bottom" constant="5" id="5Rh-NX-pSq"/>
+                <constraint firstItem="QtY-bv-VbS" firstAttribute="top" secondItem="bVk-1g-CeR" secondAttribute="bottom" constant="8" id="DBo-L0-Xjl"/>
                 <constraint firstAttribute="centerX" secondItem="bVk-1g-CeR" secondAttribute="centerX" id="GC2-Xj-vTa"/>
+                <constraint firstAttribute="centerX" secondItem="QtY-bv-VbS" secondAttribute="centerX" id="UMp-bb-xSd"/>
                 <constraint firstItem="fSU-mO-DUh" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="100" id="fIN-N8-QUa"/>
                 <constraint firstAttribute="centerX" secondItem="Pz5-K1-SB0" secondAttribute="centerX" id="noU-fo-EKk"/>
                 <constraint firstAttribute="bottom" secondItem="Pz5-K1-SB0" secondAttribute="bottom" constant="50" id="pdb-oL-Uyj"/>
