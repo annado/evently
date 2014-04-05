@@ -13,5 +13,5 @@ Wireframe screenshots: https://github.com/annado/evently/tree/master/Screenshots
 
 ## Benchmark apps
 
-1. Facebook
+1. Paper
 2. [Woovent](https://www.woovent.com/)
