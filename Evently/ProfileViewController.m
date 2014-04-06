@@ -9,6 +9,7 @@
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import "ProfileViewController.h"
 #import "User.h"
+#import "Event.h"
 
 @interface ProfileViewController ()
 
@@ -35,6 +36,10 @@
     User *user = [User currentUser];
     self.nameLabel.text = user[@"name"];
     [self.imageView setImageWithURL:[user avatarURL]];
+    
+    [Event eventsForUser:user withStatus:AttendanceAll onCompletion:^(NSArray *events, NSError *error) {
+        NSLog(@"%@", events);
+    }];
 }
 
 - (void)didReceiveMemoryWarning
