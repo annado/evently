@@ -17,4 +17,5 @@ extern NSString *const UserDidLogoutNotification;
 - (NSURL *)avatarURL;
 + (void)logInWithCompletion:(void (^)(User *user, NSError *error))block;
 + (User *)currentUser;
++ (User *)userWithDictionary:(NSDictionary *)dictionary;
 @end

@@ -79,4 +79,11 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
 
 }
 
++ (User *)userWithDictionary:(NSDictionary *)dictionary {
+    User *user = [[User alloc] init];
+    user[@"name"] = dictionary[@"name"];
+    user[@"facebookID"] = dictionary[@"id"];
+    return user;
+}
+
 @end

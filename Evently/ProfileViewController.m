@@ -37,9 +37,9 @@
     self.nameLabel.text = user[@"name"];
     [self.imageView setImageWithURL:[user avatarURL]];
     
-    [Event eventsForUser:user withStatus:AttendanceAll onCompletion:^(NSArray *events, NSError *error) {
+    [Event eventsForUser:user withStatus:AttendanceAll withIncludeAttendees:YES withCompletion:^(NSArray *events, NSError *error) {
         for (Event *event in events) {
-            NSLog(@"Found event %@ with status %i", event.facebookID, event.userAttendanceStatus);
+            NSLog(@"Found event %@ with status %i and %i attendees", event.facebookID, event.userAttendanceStatus, event.attendingUsers.count);
         }
     }];
 }

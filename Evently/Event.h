@@ -27,9 +27,15 @@ extern NSInteger const AttendanceAll;
 @property (nonatomic, strong) NSDate *startTime;
 @property (nonatomic, strong) NSDate *endTime;
 
+@property (nonatomic, strong) NSMutableArray *attendingUsers;
+@property (nonatomic, strong) NSMutableArray *unsureUsers;
+@property (nonatomic, strong) NSMutableArray *declinedUsers;
+@property (nonatomic, strong) NSMutableArray *notRepliedUsers;
+
 // For the currentUser
 @property (nonatomic, assign) NSInteger userAttendanceStatus;
 
-+ (void)eventsForUser:(User *)user withStatus:(NSInteger)status onCompletion:(void (^)(NSArray *events, NSError *error))block;
++ (void)eventsForUser:(User *)user withStatus:(NSInteger)status withIncludeAttendees:(BOOL)includeAttendees withCompletion:(void (^)(NSArray *events, NSError *error))block;
++ (void)eventForFacebookID:(NSString *)facebookID withIncludeAttendees:(BOOL)includeAttendees withCompletion:(void (^)(Event *event, NSError *error))completion;
 + (Event *)eventWithDictionary:(NSDictionary *)dictionary;
 @end

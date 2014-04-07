@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3B8828CA18F0FE1F00D5E87C /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828C918F0FE1F00D5E87C /* Event.m */; };
 		3B8828CD18F23B3700D5E87C /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828CC18F23B3700D5E87C /* Location.m */; };
+		3B8828D318F24CB600D5E87C /* EventCheckin.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828D218F24CB600D5E87C /* EventCheckin.m */; };
 		580A1D2318EB50C10011A042 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 580A1D2218EB50C10011A042 /* Foundation.framework */; };
 		580A1D2518EB50C10011A042 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 580A1D2418EB50C10011A042 /* CoreGraphics.framework */; };
 		580A1D2718EB50C10011A042 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 580A1D2618EB50C10011A042 /* UIKit.framework */; };
@@ -45,6 +46,8 @@
 		3B8828C918F0FE1F00D5E87C /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		3B8828CB18F23B3700D5E87C /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
 		3B8828CC18F23B3700D5E87C /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
+		3B8828D118F24CB600D5E87C /* EventCheckin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCheckin.h; sourceTree = "<group>"; };
+		3B8828D218F24CB600D5E87C /* EventCheckin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCheckin.m; sourceTree = "<group>"; };
 		580A1D1F18EB50C10011A042 /* Evently.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Evently.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		580A1D2218EB50C10011A042 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		580A1D2418EB50C10011A042 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -201,6 +204,8 @@
 				3B8828C918F0FE1F00D5E87C /* Event.m */,
 				3B8828CB18F23B3700D5E87C /* Location.h */,
 				3B8828CC18F23B3700D5E87C /* Location.m */,
+				3B8828D118F24CB600D5E87C /* EventCheckin.h */,
+				3B8828D218F24CB600D5E87C /* EventCheckin.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -337,6 +342,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B8828D318F24CB600D5E87C /* EventCheckin.m in Sources */,
 				3B8828CA18F0FE1F00D5E87C /* Event.m in Sources */,
 				3B8828CD18F23B3700D5E87C /* Location.m in Sources */,
 				5863441F18ED3257009CFD7B /* User.m in Sources */,
