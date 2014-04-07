@@ -122,10 +122,9 @@ NSInteger AttendanceStatuses[] = { AttendanceYes, AttendanceMaybe, AttendanceNo,
 
 + (void)eventForFacebookID:(NSString *)facebookID withIncludeAttendees:(BOOL)includeAttendees withCompletion:(void (^)(Event *event, NSError *error))block {
     
-    NSString *path = [NSString stringWithFormat:@"/%@?fields=id,cover,description,end_time,location,name,start_time,venue,rsvp_status", facebookID];
+    NSString *path = [NSString stringWithFormat:@"/%@?fields=id,cover,description,end_time,location,name,start_time,venue", facebookID];
     
     [FBRequestConnection startWithGraphPath:path completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-
         if (!error) {
             Event *event = [Event eventWithDictionary:result];
             if (includeAttendees) {
@@ -164,8 +163,9 @@ NSInteger AttendanceStatuses[] = { AttendanceYes, AttendanceMaybe, AttendanceNo,
     event.startTime = [formatter dateFromString:dictionary[@"start_time"]];
     event.endTime = [formatter dateFromString:dictionary[@"end_time"]];
     
-    // Attendance
-    event.userAttendanceStatus = [Event attendanceStatusForRsvpString:dictionary[@"rsvp_status"]];
+    if (dictionary[@"rsvp_status"]) {
+        event.userAttendanceStatus = [Event attendanceStatusForRsvpString:dictionary[@"rsvp_status"]];
+    }
     event.attendingUsers = [[NSMutableArray alloc] init];
     event.unsureUsers = [[NSMutableArray alloc] init];
     event.declinedUsers = [[NSMutableArray alloc] init];

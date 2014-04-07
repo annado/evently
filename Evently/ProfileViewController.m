@@ -10,6 +10,7 @@
 #import "ProfileViewController.h"
 #import "User.h"
 #import "Event.h"
+#import "EventCheckin.h"
 
 @interface ProfileViewController ()
 
@@ -36,12 +37,6 @@
     User *user = [User currentUser];
     self.nameLabel.text = user[@"name"];
     [self.imageView setImageWithURL:[user avatarURL]];
-    
-    [Event eventsForUser:user withStatus:AttendanceAll withIncludeAttendees:YES withCompletion:^(NSArray *events, NSError *error) {
-        for (Event *event in events) {
-            NSLog(@"Found event %@ with status %i and %i attendees", event.facebookID, event.userAttendanceStatus, event.attendingUsers.count);
-        }
-    }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -53,4 +48,5 @@
 - (IBAction)onLogOutButton:(id)sender {
     [User logOut];
 }
+
 @end

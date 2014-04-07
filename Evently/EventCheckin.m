@@ -20,30 +20,44 @@
     return @"EventCheckin";
 }
 
-+ (void) user:(User *)user didArriveAtEvent:(Event *)event {
+// TODO call didDepartEvent on previous event?
+// TODO idempotent checkin?
+// TODO allow checking back into an event?
++ (void) user:(User *)user didArriveAtEvent:(Event *)event withCompletion:(void (^)(NSError *error))block {
+    if (!event) {
+        block([NSError errorWithDomain:@"Nil event passed to didDepartEvent" code:100 userInfo:nil]);
+        return;
+    }
+    
     NSDate *now = [[NSDate alloc] init];
 
+    // Check user into current event
     PFQuery *query = [EventCheckin query];
     [query whereKey:@"user" equalTo:user];
     [query whereKey:@"event_facebook_id" equalTo:event.facebookID];
-    
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-        if (error) {
+        if (error && [error code] != 101) {
             NSLog(@"Error marking arrival: %@", [error description]);
-            return;
-        }
-        
-        if (!object) {
-            object = [[EventCheckin alloc] init];
-            object[@"user"] = user;
-            object[@"event_facebook_id"] = event.facebookID;
-            object[@"arrival_time"] = now;
-            [object saveInBackground];
+            block(error);
+        } else {
+            if (!object) {
+                object = [[EventCheckin alloc] init];
+                object[@"user"] = user;
+                object[@"event_facebook_id"] = event.facebookID;
+                object[@"arrival_time"] = now;
+                [object saveInBackground];
+            }
+            block(nil);
         }
     }];
 }
 
-+ (void) user:(User *)user didDepartEvent:(Event *)event {
++ (void) user:(User *)user didDepartEvent:(Event *)event withCompletion:(void (^)(NSError *error))block {
+    if (!event) {
+        block([NSError errorWithDomain:@"Nil event passed to didDepartEvent" code:100 userInfo:nil]);
+        return;
+    }
+    
     NSDate *now = [[NSDate alloc] init];
     
     PFQuery *query = [EventCheckin query];
@@ -51,19 +65,25 @@
     [query whereKey:@"event_facebook_id" equalTo:event.facebookID];
     
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-        if (error) {
+        if (error && [error code] != 101) {
             NSLog(@"Error marking departure: %@", [error description]);
-            return;
-        }
-        
-        if (object) {
-            object[@"departure_time"] = now;
-            [object saveInBackground];
+            block(error);
+        } else {
+            if (object) {
+                object[@"departure_time"] = now;
+                [object saveInBackground];
+            }
+            block(nil);
         }
     }];
 }
 
 + (void) usersAtEvent:(Event *)event withCompletion:(void (^)(NSArray *users, NSError *error))block {
+    if (!event) {
+        block(nil, [NSError errorWithDomain:@"Nil event passed to usersAtEvent" code:100 userInfo:nil]);
+        return;
+    }
+    
     NSDate *now = [[NSDate alloc] init];
     
     PFQuery *query = [EventCheckin query];
@@ -74,7 +94,7 @@
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         NSMutableArray *users = nil;
-        if (!error) {
+        if (!error || [error code] == 101) {
             users = [[NSMutableArray alloc] init];
             for (EventCheckin *checkin in objects) {
                 User *user = checkin[@"user"];
@@ -96,11 +116,15 @@
     [query whereKeyDoesNotExist:@"departure_time"];
     
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-        if (!error && object) {
-            [Event eventForFacebookID:object[@"event_facebook_id"] withIncludeAttendees:includeAttendees withCompletion:block];
-        } else {
+        if (error && [error code] != 101) {
             NSLog(@"Error retrieving event for user: %@", [error description]);
             block(nil, error);
+        } else {
+            if (object) {
+                [Event eventForFacebookID:object[@"event_facebook_id"] withIncludeAttendees:includeAttendees withCompletion:block];
+            } else {
+                block(nil, nil);
+            }
         }
     }];
 }
