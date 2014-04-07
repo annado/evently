@@ -27,8 +27,6 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
 
 + (void)logInWithCompletion:(void (^)(User *user, NSError *error))block
 {
-    [PFFacebookUtils initializeFacebook];
-    
     // The permissions requested from the user
     NSArray *permissionsArray = @[ @"email", @"user_about_me", @"user_location", @"user_events"];
     

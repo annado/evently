@@ -38,7 +38,9 @@
     [self.imageView setImageWithURL:[user avatarURL]];
     
     [Event eventsForUser:user withStatus:AttendanceAll onCompletion:^(NSArray *events, NSError *error) {
-        NSLog(@"%@", events);
+        for (Event *event in events) {
+            NSLog(@"Found event %@ with status %i", event.facebookID, event.userAttendanceStatus);
+        }
     }];
 }
 

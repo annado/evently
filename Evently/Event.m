@@ -19,32 +19,30 @@ NSInteger AttendanceStatuses[] = { AttendanceYes, AttendanceMaybe, AttendanceNo,
 
 // TODO properly handle errors
 + (void)eventsForUser:(User *)user
-           withStatus:(NSInteger)status
+           withStatus:(NSInteger)queryStatus
          onCompletion:(void (^)(NSArray *events, NSError *error))block {
-
+    
     NSMutableArray *allEvents = [[NSMutableArray alloc] init];
     NSLock *lock = [[NSLock alloc] init];
-    
-    int pending = 0;
-    NSInteger *pendingCount = &pending;
+    FBRequestConnection *connection = [[FBRequestConnection alloc] init];
+    NSMutableSet *pendingRequests = [[NSMutableSet alloc] init];
     
     for (NSInteger i = 0; i < sizeof(AttendanceStatuses) / sizeof(AttendanceYes); i++) {
+
         NSInteger attendanceStatus = AttendanceStatuses[i];
-        if ((status & attendanceStatus) > 0) {
-            NSString *path = [NSString stringWithFormat:@"/%@/events/%@", user[@"facebookID"], [Event suffixForStatus:attendanceStatus]];
+        if ((queryStatus & attendanceStatus) > 0) {
+            NSString *path = [NSString stringWithFormat:@"/%@/events/%@?fields=id,cover,description,end_time,location,name,start_time,venue,rsvp_status", user[@"facebookID"], [Event suffixForStatus:attendanceStatus]];
             
-            *pendingCount += 1;
-            [FBRequestConnection startWithGraphPath:path completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            FBRequest *request = [FBRequest requestForGraphPath:path];
+            [pendingRequests addObject:request];
+            
+            [connection addRequest:request completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                NSMutableArray *events = [[NSMutableArray alloc] init];
                 
                 if (!error) {
-                    NSMutableArray *events = [[NSMutableArray alloc] init];
                     for (NSDictionary *dictionary in result[@"data"]) {
                         Event *event = [Event eventWithDictionary:dictionary];
-                        
-                        // critical section
-                        [lock lock];
                         [events addObject:event];
-                        [lock unlock];
                     }
                 } else {
                     NSLog(@"Error requesting events: %@", [error description]);
@@ -52,21 +50,38 @@ NSInteger AttendanceStatuses[] = { AttendanceYes, AttendanceMaybe, AttendanceNo,
                 
                 // critical section
                 [lock lock];
-                *pendingCount -= 1;
+                [allEvents addObjectsFromArray:events];
+                [pendingRequests removeObject:request];
                 [lock unlock];
                 
-                if (*pendingCount == 0) {
+                if ([pendingRequests count] == 0) {
+                    NSLog(@"Returning events: %@", allEvents);
                     block(allEvents, error);
                 }
             }];
         }
     }
+    
+    [connection start];
 }
 
 + (Event *)eventWithDictionary:(NSDictionary *)dictionary {
     Event *event = [[Event alloc] init];
     
-    // TODO parse the fields from the JSON
+    event.location = [Location locationWithDictionary:dictionary];
+    event.location.name = dictionary[@"location"];
+
+    event.facebookID = dictionary[@"id"];
+    event.name = dictionary[@"name"];
+    event.description = dictionary[@"description"];
+    event.coverPhotoURL = dictionary[@"cover"];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZ"];
+    
+    event.startTime = [formatter dateFromString:dictionary[@"start_time"]];
+    event.endTime = [formatter dateFromString:dictionary[@"end_time"]];
+    event.userAttendanceStatus = [Event attendanceStatusForRsvpString:dictionary[@"rsvp_status"]];
     
     return event;
 }
@@ -80,6 +95,21 @@ NSInteger AttendanceStatuses[] = { AttendanceYes, AttendanceMaybe, AttendanceNo,
         default:
             NSLog(@"Invalid status: %d", status);
             return nil;
+    }
+}
+         
++ (NSInteger)attendanceStatusForRsvpString:(NSString *)rsvpString {
+    if ([rsvpString isEqualToString:@"attending"]) {
+        return AttendanceYes;
+    } else if ([rsvpString isEqualToString:@"maybe"]) {
+        return AttendanceMaybe;
+    } else if ([rsvpString isEqualToString:@"declined"]) {
+        return AttendanceNo;
+    } else if ([rsvpString isEqualToString:@"not_replied"]) {
+        return AttendanceNotReplied;
+    } else {
+        NSLog(@"Invalid rsvpString: %@", rsvpString);
+        return -1;
     }
 }
 
