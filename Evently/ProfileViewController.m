@@ -37,6 +37,34 @@
     User *user = [User currentUser];
     self.nameLabel.text = user[@"name"];
     [self.imageView setImageWithURL:[user avatarURL]];
+    
+    [Event eventsForUser:user withStatus:AttendanceAll withIncludeAttendees:NO withCompletion:^(NSArray *events, NSError *error) {
+        Event *event = events[6];
+        [EventCheckin user:[User currentUser] didArriveAtEvent:event withCompletion:^(NSError *error) {
+            NSLog(@"User did checkin to event: %@", user[@"facebookID"]);
+            
+            [EventCheckin currentEventForUser:user withIncludeAttendees:NO withCompletion:^(Event *innerEvent, NSError *error) {
+                NSLog(@"Current event for user: %@", innerEvent.facebookID);
+                
+                [EventCheckin usersAtEvent:event withCompletion:^(NSArray *users, NSError *error) {
+                    NSLog(@"%d users at event", [users count]);
+                    
+                    [EventCheckin user:user didDepartEvent:event withCompletion:^(NSError *error) {
+                        NSLog(@"User did checkout of event");
+                        
+                        [EventCheckin currentEventForUser:user withIncludeAttendees:NO withCompletion:^(Event *innerEvent2, NSError *error) {
+                            NSLog(@"Current event for user: %@", innerEvent2.facebookID);
+                            
+                            [EventCheckin usersAtEvent:event withCompletion:^(NSArray *users, NSError *error) {
+                                NSLog(@"%d users at event", [users count]);
+                            }];
+                        }];
+                    }];
+                }];
+            }];
+            
+        }];
+    }];
 }
 
 - (void)didReceiveMemoryWarning
