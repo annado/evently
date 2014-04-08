@@ -28,6 +28,10 @@
 		5863442318ED37AE009CFD7B /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5863442118ED37AE009CFD7B /* ProfileViewController.m */; };
 		5863442418ED37AE009CFD7B /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5863442218ED37AE009CFD7B /* ProfileViewController.xib */; };
 		6E928ECB3068458E93E99D3A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 161D78BE570642A8B3EFB03A /* libPods.a */; };
+		FE4D9A1318F3D581003351C3 /* EventListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4D9A1118F3D581003351C3 /* EventListViewController.m */; };
+		FE4D9A1418F3D581003351C3 /* EventListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE4D9A1218F3D581003351C3 /* EventListViewController.xib */; };
+		FE4D9A1918F3D7E0003351C3 /* EventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4D9A1718F3D7E0003351C3 /* EventCell.m */; };
+		FE4D9A1A18F3D7E0003351C3 /* EventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE4D9A1818F3D7E0003351C3 /* EventCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +77,12 @@
 		5863442118ED37AE009CFD7B /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		5863442218ED37AE009CFD7B /* ProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileViewController.xib; sourceTree = "<group>"; };
 		C7F6CD6B069E4FF9930FF9A5 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		FE4D9A1018F3D581003351C3 /* EventListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventListViewController.h; sourceTree = "<group>"; };
+		FE4D9A1118F3D581003351C3 /* EventListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventListViewController.m; sourceTree = "<group>"; };
+		FE4D9A1218F3D581003351C3 /* EventListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventListViewController.xib; sourceTree = "<group>"; };
+		FE4D9A1618F3D7E0003351C3 /* EventCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCell.h; sourceTree = "<group>"; };
+		FE4D9A1718F3D7E0003351C3 /* EventCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCell.m; sourceTree = "<group>"; };
+		FE4D9A1818F3D7E0003351C3 /* EventCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +152,7 @@
 		580A1D2818EB50C10011A042 /* Evently */ = {
 			isa = PBXGroup;
 			children = (
+				FE4D9A1518F3D7C8003351C3 /* Views */,
 				3B8828C418F0FD3600D5E87C /* Clients */,
 				5863441C18ED3247009CFD7B /* Models */,
 				580A1D5118EB50CC0011A042 /* Controllers */,
@@ -191,6 +202,9 @@
 				5863442018ED37AE009CFD7B /* ProfileViewController.h */,
 				5863442118ED37AE009CFD7B /* ProfileViewController.m */,
 				5863442218ED37AE009CFD7B /* ProfileViewController.xib */,
+				FE4D9A1018F3D581003351C3 /* EventListViewController.h */,
+				FE4D9A1118F3D581003351C3 /* EventListViewController.m */,
+				FE4D9A1218F3D581003351C3 /* EventListViewController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -208,6 +222,16 @@
 				3B8828D218F24CB600D5E87C /* EventCheckin.m */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		FE4D9A1518F3D7C8003351C3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FE4D9A1618F3D7E0003351C3 /* EventCell.h */,
+				FE4D9A1718F3D7E0003351C3 /* EventCell.m */,
+				FE4D9A1818F3D7E0003351C3 /* EventCell.xib */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -290,6 +314,8 @@
 				580A1D2D18EB50C10011A042 /* InfoPlist.strings in Resources */,
 				580A1D5618EB50F00011A042 /* SignInViewController.xib in Resources */,
 				5863442418ED37AE009CFD7B /* ProfileViewController.xib in Resources */,
+				FE4D9A1418F3D581003351C3 /* EventListViewController.xib in Resources */,
+				FE4D9A1A18F3D7E0003351C3 /* EventCell.xib in Resources */,
 				580A1D3518EB50C10011A042 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -343,10 +369,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B8828D318F24CB600D5E87C /* EventCheckin.m in Sources */,
+				FE4D9A1318F3D581003351C3 /* EventListViewController.m in Sources */,
 				3B8828CA18F0FE1F00D5E87C /* Event.m in Sources */,
 				3B8828CD18F23B3700D5E87C /* Location.m in Sources */,
 				5863441F18ED3257009CFD7B /* User.m in Sources */,
 				580A1D3318EB50C10011A042 /* AppDelegate.m in Sources */,
+				FE4D9A1918F3D7E0003351C3 /* EventCell.m in Sources */,
 				580A1D5518EB50F00011A042 /* SignInViewController.m in Sources */,
 				580A1D2F18EB50C10011A042 /* main.m in Sources */,
 				5863442318ED37AE009CFD7B /* ProfileViewController.m in Sources */,

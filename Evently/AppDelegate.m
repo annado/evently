@@ -11,6 +11,7 @@
 #import "ProfileViewController.h"
 #import "User.h"
 #import "EventCheckin.h"
+#import "EventListViewController.h"
 
 @implementation AppDelegate
 
@@ -77,7 +78,7 @@
 - (void)updateRootViewController
 {
     if ([[User currentUser] isLoggedIn]) {
-        self.window.rootViewController = [[ProfileViewController alloc] init];
+        self.window.rootViewController = [[EventListViewController alloc] init];
     } else {
         self.window.rootViewController = [[SignInViewController alloc] init];
     }
