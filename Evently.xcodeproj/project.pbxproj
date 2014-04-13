@@ -10,6 +10,8 @@
 		3B8828CA18F0FE1F00D5E87C /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828C918F0FE1F00D5E87C /* Event.m */; };
 		3B8828CD18F23B3700D5E87C /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828CC18F23B3700D5E87C /* Location.m */; };
 		3B8828D318F24CB600D5E87C /* EventCheckin.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828D218F24CB600D5E87C /* EventCheckin.m */; };
+		58001AEA18FA19CB007ECAF9 /* EventDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58001AE818FA19CB007ECAF9 /* EventDetailViewController.m */; };
+		58001AEB18FA19CB007ECAF9 /* EventDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58001AE918FA19CB007ECAF9 /* EventDetailViewController.xib */; };
 		580A1D2318EB50C10011A042 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 580A1D2218EB50C10011A042 /* Foundation.framework */; };
 		580A1D2518EB50C10011A042 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 580A1D2418EB50C10011A042 /* CoreGraphics.framework */; };
 		580A1D2718EB50C10011A042 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 580A1D2618EB50C10011A042 /* UIKit.framework */; };
@@ -52,6 +54,9 @@
 		3B8828CC18F23B3700D5E87C /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		3B8828D118F24CB600D5E87C /* EventCheckin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCheckin.h; sourceTree = "<group>"; };
 		3B8828D218F24CB600D5E87C /* EventCheckin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCheckin.m; sourceTree = "<group>"; };
+		58001AE718FA19CB007ECAF9 /* EventDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailViewController.h; sourceTree = "<group>"; };
+		58001AE818FA19CB007ECAF9 /* EventDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailViewController.m; sourceTree = "<group>"; };
+		58001AE918FA19CB007ECAF9 /* EventDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventDetailViewController.xib; sourceTree = "<group>"; };
 		580A1D1F18EB50C10011A042 /* Evently.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Evently.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		580A1D2218EB50C10011A042 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		580A1D2418EB50C10011A042 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -205,6 +210,9 @@
 				FE4D9A1018F3D581003351C3 /* EventListViewController.h */,
 				FE4D9A1118F3D581003351C3 /* EventListViewController.m */,
 				FE4D9A1218F3D581003351C3 /* EventListViewController.xib */,
+				58001AE718FA19CB007ECAF9 /* EventDetailViewController.h */,
+				58001AE818FA19CB007ECAF9 /* EventDetailViewController.m */,
+				58001AE918FA19CB007ECAF9 /* EventDetailViewController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -317,6 +325,7 @@
 				FE4D9A1418F3D581003351C3 /* EventListViewController.xib in Resources */,
 				FE4D9A1A18F3D7E0003351C3 /* EventCell.xib in Resources */,
 				580A1D3518EB50C10011A042 /* Images.xcassets in Resources */,
+				58001AEB18FA19CB007ECAF9 /* EventDetailViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,6 +385,7 @@
 				580A1D3318EB50C10011A042 /* AppDelegate.m in Sources */,
 				FE4D9A1918F3D7E0003351C3 /* EventCell.m in Sources */,
 				580A1D5518EB50F00011A042 /* SignInViewController.m in Sources */,
+				58001AEA18FA19CB007ECAF9 /* EventDetailViewController.m in Sources */,
 				580A1D2F18EB50C10011A042 /* main.m in Sources */,
 				5863442318ED37AE009CFD7B /* ProfileViewController.m in Sources */,
 			);

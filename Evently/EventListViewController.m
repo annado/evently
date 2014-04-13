@@ -7,7 +7,7 @@
 //
 
 #import "EventListViewController.h"
-#import "Event.h"
+#import "EventDetailViewController.h"
 #import "EventCell.h"
 
 @interface EventListViewController ()
@@ -23,7 +23,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        self.title = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
     }
     return self;
 }
@@ -66,6 +66,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 66.0; // TODO: don't hardcode
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    Event *event = self.events[indexPath.row];
+    EventDetailViewController *eventDetailViewController = [[EventDetailViewController alloc] initWithEvent:event];
+    [self.navigationController pushViewController:eventDetailViewController animated:YES];
 }
 
 @end
