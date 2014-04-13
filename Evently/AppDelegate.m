@@ -89,6 +89,11 @@
 - (void)setDefaultAppearance
 {
 //    [[UILabel appearance] setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:17.0]];
+    [[UIView appearance] setTintColor:[UIColor orangeColor]];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{
+                                                          NSForegroundColorAttributeName: [[UIColor alloc] initWithRed:51.0/255 green:51.0/255 blue:51.0/255 alpha:1.0],
+                                                          NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue" size:17.0],
+                                                          }];
 }
 
 @end
