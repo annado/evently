@@ -10,10 +10,14 @@
 #import "EventDetailViewController.h"
 #import "EventCell.h"
 
+const NSInteger kHappeningNowSection = 0;
+const NSInteger kUpcomingSection = 1;
+
 @interface EventListViewController ()
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) NSArray *events;
+@property (nonatomic, strong) NSArray *nowEvents;
+@property (nonatomic, strong) NSArray *upcomingEvents;
 
 @end
 
@@ -36,11 +40,19 @@
     [self.tableView registerNib:eventCell forCellReuseIdentifier:@"EventCell"];
 
     [Event eventsForUser:[User currentUser] withStatus:EventAttendanceAll withIncludeAttendees:NO withCompletion:^(NSArray *events, NSError *error) {
-        self.events = events;
+        NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"startTime"
+                                                                     ascending:YES]];
+        NSDate *now = [NSDate date];
+        self.nowEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(startTime <= %@ AND %@ <= endTime)", now, now]] sortedArrayUsingDescriptors:sortDescriptors];
+        self.upcomingEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(%@ <= startTime)", now]] sortedArrayUsingDescriptors:sortDescriptors];
         [self.tableView reloadData];
     }];
 
-    // Do any additional setup after loading the view from its nib.
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(onLogoutButtonTap)];
+}
+
+- (void)onLogoutButtonTap {
+    [User logOut];
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,13 +63,39 @@
 
 #pragma mark - UITableViewDataSource
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.events.count;
+    switch (section) {
+        case kHappeningNowSection:
+            return 0;
+        case kUpcomingSection:
+            return self.upcomingEvents.count;
+        default:
+            break;
+    }
+    
+    return 0;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    switch (section) {
+        case kHappeningNowSection:
+            return @"Happening Now";
+        case kUpcomingSection:
+            return @"Upcoming";
+        default:
+            break;
+    }
+    
+    return nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     EventCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"EventCell" forIndexPath:indexPath];
-    Event *event = self.events[indexPath.row];
+    Event *event = self.upcomingEvents[indexPath.row];
     cell.event = event;
     return cell;
 }
@@ -70,7 +108,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Event *event = self.events[indexPath.row];
+    Event *event = self.upcomingEvents[indexPath.row];
     EventDetailViewController *eventDetailViewController = [[EventDetailViewController alloc] initWithEvent:event];
     [self.navigationController pushViewController:eventDetailViewController animated:YES];
 }

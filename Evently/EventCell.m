@@ -7,11 +7,13 @@
 //
 
 #import "EventCell.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface EventCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *eventNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *eventTimeLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *eventImage;
 
 @end
 
@@ -29,9 +31,18 @@
     // Configure the view for the selected state
 }
 
+- (NSString *)stringFromEventTime {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    [formatter setDateFormat:@"EEE MMMM d h:mm a"];
+    return [formatter stringFromDate:self.event.startTime];
+}
+
 - (void)setEvent:(Event *)event {
+    _event = event;
     self.eventNameLabel.text = event.name;
-    self.eventTimeLabel.text = [event.startTime description];
+    self.eventTimeLabel.text = [self stringFromEventTime];
+    [self.eventImage setImageWithURL:event.coverPhotoURL];
 }
 
 @end
