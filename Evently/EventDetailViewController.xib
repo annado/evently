@@ -7,6 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EventDetailViewController">
             <connections>
                 <outlet property="coverImageView" destination="Kz3-Y9-9CP" id="Iv7-K8-k5f"/>
+                <outlet property="rsvpSegmentedControl" destination="KiD-ES-oK7" id="Vv0-2h-uMP"/>
                 <outlet property="titleLabel" destination="cWM-q9-Yw5" id="Da3-3Y-Pcb"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -32,10 +33,21 @@
                     <color key="shadowColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
                     <size key="shadowOffset" width="1" height="-1"/>
                 </label>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="KiD-ES-oK7">
+                    <rect key="frame" x="51" y="270" width="218" height="29"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <segments>
+                        <segment title="Attending"/>
+                        <segment title="Maybe"/>
+                        <segment title="Decline"/>
+                    </segments>
+                </segmentedControl>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="cWM-q9-Yw5" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="8IE-oi-cdA"/>
+                <constraint firstItem="KiD-ES-oK7" firstAttribute="top" secondItem="Kz3-Y9-9CP" secondAttribute="bottom" constant="20" id="WTo-yD-604"/>
+                <constraint firstAttribute="centerX" secondItem="KiD-ES-oK7" secondAttribute="centerX" id="XiU-A4-daQ"/>
                 <constraint firstItem="cWM-q9-Yw5" firstAttribute="bottom" secondItem="Kz3-Y9-9CP" secondAttribute="bottom" constant="-15" id="bcE-iT-FwM"/>
                 <constraint firstItem="Kz3-Y9-9CP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="i3t-BT-CiW"/>
                 <constraint firstAttribute="trailing" secondItem="Kz3-Y9-9CP" secondAttribute="trailing" id="vll-ha-Kad"/>

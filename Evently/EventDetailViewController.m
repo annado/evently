@@ -12,6 +12,7 @@
 @interface EventDetailViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *rsvpSegmentedControl;
 
 @end
 
@@ -23,6 +24,7 @@
     if (self) {
         _event = event;
         self.title = event.name;
+        [self initRSVPControl];
     }
     return self;
 }
@@ -36,9 +38,17 @@
     return self;
 }
 
+- (void)initRSVPControl
+{
+    [self.rsvpSegmentedControl addTarget:self
+                                  action:@selector(onRSVP:)
+                        forControlEvents:UIControlEventValueChanged];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self updateRSVP];
 
     self.titleLabel.text = _event.name;
     if (_event.coverPhotoURL) {
@@ -50,6 +60,36 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)onRSVP:(UISegmentedControl *)control
+{
+    // TODO:
+    NSLog(@"onRSVP: %d", control.selectedSegmentIndex);
+}
+
+- (void)updateRSVP
+{
+    NSInteger index;
+    
+    switch (_event.userAttendanceStatus) {
+        case EventAttendanceYes:
+            index = 0;
+            break;
+        case EventAttendanceMaybe:
+            index = 1;
+            break;
+        case EventAttendanceNo:
+            index = 2;
+            break;
+        case EventAttendanceNotReplied:
+            index = -1;
+            break;
+        default:
+            index = -1;
+            break;
+    }
+    self.rsvpSegmentedControl.selectedSegmentIndex = index;
 }
 
 @end
