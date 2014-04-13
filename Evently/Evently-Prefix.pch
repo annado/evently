@@ -16,3 +16,5 @@
 #endif
 
 #import <Parse/Parse.h>
+
+#import "Event.h"
