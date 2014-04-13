@@ -8,12 +8,7 @@
 
 #import "Event.h"
 
-NSInteger const AttendanceYes = 1;
-NSInteger const AttendanceMaybe = 1 << 1;
-NSInteger const AttendanceNo = 1 << 2;
-NSInteger const AttendanceNotReplied = 1 << 3;
-NSInteger const AttendanceAll = AttendanceYes | AttendanceMaybe | AttendanceNo | AttendanceNotReplied;
-NSInteger AttendanceStatuses[] = { AttendanceYes, AttendanceMaybe, AttendanceNo, AttendanceNotReplied };
+NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, EventAttendanceNo, EventAttendanceNotReplied };
 
 @implementation Event
 
@@ -28,7 +23,7 @@ NSInteger AttendanceStatuses[] = { AttendanceYes, AttendanceMaybe, AttendanceNo,
     FBRequestConnection *connection = [[FBRequestConnection alloc] init];
     NSMutableSet *pendingEventRequests = [[NSMutableSet alloc] init];
     
-    for (NSInteger i = 0; i < sizeof(AttendanceStatuses) / sizeof(AttendanceYes); i++) {
+    for (NSInteger i = 0; i < sizeof(AttendanceStatuses) / sizeof(EventAttendanceYes); i++) {
         
         NSInteger attendanceStatus = AttendanceStatuses[i];
         if ((queryStatus & attendanceStatus) > 0) {
@@ -175,17 +170,15 @@ NSInteger AttendanceStatuses[] = { AttendanceYes, AttendanceMaybe, AttendanceNo,
     event.declinedUsers = [[NSMutableArray alloc] init];
     event.notRepliedUsers = [[NSMutableArray alloc] init];
     
-    
-    
     return event;
 }
 
 + (NSString *)suffixForStatus:(NSInteger)status {
     switch (status) {
-        case AttendanceYes: return @"attending";
-        case AttendanceMaybe: return @"maybe";
-        case AttendanceNo: return @"declined";
-        case AttendanceNotReplied: return @"not_replied";
+        case EventAttendanceYes: return @"attending";
+        case EventAttendanceMaybe: return @"maybe";
+        case EventAttendanceNo: return @"declined";
+        case EventAttendanceNotReplied: return @"not_replied";
         default:
             NSLog(@"Invalid status: %d", status);
             return nil;
@@ -194,13 +187,13 @@ NSInteger AttendanceStatuses[] = { AttendanceYes, AttendanceMaybe, AttendanceNo,
          
 + (NSInteger)attendanceStatusForRsvpString:(NSString *)rsvpString {
     if ([rsvpString isEqualToString:@"attending"]) {
-        return AttendanceYes;
-    } else if ([rsvpString isEqualToString:@"maybe"]) {
-        return AttendanceMaybe;
+        return EventAttendanceYes;
+    } else if ([rsvpString isEqualToString:@"unsure"]) {
+        return EventAttendanceMaybe;
     } else if ([rsvpString isEqualToString:@"declined"]) {
-        return AttendanceNo;
+        return EventAttendanceNo;
     } else if ([rsvpString isEqualToString:@"not_replied"]) {
-        return AttendanceNotReplied;
+        return EventAttendanceNotReplied;
     } else {
         NSLog(@"Invalid rsvpString: %@", rsvpString);
         return -1;

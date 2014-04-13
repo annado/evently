@@ -35,7 +35,7 @@
     UINib *eventCell = [UINib nibWithNibName:@"EventCell" bundle:nil];
     [self.tableView registerNib:eventCell forCellReuseIdentifier:@"EventCell"];
 
-    [Event eventsForUser:[User currentUser] withStatus:AttendanceAll withIncludeAttendees:NO withCompletion:^(NSArray *events, NSError *error) {
+    [Event eventsForUser:[User currentUser] withStatus:EventAttendanceAll withIncludeAttendees:NO withCompletion:^(NSArray *events, NSError *error) {
         self.events = events;
         [self.tableView reloadData];
     }];

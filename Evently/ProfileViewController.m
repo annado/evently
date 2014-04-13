@@ -38,7 +38,7 @@
     self.nameLabel.text = user[@"name"];
     [self.imageView setImageWithURL:[user avatarURL]];
     
-    [Event eventsForUser:user withStatus:AttendanceAll withIncludeAttendees:NO withCompletion:^(NSArray *events, NSError *error) {
+    [Event eventsForUser:user withStatus:EventAttendanceAll withIncludeAttendees:NO withCompletion:^(NSArray *events, NSError *error) {
         Event *event = events[6];
         [EventCheckin user:[User currentUser] didArriveAtEvent:event withCompletion:^(NSError *error) {
             NSLog(@"User did checkin to event: %@", user[@"facebookID"]);

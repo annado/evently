@@ -10,11 +10,13 @@
 #import "User.h"
 #import "Location.h"
 
-extern NSInteger const AttendanceYes;
-extern NSInteger const AttendanceMaybe;
-extern NSInteger const AttendanceNo;
-extern NSInteger const AttendanceNotReplied;
-extern NSInteger const AttendanceAll;
+typedef enum {
+    EventAttendanceYes = 1,
+    EventAttendanceMaybe = 1 << 1,
+    EventAttendanceNo = 1 << 2,
+    EventAttendanceNotReplied = 1 << 3,
+    EventAttendanceAll = EventAttendanceYes | EventAttendanceMaybe | EventAttendanceNo | EventAttendanceNotReplied
+} EventAttendance;
 
 @interface Event : NSObject
 
