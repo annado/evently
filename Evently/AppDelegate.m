@@ -78,7 +78,9 @@
 - (void)updateRootViewController
 {
     if ([[User currentUser] isLoggedIn]) {
-        self.window.rootViewController = [[EventListViewController alloc] init];
+        EventListViewController *eventListViewController = [[EventListViewController alloc] init];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:eventListViewController];
+        self.window.rootViewController = navController;
     } else {
         self.window.rootViewController = [[SignInViewController alloc] init];
     }
