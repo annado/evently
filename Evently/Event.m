@@ -60,10 +60,10 @@ NSInteger AttendanceStatuses[] = { AttendanceYes, AttendanceMaybe, AttendanceNo,
                     
                     if (includeAttendees) {
                         [Event fillAttendees:allEvents onCompletion:^(NSArray *events, NSError *error) {
-                            block(events, error);
+                            block(allEvents, error);
                         }];
                     } else {
-                        block(events, error);
+                        block(allEvents, error);
                     }
                 }
             }];
