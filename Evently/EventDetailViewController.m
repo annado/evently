@@ -8,15 +8,16 @@
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import "EventDetailViewController.h"
+#import "EventDetailHeader.h"
+#import "EventRSVPCell.h"
 
 @interface EventDetailViewController ()
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *rsvpSegmentedControl;
-
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @end
 
 @implementation EventDetailViewController
+
+static NSString *RSVPCellIdentifier = @"EventRSVPCell";
 
 - (id)initWithEvent:(Event *)event
 {
@@ -24,7 +25,6 @@
     if (self) {
         _event = event;
         self.title = event.name;
-        [self initRSVPControl];
     }
     return self;
 }
@@ -38,22 +38,21 @@
     return self;
 }
 
-- (void)initRSVPControl
-{
-    [self.rsvpSegmentedControl addTarget:self
-                                  action:@selector(onRSVP:)
-                        forControlEvents:UIControlEventValueChanged];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self updateRSVP];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
 
-    self.titleLabel.text = _event.name;
-    if (_event.coverPhotoURL) {
-        [self.coverImageView setImageWithURL:_event.coverPhotoURL];
-    }
+    // Register cells
+    [self.tableView registerNib:[UINib nibWithNibName:@"EventRSVPCell" bundle:nil] forCellReuseIdentifier:RSVPCellIdentifier];
+
+    [self.tableView registerNib:[UINib nibWithNibName:@"EventDetailHeader" bundle:nil] forHeaderFooterViewReuseIdentifier:@"EventDetailHeader"];
+
+    EventDetailHeader *eventDetailHeader = [[EventDetailHeader alloc] initWithFrame:CGRectMake(0, 0, 300, 200)];
+    
+    eventDetailHeader.event = _event;
+    self.tableView.tableHeaderView = eventDetailHeader;
 }
 
 - (void)didReceiveMemoryWarning
@@ -62,34 +61,31 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)onRSVP:(UISegmentedControl *)control
-{
-    // TODO:
-    NSLog(@"onRSVP: %d", control.selectedSegmentIndex);
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+
+    return 1;
 }
 
-- (void)updateRSVP
-{
-    NSInteger index;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    switch (_event.userAttendanceStatus) {
-        case EventAttendanceYes:
-            index = 0;
-            break;
-        case EventAttendanceMaybe:
-            index = 1;
-            break;
-        case EventAttendanceNo:
-            index = 2;
-            break;
-        case EventAttendanceNotReplied:
-            index = -1;
-            break;
-        default:
-            index = -1;
-            break;
-    }
-    self.rsvpSegmentedControl.selectedSegmentIndex = index;
+    EventRSVPCell *cell = [self.tableView dequeueReusableCellWithIdentifier:RSVPCellIdentifier forIndexPath:indexPath];
+    cell.event = _event;
+    return cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 66.0; // TODO: don't hardcode
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+//    Event *event = self.events[indexPath.row];
+//    EventDetailViewController *eventDetailViewController = [[EventDetailViewController alloc] initWithEvent:event];
+//    [self.navigationController pushViewController:eventDetailViewController animated:YES];
 }
 
 @end

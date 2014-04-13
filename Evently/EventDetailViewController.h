@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EventDetailViewController : UIViewController
+@interface EventDetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) Event *event;
 - (id)initWithEvent:(Event *)event;
 @end

@@ -6,9 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EventDetailViewController">
             <connections>
-                <outlet property="coverImageView" destination="Kz3-Y9-9CP" id="Iv7-K8-k5f"/>
-                <outlet property="rsvpSegmentedControl" destination="KiD-ES-oK7" id="Vv0-2h-uMP"/>
-                <outlet property="titleLabel" destination="cWM-q9-Yw5" id="Da3-3Y-Pcb"/>
+                <outlet property="tableView" destination="HCc-SM-5D9" id="mY5-sZ-RGc"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -17,42 +15,18 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Kz3-Y9-9CP">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="250"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="HCc-SM-5D9">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="250" id="wAP-9V-Q1o"/>
-                    </constraints>
-                </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="cWM-q9-Yw5">
-                    <rect key="frame" x="15" y="213" width="290" height="22"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                    <color key="shadowColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
-                    <size key="shadowOffset" width="1" height="-1"/>
-                </label>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="KiD-ES-oK7">
-                    <rect key="frame" x="51" y="270" width="218" height="29"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <segments>
-                        <segment title="Attending"/>
-                        <segment title="Maybe"/>
-                        <segment title="Decline"/>
-                    </segments>
-                </segmentedControl>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="cWM-q9-Yw5" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="8IE-oi-cdA"/>
-                <constraint firstItem="KiD-ES-oK7" firstAttribute="top" secondItem="Kz3-Y9-9CP" secondAttribute="bottom" constant="20" id="WTo-yD-604"/>
-                <constraint firstAttribute="centerX" secondItem="KiD-ES-oK7" secondAttribute="centerX" id="XiU-A4-daQ"/>
-                <constraint firstItem="cWM-q9-Yw5" firstAttribute="bottom" secondItem="Kz3-Y9-9CP" secondAttribute="bottom" constant="-15" id="bcE-iT-FwM"/>
-                <constraint firstItem="Kz3-Y9-9CP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="i3t-BT-CiW"/>
-                <constraint firstAttribute="trailing" secondItem="Kz3-Y9-9CP" secondAttribute="trailing" id="vll-ha-Kad"/>
-                <constraint firstAttribute="trailing" secondItem="cWM-q9-Yw5" secondAttribute="trailing" constant="15" id="vmR-eo-Iu0"/>
-                <constraint firstItem="Kz3-Y9-9CP" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="xBw-Hq-64N"/>
+                <constraint firstAttribute="trailing" secondItem="HCc-SM-5D9" secondAttribute="trailing" id="09d-9y-AVy"/>
+                <constraint firstItem="HCc-SM-5D9" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="5xB-lZ-AkG"/>
+                <constraint firstItem="HCc-SM-5D9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="OhD-li-ngc"/>
+                <constraint firstAttribute="bottom" secondItem="HCc-SM-5D9" secondAttribute="bottom" id="pH2-jO-I0a"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
