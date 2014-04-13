@@ -22,7 +22,7 @@ extern NSInteger const AttendanceAll;
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *description;
-@property (nonatomic, strong) NSString *coverPhotoURL;
+@property (nonatomic, strong) NSURL *coverPhotoURL;
 @property (nonatomic, strong) Location *location;
 @property (nonatomic, strong) NSDate *startTime;
 @property (nonatomic, strong) NSDate *endTime;

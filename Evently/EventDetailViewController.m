@@ -6,9 +6,12 @@
 //  Copyright (c) 2014 Evently. All rights reserved.
 //
 
+#import <AFNetworking/UIImageView+AFNetworking.h>
 #import "EventDetailViewController.h"
 
 @interface EventDetailViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
 
 @end
 
@@ -18,6 +21,7 @@
 {
     self = [super init];
     if (self) {
+        _event = event;
         self.title = event.name;
     }
     return self;
@@ -35,7 +39,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+
+    self.titleLabel.text = _event.name;
+    if (_event.coverPhotoURL) {
+        [self.coverImageView setImageWithURL:_event.coverPhotoURL];
+    }
 }
 
 - (void)didReceiveMemoryWarning

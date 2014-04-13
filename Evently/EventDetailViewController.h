@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface EventDetailViewController : UIViewController
+@property (nonatomic, strong) Event *event;
 - (id)initWithEvent:(Event *)event;
 @end

@@ -155,7 +155,11 @@ NSInteger AttendanceStatuses[] = { AttendanceYes, AttendanceMaybe, AttendanceNo,
     event.facebookID = dictionary[@"id"];
     event.name = dictionary[@"name"];
     event.description = dictionary[@"description"];
-    event.coverPhotoURL = dictionary[@"cover"];
+    
+    NSDictionary *cover = dictionary[@"cover"];
+    if (cover) {
+        event.coverPhotoURL = [NSURL URLWithString:dictionary[@"cover"][@"source"]];
+    }
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZ"];
@@ -170,6 +174,8 @@ NSInteger AttendanceStatuses[] = { AttendanceYes, AttendanceMaybe, AttendanceNo,
     event.unsureUsers = [[NSMutableArray alloc] init];
     event.declinedUsers = [[NSMutableArray alloc] init];
     event.notRepliedUsers = [[NSMutableArray alloc] init];
+    
+    
     
     return event;
 }
