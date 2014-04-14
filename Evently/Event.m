@@ -251,4 +251,19 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
     }
 }
 
+- (NSString *)displayUserAttendanceStatus {
+    switch (self.userAttendanceStatus) {
+        case EventAttendanceYes:
+            return @"Yes";
+        case EventAttendanceMaybe:
+            return @"Maybe";
+        case EventAttendanceNo:
+            return @"No";
+        case EventAttendanceNotReplied:
+            return @"Not replied";
+    }
+    
+    return nil;
+}
+
 @end

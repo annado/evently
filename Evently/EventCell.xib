@@ -21,7 +21,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VSR-kr-8YW">
-                        <rect key="frame" x="69" y="34" width="62" height="15"/>
+                        <rect key="frame" x="69" y="29" width="62" height="15"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -35,12 +35,21 @@
                             <constraint firstAttribute="width" constant="56" id="RAV-SV-G6H"/>
                         </constraints>
                     </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attendance status: Attending" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LQU-Fa-MP7">
+                        <rect key="frame" x="69" y="46" width="163" height="15"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="WSy-TM-buI" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="4iw-0G-AaN"/>
+                    <constraint firstItem="VSR-kr-8YW" firstAttribute="leading" secondItem="LQU-Fa-MP7" secondAttribute="leading" id="8SX-Ir-dTh"/>
+                    <constraint firstItem="LQU-Fa-MP7" firstAttribute="top" secondItem="VSR-kr-8YW" secondAttribute="bottom" constant="2" id="9Ym-6K-a8Q"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="i00-SW-G0I" secondAttribute="trailing" constant="10" id="Cvm-dg-sTR"/>
                     <constraint firstItem="i00-SW-G0I" firstAttribute="leading" secondItem="WSy-TM-buI" secondAttribute="trailing" constant="6" id="azn-M9-AlE"/>
-                    <constraint firstItem="VSR-kr-8YW" firstAttribute="top" secondItem="i00-SW-G0I" secondAttribute="bottom" constant="6" id="bqQ-67-6GM"/>
+                    <constraint firstItem="VSR-kr-8YW" firstAttribute="top" secondItem="i00-SW-G0I" secondAttribute="bottom" constant="1" id="bqQ-67-6GM"/>
                     <constraint firstItem="VSR-kr-8YW" firstAttribute="leading" secondItem="i00-SW-G0I" secondAttribute="leading" id="e2c-qA-srg"/>
                     <constraint firstItem="WSy-TM-buI" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="7" id="n1T-aY-DAp"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="VSR-kr-8YW" secondAttribute="trailing" constant="10" id="nyD-pb-Hus"/>
@@ -48,6 +57,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="attendanceLabel" destination="LQU-Fa-MP7" id="4y6-wo-hcA"/>
                 <outlet property="eventImage" destination="WSy-TM-buI" id="RiK-3h-Xk7"/>
                 <outlet property="eventNameLabel" destination="i00-SW-G0I" id="1qF-qB-LWn"/>
                 <outlet property="eventTimeLabel" destination="VSR-kr-8YW" id="FXh-LY-g74"/>

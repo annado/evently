@@ -37,6 +37,7 @@ typedef enum {
 
 // For the currentUser
 @property (nonatomic, assign) NSInteger userAttendanceStatus;
+@property (nonatomic, readonly, strong) NSString *displayUserAttendanceStatus;
 
 + (void)eventsForUser:(User *)user withStatus:(NSInteger)status withIncludeAttendees:(BOOL)includeAttendees withCompletion:(void (^)(NSArray *events, NSError *error))block;
 + (void)eventForFacebookID:(NSString *)facebookID withIncludeAttendees:(BOOL)includeAttendees withCompletion:(void (^)(Event *event, NSError *error))completion;
