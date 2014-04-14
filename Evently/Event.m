@@ -49,7 +49,7 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
                 
                 if (!error) {
                     for (NSDictionary *dictionary in result[@"data"]) {
-                        Event *event = [Event eventWithDictionary:dictionary];
+                        Event *event = [[Event alloc] initWithDictionary:dictionary];
                         [events addObject:event];
                     }
                 } else {
@@ -132,7 +132,7 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
     
     [FBRequestConnection startWithGraphPath:path completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (!error) {
-            Event *event = [Event eventWithDictionary:result];
+            Event *event = [[Event alloc] initWithDictionary:result];
             if (includeAttendees) {
                 [Event fillAttendees:@[event] onCompletion:^(NSArray *events, NSError *error) {
                     if (!error) {
@@ -152,41 +152,40 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
     
 }
 
-+ (Event *)eventWithDictionary:(NSDictionary *)dictionary {
-    Event *event = [[Event alloc] init];
-    
-    event.location = [Location locationWithDictionary:dictionary];
-    event.location.name = dictionary[@"location"];
-
-    event.facebookID = dictionary[@"id"];
-    event.name = dictionary[@"name"];
-    event.description = dictionary[@"description"];
-    
-    NSDictionary *cover = dictionary[@"cover"];
-    if (cover) {
-        event.coverPhotoURL = [NSURL URLWithString:dictionary[@"cover"][@"source"]];
-    }
-    
-    NSDateFormatter *formatter = [Event dateFormatter];
-    
-    if (dictionary[@"is_date_only"]) {
-        [formatter setDateFormat:@"yyyy-MM-dd"];
-        event.date = [formatter dateFromString:dictionary[@"start_time"]];
-    } else {
-        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZ"];
-                event.startTime = [formatter dateFromString:dictionary[@"start_time"]];
-        event.endTime = [formatter dateFromString:dictionary[@"end_time"]];
-    }
-    
-    if (dictionary[@"rsvp_status"]) {
-        event.userAttendanceStatus = [Event attendanceStatusForRsvpString:dictionary[@"rsvp_status"]];
-    }
-    event.attendingUsers = [[NSMutableArray alloc] init];
-    event.unsureUsers = [[NSMutableArray alloc] init];
-    event.declinedUsers = [[NSMutableArray alloc] init];
-    event.notRepliedUsers = [[NSMutableArray alloc] init];
-    
-    return event;
+- (id)initWithDictionary:(NSDictionary *)dictionary {
+    self = [super init];
+    if (self) {
+        _location = [Location locationWithDictionary:dictionary];
+        _location.name = dictionary[@"location"];
+        
+        _facebookID = dictionary[@"id"];
+        _name = dictionary[@"name"];
+        _description = dictionary[@"description"];
+        
+        NSDictionary *cover = dictionary[@"cover"];
+        if (cover) {
+            _coverPhotoURL = [NSURL URLWithString:dictionary[@"cover"][@"source"]];
+        }
+        
+        NSDateFormatter *formatter = [Event dateFormatter];
+        
+        if (dictionary[@"is_date_only"]) {
+            [formatter setDateFormat:@"yyyy-MM-dd"];
+            _date = [formatter dateFromString:dictionary[@"start_time"]];
+        } else {
+            [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZ"];
+            _startTime = [formatter dateFromString:dictionary[@"start_time"]];
+            _endTime = [formatter dateFromString:dictionary[@"end_time"]];
+        }
+        
+        if (dictionary[@"rsvp_status"]) {
+            _userAttendanceStatus = [Event attendanceStatusForRsvpString:dictionary[@"rsvp_status"]];
+        }
+        _attendingUsers = [[NSMutableArray alloc] init];
+        _unsureUsers = [[NSMutableArray alloc] init];
+        _declinedUsers = [[NSMutableArray alloc] init];
+        _notRepliedUsers = [[NSMutableArray alloc] init];    }
+    return self;
 }
 
 + (NSString *)suffixForStatus:(NSInteger)status {
