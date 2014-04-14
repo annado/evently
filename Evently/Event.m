@@ -230,4 +230,26 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
     return date;
 }
 
+- (void)setUserAttendanceStatus:(NSInteger)userAttendanceStatus
+{
+    NSString *path = [NSString stringWithFormat:@"/%@/%@", _facebookID, [Event suffixForStatus:userAttendanceStatus]];
+    
+    if (path) {
+        [FBRequestConnection startWithGraphPath:path
+                                     parameters:nil
+                                     HTTPMethod:@"POST"
+                              completionHandler:^(
+                                                  FBRequestConnection *connection,
+                                                  id result,
+                                                  NSError *error
+                                                  ) {
+                                  NSLog(@"updatedRSVP to: %@", path);
+                                  _userAttendanceStatus = userAttendanceStatus;
+                                  if (error) {
+                                      NSLog(@"failed: %@", error);
+                                  }
+                              }];
+    }
+}
+
 @end
