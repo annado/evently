@@ -169,13 +169,13 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
     
     NSDateFormatter *formatter = [Event dateFormatter];
     
-    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZ"];
-
-    event.startTime = [formatter dateFromString:dictionary[@"start_time"]];
-    event.endTime = [formatter dateFromString:dictionary[@"end_time"]];
-    if (!event.startTime) {
+    if (dictionary[@"is_date_only"]) {
         [formatter setDateFormat:@"yyyy-MM-dd"];
         event.date = [formatter dateFromString:dictionary[@"start_time"]];
+    } else {
+        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZ"];
+                event.startTime = [formatter dateFromString:dictionary[@"start_time"]];
+        event.endTime = [formatter dateFromString:dictionary[@"end_time"]];
     }
     
     if (dictionary[@"rsvp_status"]) {
@@ -200,7 +200,7 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
             return nil;
     }
 }
-         
+
 + (NSInteger)attendanceStatusForRsvpString:(NSString *)rsvpString {
     if ([rsvpString isEqualToString:@"attending"]) {
         return EventAttendanceYes;
@@ -216,8 +216,7 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
     }
 }
 
-- (NSString *)displayDate
-{
+- (NSString *)displayDate {
     NSString *date;
     if (_startTime) {
         date = [NSDateFormatter localizedStringFromDate:_startTime
