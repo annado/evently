@@ -12,6 +12,17 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
 
 @implementation Event
 
++ (NSDateFormatter *)dateFormatter {
+    static NSDateFormatter *dateFormatter;
+    static dispatch_once_t once;
+    
+    dispatch_once(&once, ^{
+        dateFormatter = [[NSDateFormatter alloc] init];
+    });
+    
+    return dateFormatter;
+}
+
 // TODO properly handle errors
 + (void)eventsForUser:(User *)user
            withStatus:(NSInteger)queryStatus
@@ -156,11 +167,16 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
         event.coverPhotoURL = [NSURL URLWithString:dictionary[@"cover"][@"source"]];
     }
     
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZ"];
+    NSDateFormatter *formatter = [Event dateFormatter];
     
+    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZ"];
+
     event.startTime = [formatter dateFromString:dictionary[@"start_time"]];
     event.endTime = [formatter dateFromString:dictionary[@"end_time"]];
+    if (!event.startTime) {
+        [formatter setDateFormat:@"yyyy-MM-dd"];
+        event.date = [formatter dateFromString:dictionary[@"start_time"]];
+    }
     
     if (dictionary[@"rsvp_status"]) {
         event.userAttendanceStatus = [Event attendanceStatusForRsvpString:dictionary[@"rsvp_status"]];
@@ -198,6 +214,21 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
         NSLog(@"Invalid rsvpString: %@", rsvpString);
         return -1;
     }
+}
+
+- (NSString *)displayDate
+{
+    NSString *date;
+    if (_startTime) {
+        date = [NSDateFormatter localizedStringFromDate:_startTime
+                                                        dateStyle:NSDateFormatterLongStyle
+                                                        timeStyle:NSDateFormatterShortStyle];
+    } else if (_date) {
+        date = [NSDateFormatter localizedStringFromDate:_date
+                                              dateStyle:NSDateFormatterLongStyle
+                                              timeStyle:NSDateFormatterNoStyle];
+    }
+    return date;
 }
 
 @end

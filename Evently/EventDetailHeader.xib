@@ -6,12 +6,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EventDetailHeader">
             <connections>
-                <outlet property="imageView" destination="ofE-Tz-hET" id="jHG-E1-s4x"/>
-                <outlet property="titleLabel" destination="Aws-EQ-6yJ" id="t0j-ip-HY0"/>
+                <outlet property="imageView" destination="ofE-Tz-hET" id="cDu-id-ixL"/>
+                <outlet property="titleLabel" destination="Aws-EQ-6yJ" id="2sT-xF-QjN"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB">
+        <view clipsSubviews="YES" contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="320" height="250"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -40,10 +40,6 @@
                 <constraint firstItem="Aws-EQ-6yJ" firstAttribute="bottom" secondItem="ofE-Tz-hET" secondAttribute="bottom" constant="-15" id="pRC-LE-227"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <connections>
-                <outlet property="imageView" destination="ofE-Tz-hET" id="4f8-fJ-9ve"/>
-                <outlet property="titleLabel" destination="Aws-EQ-6yJ" id="pWg-hR-yPM"/>
-            </connections>
         </view>
     </objects>
 </document>

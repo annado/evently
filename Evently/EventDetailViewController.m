@@ -49,8 +49,7 @@ static NSString *RSVPCellIdentifier = @"EventRSVPCell";
 
     [self.tableView registerNib:[UINib nibWithNibName:@"EventDetailHeader" bundle:nil] forHeaderFooterViewReuseIdentifier:@"EventDetailHeader"];
 
-    EventDetailHeader *eventDetailHeader = [[EventDetailHeader alloc] initWithFrame:CGRectMake(0, 0, 300, 200)];
-    
+    EventDetailHeader *eventDetailHeader = [[EventDetailHeader alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 250)];
     eventDetailHeader.event = _event;
     self.tableView.tableHeaderView = eventDetailHeader;
 }
@@ -63,29 +62,23 @@ static NSString *RSVPCellIdentifier = @"EventRSVPCell";
 
 #pragma mark - UITableViewDataSource
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return 1;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+#pragma mark - UITableViewDelegate
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     
     EventRSVPCell *cell = [self.tableView dequeueReusableCellWithIdentifier:RSVPCellIdentifier forIndexPath:indexPath];
     cell.event = _event;
     return cell;
 }
 
-#pragma mark - UITableViewDelegate
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 66.0; // TODO: don't hardcode
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-//    Event *event = self.events[indexPath.row];
-//    EventDetailViewController *eventDetailViewController = [[EventDetailViewController alloc] initWithEvent:event];
-//    [self.navigationController pushViewController:eventDetailViewController animated:YES];
 }
 
 @end

@@ -10,6 +10,8 @@
 
 @interface EventRSVPCell ()
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 - (IBAction)onRSVP:(id)sender;
 @end
 
@@ -31,6 +33,9 @@
 {
     _event = event;
     [self setRSVPDisplay];
+    
+    self.locationLabel.text = [_event.location displayLocation];
+    self.dateLabel.text = [_event displayDate];
 }
 
 - (void)setRSVPDisplay

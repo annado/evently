@@ -26,6 +26,7 @@ typedef enum {
 @property (nonatomic, strong) NSString *description;
 @property (nonatomic, strong) NSURL *coverPhotoURL;
 @property (nonatomic, strong) Location *location;
+@property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSDate *startTime;
 @property (nonatomic, strong) NSDate *endTime;
 
@@ -40,4 +41,5 @@ typedef enum {
 + (void)eventsForUser:(User *)user withStatus:(NSInteger)status withIncludeAttendees:(BOOL)includeAttendees withCompletion:(void (^)(NSArray *events, NSError *error))block;
 + (void)eventForFacebookID:(NSString *)facebookID withIncludeAttendees:(BOOL)includeAttendees withCompletion:(void (^)(Event *event, NSError *error))completion;
 + (Event *)eventWithDictionary:(NSDictionary *)dictionary;
+- (NSString *)displayDate;
 @end

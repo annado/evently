@@ -13,6 +13,9 @@
 + (Location *)locationWithDictionary:(NSDictionary *)dictionary {
     Location *location = [[Location alloc] init];
 
+    dictionary = dictionary[@"venue"];
+    
+    location.name = dictionary[@"name"];
     location.streetAddress = dictionary[@"street"];
     location.city = dictionary[@"city"];
     location.country = dictionary[@"country"];
@@ -21,6 +24,31 @@
 
     location.latitude = [dictionary[@"latitude"] floatValue];
     location.longitude = [dictionary[@"longitude"] floatValue];
+    
+    return location;
+}
+
+- (NSString *)displayLocation
+{
+    NSString *location;
+    NSMutableArray *locations = [[NSMutableArray alloc] init];
+    
+    if (_name.length > 0) {
+        return _name;
+    }
+    
+    if (_streetAddress.length > 0) {
+        [locations addObject:_streetAddress];
+    }
+    if (_city.length > 0) {
+        [locations addObject:_city];
+    }
+
+    location = [locations componentsJoinedByString:@", "];
+    
+    if (_city.length == 0 && _zipCode.length > 0) {
+        location = [location stringByAppendingFormat:@" %@", _zipCode];
+    }
     
     return location;
 }

@@ -22,5 +22,5 @@
 @property (nonatomic, assign) float longitude;
 
 + (Location *)locationWithDictionary:(NSDictionary *)dictionary;
-
+- (NSString *)displayLocation;
 @end

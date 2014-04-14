@@ -12,7 +12,6 @@
 @interface EventDetailHeader ()
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-
 @end
 
 @implementation EventDetailHeader
@@ -21,21 +20,16 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        UINib *nib = [UINib nibWithNibName:@"EventDetailHeader" bundle:nil];
+        NSArray *nibArray = [nib instantiateWithOwner:self options:nil];
+        [self addSubview:nibArray[0]];
     }
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
-	self = [super initWithCoder:aDecoder];
-	UIView *containerView = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil][0];
-	containerView.frame = self.bounds;
-	[self addSubview:containerView];
-	return self;
-}
-
 - (void)setEvent:(Event *)event
 {
+    _event = event;
     self.titleLabel.text = _event.name;
     if (_event.coverPhotoURL) {
         [self.imageView setImageWithURL:_event.coverPhotoURL];
