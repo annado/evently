@@ -78,7 +78,7 @@ static NSString *RSVPCellIdentifier = @"EventRSVPCell";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 66.0; // TODO: don't hardcode
+    return 132.0; // TODO: don't hardcode
 }
 
 @end

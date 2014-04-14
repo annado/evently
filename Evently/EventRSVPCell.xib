@@ -23,6 +23,7 @@
                         </segments>
                         <connections>
                             <action selector="onRSVP:" destination="KGk-i7-Jjw" eventType="valueChanged" id="Ztb-Gu-PFR"/>
+                            <action selector="onRSVPTouchUp:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ULb-r4-7ta"/>
                         </connections>
                     </segmentedControl>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="January 1, 2014 at 10:00pm" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DaX-Zx-VGI">
