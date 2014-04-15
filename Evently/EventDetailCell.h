@@ -8,13 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EventRSVPCell : UITableViewCell
+@interface EventDetailCell : UITableViewCell
 @property (nonatomic, strong) Event *event;
 + (CGFloat)heightForEvent:(Event *)event;
-@end
-
-@protocol EventRSVPProtocol <NSObject>
-
-- (void)onLocation:(Event *)event;
-
 @end

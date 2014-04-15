@@ -6,9 +6,11 @@
 //  Copyright (c) 2014 Evently. All rights reserved.
 //
 
-#import <AFNetworking/UIImageView+AFNetworking.h>
 #import "EventDetailViewController.h"
+#import <AFNetworking/UIImageView+AFNetworking.h>
+#import <MapKit/MapKit.h>
 #import "EventDetailHeader.h"
+#import "EventDetailCell.h"
 #import "EventRSVPCell.h"
 
 @interface EventDetailViewController ()
@@ -18,6 +20,7 @@
 @implementation EventDetailViewController
 
 static NSString *RSVPCellIdentifier = @"EventRSVPCell";
+static NSString *DetailCellIdentifier = @"EventDetailCell";
 
 - (id)initWithEvent:(Event *)event
 {
@@ -46,6 +49,7 @@ static NSString *RSVPCellIdentifier = @"EventRSVPCell";
 
     // Register cells
     [self.tableView registerNib:[UINib nibWithNibName:@"EventRSVPCell" bundle:nil] forCellReuseIdentifier:RSVPCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:@"EventDetailCell" bundle:nil] forCellReuseIdentifier:DetailCellIdentifier];
 
     [self.tableView registerNib:[UINib nibWithNibName:@"EventDetailHeader" bundle:nil] forHeaderFooterViewReuseIdentifier:@"EventDetailHeader"];
 
@@ -64,21 +68,32 @@ static NSString *RSVPCellIdentifier = @"EventRSVPCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return 2;
 }
 
 #pragma mark - UITableViewDelegate
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    EventRSVPCell *cell = [self.tableView dequeueReusableCellWithIdentifier:RSVPCellIdentifier forIndexPath:indexPath];
-    cell.event = _event;
-    return cell;
+    if (indexPath.row == 0) {
+        EventDetailCell *cell = [self.tableView dequeueReusableCellWithIdentifier:DetailCellIdentifier forIndexPath:indexPath];
+        cell.event = _event;
+        return cell;
+    } else {
+        EventRSVPCell *cell = [self.tableView dequeueReusableCellWithIdentifier:RSVPCellIdentifier forIndexPath:indexPath];
+        cell.event = _event;
+        return cell;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 132.0; // TODO: don't hardcode
+    return (indexPath.row == 0) ? [EventDetailCell heightForEvent:_event] : [EventRSVPCell heightForEvent:_event];
+}
+
+#pragma mark - EventRSVPCell protocol
+- (void)onLocation:(Event *)event
+{
+    NSLog(@"Open location action sheet");
 }
 
 @end

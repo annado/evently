@@ -33,6 +33,23 @@
     self.titleLabel.text = _event.name;
     if (_event.coverPhotoURL) {
         [self.imageView setImageWithURL:_event.coverPhotoURL];
+        self.titleLabel.layer.shadowRadius = 3.0;
+    } else {
+        self.titleLabel.textColor = [UIColor darkGrayColor];
+        self.titleLabel.layer.shadowColor = [[UIColor whiteColor] CGColor];
+    }
+    
+    CGRect frame = self.frame;
+    frame.size.height = [self heightForView];
+    self.frame = frame;
+}
+
+- (CGFloat)heightForView
+{
+    if (_event.coverPhotoURL) {
+        return 250;
+    } else {
+        return 52;
     }
 }
 

@@ -12,6 +12,7 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *locationIcon;
 - (IBAction)onRSVP:(UISegmentedControl *)sender;
 @end
 
@@ -34,7 +35,12 @@
     _event = event;
     [self setRSVPDisplay];
     
-    self.locationLabel.text = [_event.location displayLocation];
+    NSString *location = [_event.location displayLocation];
+    self.locationLabel.text = location;
+    if (location.length == 0) {
+        self.locationIcon.hidden = YES;
+    }
+    
     self.dateLabel.text = [_event displayDate];
 }
 
@@ -63,7 +69,6 @@
 }
 
 - (IBAction)onRSVP:(UISegmentedControl *)sender {
-    NSLog(@"onRSVP: %d", sender.selectedSegmentIndex);
     NSInteger selected = sender.selectedSegmentIndex;
     NSInteger status;
     
@@ -86,6 +91,11 @@
             break;
     }
     _event.userAttendanceStatus = status;
+}
+
++ (CGFloat)heightForEvent:(Event *)event
+{
+    return 50;
 }
 
 @end

@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EventRSVPCell.h"
 
-@interface EventDetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface EventDetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, EventRSVPProtocol>
 @property (nonatomic, strong) Event *event;
 - (id)initWithEvent:(Event *)event;
 @end
