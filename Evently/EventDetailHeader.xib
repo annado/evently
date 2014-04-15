@@ -19,8 +19,8 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="250"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="Aws-EQ-6yJ">
-                    <rect key="frame" x="15" y="213" width="290" height="22"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="285" translatesAutoresizingMaskIntoConstraints="NO" id="Aws-EQ-6yJ">
+                    <rect key="frame" x="20" y="213" width="285" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -34,7 +34,7 @@
                 <constraint firstItem="ofE-Tz-hET" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="SLq-UL-qXa"/>
                 <constraint firstItem="ofE-Tz-hET" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ahN-Jr-rKf"/>
                 <constraint firstAttribute="trailing" secondItem="ofE-Tz-hET" secondAttribute="trailing" id="fRV-Zp-EOS"/>
-                <constraint firstItem="Aws-EQ-6yJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="jx5-P1-iA8"/>
+                <constraint firstItem="Aws-EQ-6yJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="jx5-P1-iA8"/>
                 <constraint firstItem="Aws-EQ-6yJ" firstAttribute="bottom" secondItem="ofE-Tz-hET" secondAttribute="bottom" constant="-15" id="pRC-LE-227"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

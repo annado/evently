@@ -43,8 +43,18 @@
                             <constraint firstAttribute="width" constant="18" id="dPg-7J-Tzr"/>
                         </constraints>
                     </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rsl-8O-i3s" customClass="CheckinButton">
+                        <rect key="frame" x="213" y="17" width="107" height="35"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="107" id="1tn-vA-okX"/>
+                            <constraint firstAttribute="height" constant="35" id="OBn-MH-ci9"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="centerY" secondItem="Rsl-8O-i3s" secondAttribute="centerY" id="DRJ-7K-PAd"/>
                     <constraint firstItem="FWe-Vr-dJ8" firstAttribute="centerY" secondItem="DaX-Zx-VGI" secondAttribute="centerY" id="Hr8-G1-1W0"/>
                     <constraint firstItem="3RS-Qj-PbN" firstAttribute="leading" secondItem="tTv-74-7m3" secondAttribute="trailing" constant="8" id="SI2-Wd-FrH"/>
                     <constraint firstItem="3RS-Qj-PbN" firstAttribute="top" secondItem="DaX-Zx-VGI" secondAttribute="bottom" constant="10" id="YfE-B4-jHC"/>
@@ -55,9 +65,11 @@
                     <constraint firstItem="tTv-74-7m3" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="xBn-yr-1R2"/>
                     <constraint firstAttribute="trailing" secondItem="3RS-Qj-PbN" secondAttribute="trailing" constant="20" id="xD6-ez-Iz0"/>
                     <constraint firstItem="3RS-Qj-PbN" firstAttribute="centerY" secondItem="tTv-74-7m3" secondAttribute="centerY" id="yjy-ra-f9c"/>
+                    <constraint firstAttribute="trailing" secondItem="Rsl-8O-i3s" secondAttribute="trailing" id="zU9-WZ-vwP"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="checkinButton" destination="Rsl-8O-i3s" id="jnb-JR-NJb"/>
                 <outlet property="dateLabel" destination="DaX-Zx-VGI" id="07R-o5-rxM"/>
                 <outlet property="locationIcon" destination="tTv-74-7m3" id="vDf-mw-4Ei"/>
                 <outlet property="locationLabel" destination="3RS-Qj-PbN" id="gLa-1X-0Ae"/>
