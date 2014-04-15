@@ -9,6 +9,7 @@
 #import "EventListViewController.h"
 #import "EventDetailViewController.h"
 #import "EventCell.h"
+#import "EventNowCell.h"
 #import "AppDelegate.h"
 
 const NSInteger kHappeningNowSection = 0;
@@ -42,6 +43,9 @@ const NSInteger kUpcomingSection = 1;
     
     UINib *eventCell = [UINib nibWithNibName:@"EventCell" bundle:nil];
     [self.tableView registerNib:eventCell forCellReuseIdentifier:@"EventCell"];
+    
+    UINib *eventNowCell = [UINib nibWithNibName:@"EventNowCell" bundle:nil];
+    [self.tableView registerNib:eventNowCell forCellReuseIdentifier:@"EventNowCell"];
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(onLogoutButtonTap)];
     
@@ -79,7 +83,7 @@ const NSInteger kUpcomingSection = 1;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case kHappeningNowSection:
-            return 0;
+            return [AppDelegate sharedInstance].nowEvents.count;
         case kUpcomingSection:
             return [AppDelegate sharedInstance].upcomingEvents.count;
         default:
@@ -103,16 +107,31 @@ const NSInteger kUpcomingSection = 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    EventCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"EventCell" forIndexPath:indexPath];
-    Event *event = [AppDelegate sharedInstance].upcomingEvents[indexPath.row];
-    cell.event = event;
-    return cell;
+    if (indexPath.section == kHappeningNowSection) {
+        EventNowCell *eventNowCell = [self.tableView dequeueReusableCellWithIdentifier:@"EventNowCell" forIndexPath:indexPath];
+        Event *event = [AppDelegate sharedInstance].nowEvents[indexPath.row];
+        eventNowCell.event = event;
+        return eventNowCell;
+    } else if (indexPath.section == kUpcomingSection) {
+        EventCell *eventCell = [self.tableView dequeueReusableCellWithIdentifier:@"EventCell" forIndexPath:indexPath];
+        Event *event = [AppDelegate sharedInstance].upcomingEvents[indexPath.row];
+        eventCell.event = event;
+        return eventCell;
+    } else {
+        NSLog(@"Invalid table view section %@", indexPath);
+        return nil;
+    }
 }
 
 #pragma mark - UITableViewDelegate
 
+// TODO flexible layout height using a prototype cell
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 66.0; // TODO: don't hardcode
+    if (indexPath.section == kHappeningNowSection) {
+        return 160;
+    } else {
+        return 66.0;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

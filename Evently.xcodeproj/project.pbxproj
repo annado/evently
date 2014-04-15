@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B00387A18FDD4A7004CDE83 /* EventNowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B00387818FDD4A7004CDE83 /* EventNowCell.m */; };
+		3B00387B18FDD4A7004CDE83 /* EventNowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B00387918FDD4A7004CDE83 /* EventNowCell.xib */; };
 		3B8828CA18F0FE1F00D5E87C /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828C918F0FE1F00D5E87C /* Event.m */; };
 		3B8828CD18F23B3700D5E87C /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828CC18F23B3700D5E87C /* Location.m */; };
 		3B8828D318F24CB600D5E87C /* EventCheckin.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828D218F24CB600D5E87C /* EventCheckin.m */; };
@@ -56,6 +58,9 @@
 
 /* Begin PBXFileReference section */
 		161D78BE570642A8B3EFB03A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B00387718FDD4A7004CDE83 /* EventNowCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventNowCell.h; sourceTree = "<group>"; };
+		3B00387818FDD4A7004CDE83 /* EventNowCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventNowCell.m; sourceTree = "<group>"; };
+		3B00387918FDD4A7004CDE83 /* EventNowCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventNowCell.xib; sourceTree = "<group>"; };
 		3B8828C818F0FE1F00D5E87C /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		3B8828C918F0FE1F00D5E87C /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		3B8828CB18F23B3700D5E87C /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
@@ -270,6 +275,9 @@
 				58001AFD18FCDE20007ECAF9 /* CheckinButton.h */,
 				58001AFE18FCDE20007ECAF9 /* CheckinButton.m */,
 				58001B0018FCDE34007ECAF9 /* CheckinButton.xib */,
+				3B00387718FDD4A7004CDE83 /* EventNowCell.h */,
+				3B00387818FDD4A7004CDE83 /* EventNowCell.m */,
+				3B00387918FDD4A7004CDE83 /* EventNowCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -354,6 +362,7 @@
 				580A1D2D18EB50C10011A042 /* InfoPlist.strings in Resources */,
 				58001AFC18FBB1A1007ECAF9 /* EventDetailCell.xib in Resources */,
 				580A1D5618EB50F00011A042 /* SignInViewController.xib in Resources */,
+				3B00387B18FDD4A7004CDE83 /* EventNowCell.xib in Resources */,
 				5863442418ED37AE009CFD7B /* ProfileViewController.xib in Resources */,
 				58001AF718FB01DA007ECAF9 /* EventRSVPCell.xib in Resources */,
 				FE4D9A1418F3D581003351C3 /* EventListViewController.xib in Resources */,
@@ -428,6 +437,7 @@
 				58001AEA18FA19CB007ECAF9 /* EventDetailViewController.m in Sources */,
 				580A1D2F18EB50C10011A042 /* main.m in Sources */,
 				5863442318ED37AE009CFD7B /* ProfileViewController.m in Sources */,
+				3B00387A18FDD4A7004CDE83 /* EventNowCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

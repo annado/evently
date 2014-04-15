@@ -35,6 +35,7 @@
     PFQuery *query = [EventCheckin query];
     [query whereKey:@"user" equalTo:user];
     [query whereKey:@"event_facebook_id" equalTo:event.facebookID];
+    
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         if (error && [error code] != 101) {
             NSLog(@"Error marking arrival: %@", [error description]);
