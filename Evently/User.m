@@ -7,6 +7,7 @@
 //
 
 #import "User.h"
+#import "EventCheckin.h"
 #import <Parse/PFObject+Subclass.h>
 
 NSString * const UserDidLoginNotification = @"UserDidLoginNotification";
@@ -70,6 +71,26 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
 - (NSURL *)avatarURL
 {
     return [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", self[@"facebookID"]]];
+}
+
+- (void)getCheckinForEvent:(Event *)event completion:(void (^)(EventCheckin *checkin, NSError *error))block
+{
+    PFQuery *query = [EventCheckin query];
+    [query whereKey:@"user" equalTo:self];
+    [query whereKey:@"event_facebook_id" equalTo:event.facebookID];
+    
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        if (error && [error code] != 101) {
+            NSLog(@"Error retrieving event for user: %@", [error description]);
+            block(nil, error);
+        } else {
+            if (object) {
+                block((EventCheckin *)object, error);
+            } else {
+                block(nil, nil);
+            }
+        }
+    }];
 }
 
 + (void)logOut

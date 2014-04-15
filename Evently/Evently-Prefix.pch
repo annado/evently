@@ -18,3 +18,4 @@
 #import <Parse/Parse.h>
 
 #import "Event.h"
+#import "User.h"

@@ -9,6 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface CheckinButton : UIView
-@property (nonatomic, strong) NSString *buttonText;
 @property (nonatomic, strong) Event *event;
 @end

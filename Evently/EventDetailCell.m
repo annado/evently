@@ -43,12 +43,12 @@
     
     [self addSubview:self.checkinButton];
     self.checkinButton.event = _event;
-    
 }
 
 + (CGFloat)heightForEvent:(Event *)event
 {
     CGFloat height = 20 + 20 + 17;
+    height += 55; // checkin button
     NSString *location = [event.location displayLocation];
     if (location.length > 0) {
         height += 27;

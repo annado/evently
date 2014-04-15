@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "User.h"
 #import "Location.h"
 
 typedef enum {
@@ -17,6 +16,8 @@ typedef enum {
     EventAttendanceNotReplied = 1 << 3,
     EventAttendanceAll = EventAttendanceYes | EventAttendanceMaybe | EventAttendanceNo | EventAttendanceNotReplied
 } EventAttendance;
+
+@class User;
 
 @interface Event : NSObject
 

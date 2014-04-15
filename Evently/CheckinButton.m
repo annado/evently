@@ -11,6 +11,7 @@
 
 @interface CheckinButton ()
 @property (weak, nonatomic) IBOutlet UIButton *checkinButton;
+@property (nonatomic, assign) BOOL checkedIn;
 - (IBAction)onCheckinButton:(id)sender;
 @end
 
@@ -26,22 +27,26 @@
 	return self;
 }
 
-- (void)setButtonText:(NSString *)buttonText
+- (void)setEvent:(Event *)event
 {
-    self.checkinButton.titleLabel.text = buttonText;
+    _event = event;
+    [[User currentUser] getCheckinForEvent:_event completion:^(EventCheckin *checkin, NSError *error) {
+        self.checkedIn = (checkin) ? YES : NO;
+    }];
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+- (void)setCheckedIn:(BOOL)isCheckedIn
 {
-    // Drawing code
+    _checkedIn = isCheckedIn;
+    if (_checkedIn) {
+        self.checkinButton.enabled = NO;
+        self.checkinButton.alpha = 0.5;
+    }
 }
-*/
 
 - (IBAction)onCheckinButton:(id)sender {
     [_event checkinCurrentUser];
+    self.checkedIn = YES;
 }
 
 @end
