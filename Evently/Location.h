@@ -18,8 +18,7 @@
 @property (nonatomic, strong) NSString *streetAddress;
 @property (nonatomic, strong) NSString *zipCode;
 
-@property (nonatomic, assign) float latitude;
-@property (nonatomic, assign) float longitude;
+@property (nonatomic, strong) CLLocation *latLon;
 
 + (Location *)locationWithDictionary:(NSDictionary *)dictionary;
 - (NSString *)displayLocation;

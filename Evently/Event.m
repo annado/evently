@@ -7,6 +7,9 @@
 //
 
 #import "Event.h"
+#import "EventCheckin.h"
+
+const CLLocationDistance kNearDistance = 150; // meters
 
 NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, EventAttendanceNo, EventAttendanceNotReplied };
 
@@ -197,7 +200,8 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
         NSDate *twoHoursBeforeStart = [_startTime dateByAddingTimeInterval:-60*60*2];
         NSDate *now = [NSDate date];
         // TODO: also check for equality on start or end time
-        return ([twoHoursBeforeStart compare:now] == NSOrderedAscending && [_endTime compare:now] == NSOrderedDescending);
+        NSDate *endDate = _endTime != nil ? _endTime : [_startTime dateByAddingTimeInterval:60*60*2];
+        return ([twoHoursBeforeStart compare:now] == NSOrderedAscending && [endDate compare:now] == NSOrderedDescending);
     }
 }
 
@@ -217,7 +221,7 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
         case EventAttendanceNo: return @"declined";
         case EventAttendanceNotReplied: return @"not_replied";
         default:
-            NSLog(@"Invalid status: %d", status);
+            NSLog(@"Invalid status: %ld", (long)status);
             return nil;
     }
 }
@@ -286,6 +290,21 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
     }
     
     return nil;
+}
+
+- (BOOL)nearLocation:(CLLocation *)location {
+    if (self.location.latLon) {
+        CLLocationDistance distance = [self.location.latLon distanceFromLocation:location];
+        return distance <= kNearDistance;
+    }
+    return NO;
+}
+
+- (void)checkinCurrentUser {
+    User *user = [User currentUser];
+    [EventCheckin user:user didArriveAtEvent:self withCompletion:^(NSError *error) {
+        NSLog(@"User did checkin to event: %@", user[@"facebookID"]);
+    }];
 }
 
 @end

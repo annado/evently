@@ -47,7 +47,7 @@
                 NSLog(@"Current event for user: %@", innerEvent.facebookID);
                 
                 [EventCheckin usersAtEvent:event withCompletion:^(NSArray *users, NSError *error) {
-                    NSLog(@"%d users at event", [users count]);
+                    NSLog(@"%lu users at event", (unsigned long)[users count]);
                     
                     [EventCheckin user:user didDepartEvent:event withCompletion:^(NSError *error) {
                         NSLog(@"User did checkout of event");
@@ -56,7 +56,7 @@
                             NSLog(@"Current event for user: %@", innerEvent2.facebookID);
                             
                             [EventCheckin usersAtEvent:event withCompletion:^(NSArray *users, NSError *error) {
-                                NSLog(@"%d users at event", [users count]);
+                                NSLog(@"%lu users at event", (unsigned long)[users count]);
                             }];
                         }];
                     }];

@@ -9,6 +9,7 @@
 #import "EventListViewController.h"
 #import "EventDetailViewController.h"
 #import "EventCell.h"
+#import "AppDelegate.h"
 
 const NSInteger kHappeningNowSection = 0;
 const NSInteger kUpcomingSection = 1;
@@ -16,8 +17,7 @@ const NSInteger kUpcomingSection = 1;
 @interface EventListViewController ()
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) NSArray *nowEvents;
-@property (nonatomic, strong) NSArray *upcomingEvents;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @end
 
@@ -36,18 +36,28 @@ const NSInteger kUpcomingSection = 1;
 {
     [super viewDidLoad];
 
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(loadEvents) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:self.refreshControl];
+    
     UINib *eventCell = [UINib nibWithNibName:@"EventCell" bundle:nil];
     [self.tableView registerNib:eventCell forCellReuseIdentifier:@"EventCell"];
 
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(onLogoutButtonTap)];
+    
+    [self loadEvents];
+}
+
+- (void)loadEvents {
+    // TODO: move outside this VC?
     [Event eventsForUser:[User currentUser] withStatus:EventAttendanceAll withIncludeAttendees:NO withCompletion:^(NSArray *events, NSError *error) {
-        NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"startTime"
-                                                                     ascending:YES]];
-        self.nowEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(isHappeningNow == YES)"]] sortedArrayUsingDescriptors:sortDescriptors];
-        self.upcomingEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(isHappeningNow == NO && startTime >= %@)", [NSDate date]]] sortedArrayUsingDescriptors:sortDescriptors];
+        // TODO: ugly code, refactor
+        NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"startTime" ascending:YES]];
+        [AppDelegate sharedInstance].nowEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(isHappeningNow == YES)"]] sortedArrayUsingDescriptors:sortDescriptors];
+        [AppDelegate sharedInstance].upcomingEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(isHappeningNow == NO && startTime >= %@)", [NSDate date]]] sortedArrayUsingDescriptors:sortDescriptors];
+        [self.refreshControl endRefreshing];
         [self.tableView reloadData];
     }];
-
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(onLogoutButtonTap)];
 }
 
 - (void)onLogoutButtonTap {
@@ -71,7 +81,7 @@ const NSInteger kUpcomingSection = 1;
         case kHappeningNowSection:
             return 0;
         case kUpcomingSection:
-            return self.upcomingEvents.count;
+            return [AppDelegate sharedInstance].upcomingEvents.count;
         default:
             break;
     }
@@ -94,7 +104,7 @@ const NSInteger kUpcomingSection = 1;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     EventCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"EventCell" forIndexPath:indexPath];
-    Event *event = self.upcomingEvents[indexPath.row];
+    Event *event = [AppDelegate sharedInstance].upcomingEvents[indexPath.row];
     cell.event = event;
     return cell;
 }
@@ -107,7 +117,7 @@ const NSInteger kUpcomingSection = 1;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Event *event = self.upcomingEvents[indexPath.row];
+    Event *event = [AppDelegate sharedInstance].upcomingEvents[indexPath.row];
     EventDetailViewController *eventDetailViewController = [[EventDetailViewController alloc] initWithEvent:event];
     [self.navigationController pushViewController:eventDetailViewController animated:YES];
 }

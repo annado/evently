@@ -22,8 +22,9 @@
     location.state = dictionary[@"state"];
     location.zipCode = dictionary[@"zip"];
 
-    location.latitude = [dictionary[@"latitude"] floatValue];
-    location.longitude = [dictionary[@"longitude"] floatValue];
+    if (dictionary[@"latitude"] && dictionary[@"longitude"]) {
+        location.latLon = [[CLLocation alloc] initWithLatitude:[dictionary[@"latitude"] floatValue] longitude:[dictionary[@"longitude"] floatValue]];
+    }
     
     return location;
 }

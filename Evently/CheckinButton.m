@@ -41,10 +41,7 @@
 */
 
 - (IBAction)onCheckinButton:(id)sender {
-    User *user = [User currentUser];
-    [EventCheckin user:user didArriveAtEvent:_event withCompletion:^(NSError *error) {
-        NSLog(@"User did checkin to event: %@", user[@"facebookID"]);
-    }];
+    [_event checkinCurrentUser];
 }
 
 @end

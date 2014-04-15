@@ -13,6 +13,12 @@
 #import "EventCheckin.h"
 #import "EventListViewController.h"
 
+@interface AppDelegate ()
+
+@property (nonatomic, strong) CLLocationManager* locManager;
+
+@end
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -37,6 +43,11 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
+    self.locManager = [[CLLocationManager alloc] init];
+    self.locManager.delegate = self;
+    // TODO only enable if any now events, disable otherwise (and update on a periodic refresh)
+    [self.locManager startMonitoringSignificantLocationChanges];
+
     return YES;
 }
 
@@ -94,6 +105,40 @@
                                                           NSForegroundColorAttributeName: [[UIColor alloc] initWithRed:51.0/255 green:51.0/255 blue:51.0/255 alpha:1.0],
                                                           NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue" size:17.0],
                                                           }];
+}
+
++ (AppDelegate *)sharedInstance {
+    return (AppDelegate *)[UIApplication sharedApplication].delegate;
+}
+
+#pragma mark - CLLocationManagerDelegate
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+	NSLog(@"Background Fail %@", [error localizedDescription]);
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    CLLocation *mostRecentLocation = locations[locations.count - 1];
+    NSLog(@"Background location %.06f %.06f %@", mostRecentLocation.coordinate.latitude, mostRecentLocation.coordinate.longitude, mostRecentLocation.timestamp);
+    [self checkinForLocationIfNeeded:mostRecentLocation];
+}
+
+- (void)checkinForLocationIfNeeded:(CLLocation *)location {
+    for (Event *event in self.nowEvents) {
+        if ([event nearLocation:location]) {
+            [event checkinCurrentUser];
+            [self fireLocalNotificationWithMessage:[NSString stringWithFormat:@"You've been checked in to %@", event.name]];
+            return;
+        }
+    }
+}
+
+- (void)fireLocalNotificationWithMessage:(NSString *)message {
+    UILocalNotification* localNotification = [[UILocalNotification alloc] init];
+    localNotification.fireDate = [NSDate date];
+    localNotification.alertBody = message;
+    localNotification.timeZone = [NSTimeZone defaultTimeZone];
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
 }
 
 @end

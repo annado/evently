@@ -44,4 +44,7 @@ typedef enum {
 + (void)eventForFacebookID:(NSString *)facebookID withIncludeAttendees:(BOOL)includeAttendees withCompletion:(void (^)(Event *event, NSError *error))completion;
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 - (NSString *)displayDate;
+- (BOOL)nearLocation:(CLLocation *)location;
+- (void)checkinCurrentUser;
+
 @end
