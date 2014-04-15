@@ -29,6 +29,7 @@ typedef enum {
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSDate *startTime;
 @property (nonatomic, strong) NSDate *endTime;
+@property (nonatomic, assign) BOOL isHappeningNow;
 
 @property (nonatomic, strong) NSMutableArray *attendingUsers;
 @property (nonatomic, strong) NSMutableArray *unsureUsers;

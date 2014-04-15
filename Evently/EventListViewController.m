@@ -42,9 +42,8 @@ const NSInteger kUpcomingSection = 1;
     [Event eventsForUser:[User currentUser] withStatus:EventAttendanceAll withIncludeAttendees:NO withCompletion:^(NSArray *events, NSError *error) {
         NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"startTime"
                                                                      ascending:YES]];
-        NSDate *now = [NSDate date];
-        self.nowEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(startTime <= %@ AND %@ <= endTime)", now, now]] sortedArrayUsingDescriptors:sortDescriptors];
-        self.upcomingEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(%@ <= startTime)", now]] sortedArrayUsingDescriptors:sortDescriptors];
+        self.nowEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(isHappeningNow == YES)"]] sortedArrayUsingDescriptors:sortDescriptors];
+        self.upcomingEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(isHappeningNow == NO && startTime >= %@)", [NSDate date]]] sortedArrayUsingDescriptors:sortDescriptors];
         [self.tableView reloadData];
     }];
 

@@ -177,6 +177,7 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
             _startTime = [formatter dateFromString:dictionary[@"start_time"]];
             _endTime = [formatter dateFromString:dictionary[@"end_time"]];
         }
+        _isHappeningNow = [self computeIsHappeningNow];
         
         if (dictionary[@"rsvp_status"]) {
             _userAttendanceStatus = [Event attendanceStatusForRsvpString:dictionary[@"rsvp_status"]];
@@ -184,8 +185,29 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
         _attendingUsers = [[NSMutableArray alloc] init];
         _unsureUsers = [[NSMutableArray alloc] init];
         _declinedUsers = [[NSMutableArray alloc] init];
-        _notRepliedUsers = [[NSMutableArray alloc] init];    }
+        _notRepliedUsers = [[NSMutableArray alloc] init];
+    }
     return self;
+}
+
+- (BOOL)computeIsHappeningNow {
+    if (_date) {
+        return [self isToday:_date];
+    } else {
+        NSDate *twoHoursBeforeStart = [_startTime dateByAddingTimeInterval:-60*60*2];
+        NSDate *now = [NSDate date];
+        // TODO: also check for equality on start or end time
+        return ([twoHoursBeforeStart compare:now] == NSOrderedAscending && [_endTime compare:now] == NSOrderedDescending);
+    }
+}
+
+- (BOOL)isToday:(NSDate *)date {
+    NSCalendar *cal = [NSCalendar currentCalendar];
+    NSDateComponents *components = [cal components:(NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:[NSDate date]];
+    NSDate *today = [cal dateFromComponents:components];
+    components = [cal components:(NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:date];
+    NSDate *otherDate = [cal dateFromComponents:components];
+    return [today isEqualToDate:otherDate];
 }
 
 + (NSString *)suffixForStatus:(NSInteger)status {
