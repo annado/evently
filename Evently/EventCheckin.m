@@ -108,6 +108,25 @@
     }];
 }
 
++ (void) checkinsForEvent:(Event *)event withCompletion:(void (^)(NSArray *checkins, NSError *error))block {
+    if (!event) {
+        block(nil, [NSError errorWithDomain:@"Nil event passed to checkinsForEvent" code:100 userInfo:nil]);
+        return;
+    }
+    
+    PFQuery *query = [EventCheckin query];
+    [query whereKey:@"event_facebook_id" equalTo:event.facebookID];
+    [query includeKey:@"user"];
+    
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error || [error code] == 101) {
+        } else {
+            NSLog(@"Error retrieving users at event: %@", [error description]);
+        }
+        block(objects, error);
+    }];
+}
+
 + (void) currentEventForUser:(User *)user withIncludeAttendees:(BOOL)includeAttendees withCompletion:(void (^)(Event *event, NSError *error))block {
     NSDate *now = [[NSDate alloc] init];
     

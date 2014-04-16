@@ -21,6 +21,7 @@
 + (void) user:(User *)user didArriveAtEvent:(Event *)event withCompletion:(void (^)(NSError *error))block;
 + (void) user:(User *)user didDepartEvent:(Event *)event withCompletion:(void (^)(NSError *error))block;
 + (void) usersAtEvent:(Event *)event withCompletion:(void (^)(NSArray *users, NSError *error))block;
++ (void) checkinsForEvent:(Event *)event withCompletion:(void (^)(NSArray *checkins, NSError *error))block;
 + (void) currentEventForUser:(User *)user withIncludeAttendees:(BOOL)includeAttendees withCompletion:(void (^)(Event *event, NSError *error))block;
 
 @end
