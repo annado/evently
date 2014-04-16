@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="UserCheckedInCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tdB-WK-Crw" customClass="TTTAttributedLabel">
+                        <rect key="frame" x="20" y="0.0" width="285" height="43"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="tdB-WK-Crw" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="fZG-aZ-nf8"/>
+                    <constraint firstItem="tdB-WK-Crw" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="kv5-cX-ekd"/>
+                    <constraint firstAttribute="bottom" secondItem="tdB-WK-Crw" secondAttribute="bottom" id="pOi-q5-fS5"/>
+                    <constraint firstAttribute="trailing" secondItem="tdB-WK-Crw" secondAttribute="trailing" constant="15" id="vbv-Vc-9Kg"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="textLabel" destination="tdB-WK-Crw" id="Mjs-hw-QdX"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

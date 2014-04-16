@@ -43,24 +43,13 @@
                             <constraint firstAttribute="width" constant="18" id="dPg-7J-Tzr"/>
                         </constraints>
                     </imageView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rsl-8O-i3s" customClass="CheckinButton">
-                        <rect key="frame" x="20" y="69" width="280" height="40"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="40" id="Fee-8q-mzz"/>
-                        </constraints>
-                    </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Rsl-8O-i3s" firstAttribute="top" secondItem="3RS-Qj-PbN" secondAttribute="bottom" constant="15" id="DBE-sO-dxo"/>
                     <constraint firstItem="FWe-Vr-dJ8" firstAttribute="centerY" secondItem="DaX-Zx-VGI" secondAttribute="centerY" id="Hr8-G1-1W0"/>
                     <constraint firstItem="3RS-Qj-PbN" firstAttribute="leading" secondItem="tTv-74-7m3" secondAttribute="trailing" constant="8" id="SI2-Wd-FrH"/>
                     <constraint firstItem="3RS-Qj-PbN" firstAttribute="top" secondItem="DaX-Zx-VGI" secondAttribute="bottom" constant="10" id="YfE-B4-jHC"/>
                     <constraint firstAttribute="trailing" secondItem="DaX-Zx-VGI" secondAttribute="trailing" constant="20" id="ZDF-GV-3eF"/>
                     <constraint firstItem="DaX-Zx-VGI" firstAttribute="leading" secondItem="FWe-Vr-dJ8" secondAttribute="trailing" constant="8" id="a8I-3y-BOi"/>
-                    <constraint firstItem="Rsl-8O-i3s" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="ksX-YK-g3W"/>
-                    <constraint firstAttribute="trailing" secondItem="Rsl-8O-i3s" secondAttribute="trailing" constant="20" id="lQ4-K1-fhR"/>
-                    <constraint firstAttribute="centerX" secondItem="Rsl-8O-i3s" secondAttribute="centerX" id="qdy-as-eni"/>
                     <constraint firstItem="DaX-Zx-VGI" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="qhc-fC-PCe"/>
                     <constraint firstItem="FWe-Vr-dJ8" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="wpC-rl-NaB"/>
                     <constraint firstItem="tTv-74-7m3" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="xBn-yr-1R2"/>
@@ -69,7 +58,6 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="checkinButton" destination="Rsl-8O-i3s" id="jnb-JR-NJb"/>
                 <outlet property="dateLabel" destination="DaX-Zx-VGI" id="07R-o5-rxM"/>
                 <outlet property="locationIcon" destination="tTv-74-7m3" id="vDf-mw-4Ei"/>
                 <outlet property="locationLabel" destination="3RS-Qj-PbN" id="gLa-1X-0Ae"/>

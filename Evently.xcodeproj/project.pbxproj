@@ -22,6 +22,8 @@
 		58001AFC18FBB1A1007ECAF9 /* EventDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58001AFA18FBB1A1007ECAF9 /* EventDetailCell.xib */; };
 		58001AFF18FCDE20007ECAF9 /* CheckinButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 58001AFE18FCDE20007ECAF9 /* CheckinButton.m */; };
 		58001B0118FCDE34007ECAF9 /* CheckinButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58001B0018FCDE34007ECAF9 /* CheckinButton.xib */; };
+		58001B0518FE4986007ECAF9 /* UserCheckedInCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58001B0318FE4986007ECAF9 /* UserCheckedInCell.m */; };
+		58001B0618FE4986007ECAF9 /* UserCheckedInCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58001B0418FE4986007ECAF9 /* UserCheckedInCell.xib */; };
 		580A1D2318EB50C10011A042 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 580A1D2218EB50C10011A042 /* Foundation.framework */; };
 		580A1D2518EB50C10011A042 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 580A1D2418EB50C10011A042 /* CoreGraphics.framework */; };
 		580A1D2718EB50C10011A042 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 580A1D2618EB50C10011A042 /* UIKit.framework */; };
@@ -82,6 +84,9 @@
 		58001AFD18FCDE20007ECAF9 /* CheckinButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckinButton.h; sourceTree = "<group>"; };
 		58001AFE18FCDE20007ECAF9 /* CheckinButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckinButton.m; sourceTree = "<group>"; };
 		58001B0018FCDE34007ECAF9 /* CheckinButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckinButton.xib; sourceTree = "<group>"; };
+		58001B0218FE4986007ECAF9 /* UserCheckedInCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCheckedInCell.h; sourceTree = "<group>"; };
+		58001B0318FE4986007ECAF9 /* UserCheckedInCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserCheckedInCell.m; sourceTree = "<group>"; };
+		58001B0418FE4986007ECAF9 /* UserCheckedInCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserCheckedInCell.xib; sourceTree = "<group>"; };
 		580A1D1F18EB50C10011A042 /* Evently.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Evently.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		580A1D2218EB50C10011A042 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		580A1D2418EB50C10011A042 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -278,6 +283,9 @@
 				3B00387718FDD4A7004CDE83 /* EventNowCell.h */,
 				3B00387818FDD4A7004CDE83 /* EventNowCell.m */,
 				3B00387918FDD4A7004CDE83 /* EventNowCell.xib */,
+				58001B0218FE4986007ECAF9 /* UserCheckedInCell.h */,
+				58001B0318FE4986007ECAF9 /* UserCheckedInCell.m */,
+				58001B0418FE4986007ECAF9 /* UserCheckedInCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -368,6 +376,7 @@
 				FE4D9A1418F3D581003351C3 /* EventListViewController.xib in Resources */,
 				58001B0118FCDE34007ECAF9 /* CheckinButton.xib in Resources */,
 				58001AF218FB0171007ECAF9 /* EventDetailHeader.xib in Resources */,
+				58001B0618FE4986007ECAF9 /* UserCheckedInCell.xib in Resources */,
 				FE4D9A1A18F3D7E0003351C3 /* EventCell.xib in Resources */,
 				580A1D3518EB50C10011A042 /* Images.xcassets in Resources */,
 				58001AEB18FA19CB007ECAF9 /* EventDetailViewController.xib in Resources */,
@@ -434,6 +443,7 @@
 				580A1D5518EB50F00011A042 /* SignInViewController.m in Sources */,
 				58001AF618FB01DA007ECAF9 /* EventRSVPCell.m in Sources */,
 				58001AEE18FB0122007ECAF9 /* EventDetailHeader.m in Sources */,
+				58001B0518FE4986007ECAF9 /* UserCheckedInCell.m in Sources */,
 				58001AEA18FA19CB007ECAF9 /* EventDetailViewController.m in Sources */,
 				580A1D2F18EB50C10011A042 /* main.m in Sources */,
 				5863442318ED37AE009CFD7B /* ProfileViewController.m in Sources */,
