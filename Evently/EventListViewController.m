@@ -74,6 +74,11 @@ const NSInteger kUpcomingSection = 1;
     // Dispose of any resources that can be recreated.
 }
 
+- (BOOL)hasNowEvents
+{
+    return [AppDelegate sharedInstance].nowEvents.count > 0;
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -96,7 +101,7 @@ const NSInteger kUpcomingSection = 1;
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case kHappeningNowSection:
-            return @"Happening Now";
+            return [self hasNowEvents] ? @"Happening Now" : nil;
         case kUpcomingSection:
             return @"Upcoming";
         default:
