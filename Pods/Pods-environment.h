@@ -60,3 +60,9 @@
 #define COCOAPODS_VERSION_MINOR_Parse 2
 #define COCOAPODS_VERSION_PATCH_Parse 18
 
+// TTTAttributedLabel
+#define COCOAPODS_POD_AVAILABLE_TTTAttributedLabel
+#define COCOAPODS_VERSION_MAJOR_TTTAttributedLabel 1
+#define COCOAPODS_VERSION_MINOR_TTTAttributedLabel 9
+#define COCOAPODS_VERSION_PATCH_TTTAttributedLabel 5
+
