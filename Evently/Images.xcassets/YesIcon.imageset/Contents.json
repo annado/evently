@@ -2,13 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "ios7-clock-outline.png"
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "ios7-clock-outline-1.png"
+      "filename" : "ios7-checkmark-30x30.png"
     }
   ],
   "info" : {
