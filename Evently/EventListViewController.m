@@ -141,7 +141,12 @@ const NSInteger kUpcomingSection = 1;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Event *event = [AppDelegate sharedInstance].upcomingEvents[indexPath.row];
+    Event *event;
+    if (indexPath.section == 0) {
+        event = [AppDelegate sharedInstance].nowEvents[indexPath.row];
+    } else {
+        event = [AppDelegate sharedInstance].upcomingEvents[indexPath.row];
+    }
     EventDetailViewController *eventDetailViewController = [[EventDetailViewController alloc] initWithEvent:event];
     [self.navigationController pushViewController:eventDetailViewController animated:YES];
 }
