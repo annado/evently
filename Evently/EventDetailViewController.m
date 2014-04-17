@@ -83,7 +83,7 @@ static NSString *CheckinCellIdentifier = @"UserCheckedInCell";
         UIBarButtonItem *checkinButton = [[UIBarButtonItem alloc] initWithTitle:@"Check in" style:UIBarButtonItemStylePlain target:self action:@selector(onCheckinButton:)];
         self.navigationItem.rightBarButtonItem = checkinButton;
         [[User currentUser] getCheckinForEvent:_event completion:^(EventCheckin *checkin, NSError *error) {
-            [self setCheckedIn];
+            [self setCheckedIn:(checkin ? YES : NO)];
         }];
     }
 }
@@ -91,13 +91,18 @@ static NSString *CheckinCellIdentifier = @"UserCheckedInCell";
 - (void)onCheckinButton:(UIBarButtonItem *)barButtonItem
 {
     [_event checkinCurrentUser];
-    [self setCheckedIn];
+    [self setCheckedIn:YES];
 }
 
-- (void)setCheckedIn
+- (void)setCheckedIn:(BOOL)checkedin
 {
-    self.navigationItem.rightBarButtonItem.title = @"Checked in";
-    self.navigationItem.rightBarButtonItem.enabled = NO;
+    if (checkedin) {
+        self.navigationItem.rightBarButtonItem.title = @"Checked in";
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+    } else {
+        self.navigationItem.rightBarButtonItem.title = @"Check in";
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+    }
 }
 
 #pragma mark - UITableViewDataSource
