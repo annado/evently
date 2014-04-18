@@ -15,6 +15,9 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
 
 @implementation User
 
+@dynamic name;
+@dynamic facebookID;
+
 + (User *)currentUser
 {
     return (User *)[PFUser currentUser];

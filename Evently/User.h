@@ -14,6 +14,8 @@ extern NSString *const UserDidLogoutNotification;
 @class EventCheckin;
 
 @interface User : PFUser<PFSubclassing>
+@property (retain) NSString *name;
+@property (retain) NSString *facebookID;
 - (BOOL)isLoggedIn;
 - (void)requestFacebookProfileWithCompletion:(void (^)(NSError *error))block;
 - (NSURL *)avatarURL;

@@ -14,18 +14,30 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tdB-WK-Crw" customClass="TTTAttributedLabel">
-                        <rect key="frame" x="20" y="0.0" width="285" height="43"/>
+                        <rect key="frame" x="70" y="0.0" width="235" height="43"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9DY-kS-Rgl">
+                        <rect key="frame" x="20" y="2" width="40" height="40"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="Jte-bF-EJB"/>
+                            <constraint firstAttribute="width" constant="40" id="fTl-gD-tow"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="9DY-kS-Rgl" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="1Nh-pl-mxj"/>
+                    <constraint firstAttribute="centerY" secondItem="9DY-kS-Rgl" secondAttribute="centerY" id="7Uu-hN-TGx"/>
+                    <constraint firstItem="tdB-WK-Crw" firstAttribute="leading" secondItem="9DY-kS-Rgl" secondAttribute="trailing" constant="10" id="UNu-U3-AiJ"/>
                     <constraint firstItem="tdB-WK-Crw" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="fZG-aZ-nf8"/>
-                    <constraint firstItem="tdB-WK-Crw" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="kv5-cX-ekd"/>
                     <constraint firstAttribute="bottom" secondItem="tdB-WK-Crw" secondAttribute="bottom" id="pOi-q5-fS5"/>
                     <constraint firstAttribute="trailing" secondItem="tdB-WK-Crw" secondAttribute="trailing" constant="15" id="vbv-Vc-9Kg"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="avatarImageView" destination="9DY-kS-Rgl" id="Q7x-sU-ZyN"/>
                 <outlet property="textLabel" destination="tdB-WK-Crw" id="Mjs-hw-QdX"/>
             </connections>
         </tableViewCell>

@@ -7,10 +7,12 @@
 //
 
 #import "UserCheckedInCell.h"
+#import "EventCheckin.h"
 #import <TTTAttributedLabel/TTTAttributedLabel.h>
 
 @interface UserCheckedInCell ()
 @property (weak, nonatomic, readonly) IBOutlet TTTAttributedLabel *textLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 @end
 
 @implementation UserCheckedInCell
@@ -30,15 +32,15 @@
 - (void)setCheckin:(EventCheckin *)checkin
 {
     _checkin = checkin;
-    
-    NSString *text = @"Anna Do checked in at 9:36pm";
+
+    self.avatarImageView.layer.cornerRadius = 20;
+
+    NSString *name = _checkin.user.name;
+    NSString *text = [NSString stringWithFormat:@"%@ checked in at 9:36pm", name];
     [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:13.0]];
-//    self.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:11];
     self.textLabel.textColor = [UIColor darkGrayColor];
-    
-    NSRange r = [text rangeOfString:@"Anna Do"];
+    NSRange r = [text rangeOfString:name];
     self.textLabel.text = text;
-    
     [self.textLabel addLinkToURL:[NSURL URLWithString:@"action://show-help"] withRange:r];
 }
 
