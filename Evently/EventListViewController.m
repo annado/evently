@@ -37,6 +37,12 @@ const NSInteger kUpcomingSection = 1;
 {
     [super viewDidLoad];
 
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(loadEvents)
+     name:UIApplicationWillEnterForegroundNotification
+     object:nil];
+
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(loadEvents) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.refreshControl];
@@ -53,12 +59,7 @@ const NSInteger kUpcomingSection = 1;
 }
 
 - (void)loadEvents {
-    // TODO: move outside this VC?
-    [Event eventsForUser:[User currentUser] withStatus:EventAttendanceAll withIncludeAttendees:NO withCompletion:^(NSArray *events, NSError *error) {
-        // TODO: ugly code, refactor
-        NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"startTime" ascending:YES]];
-        [AppDelegate sharedInstance].nowEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(isHappeningNow == YES)"]] sortedArrayUsingDescriptors:sortDescriptors];
-        [AppDelegate sharedInstance].upcomingEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(isHappeningNow == NO && startTime >= %@)", [NSDate date]]] sortedArrayUsingDescriptors:sortDescriptors];
+    [[AppDelegate sharedInstance] loadEventsWithCompletion:^(NSArray *events, NSError *error) {
         [self.refreshControl endRefreshing];
         [self.tableView reloadData];
     }];

@@ -15,5 +15,6 @@
 @property (nonatomic, strong) NSArray *upcomingEvents;
 
 + (AppDelegate *)sharedInstance;
+- (void)loadEventsWithCompletion:(void (^)(NSArray *events, NSError *error))completionBlock;
 
 @end

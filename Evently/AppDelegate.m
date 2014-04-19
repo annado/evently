@@ -45,8 +45,6 @@
     
     self.locManager = [[CLLocationManager alloc] init];
     self.locManager.delegate = self;
-    // TODO only enable if any now events, disable otherwise (and update on a periodic refresh)
-    [self.locManager startMonitoringSignificantLocationChanges];
 
     return YES;
 }
@@ -78,7 +76,6 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -109,6 +106,21 @@
 
 + (AppDelegate *)sharedInstance {
     return (AppDelegate *)[UIApplication sharedApplication].delegate;
+}
+
+- (void)loadEventsWithCompletion:(void (^)(NSArray *events, NSError *error))completionBlock {
+    [self.locManager stopMonitoringSignificantLocationChanges];
+    [Event eventsForUser:[User currentUser] withStatus:EventAttendanceAll withIncludeAttendees:NO withCompletion:^(NSArray *events, NSError *error) {
+        // TODO: ugly code, refactor
+        NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"startTime" ascending:YES]];
+        self.nowEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(isHappeningNow == YES)"]] sortedArrayUsingDescriptors:sortDescriptors];
+        self.upcomingEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(isHappeningNow == NO && startTime >= %@)", [NSDate date]]] sortedArrayUsingDescriptors:sortDescriptors];
+        // TODO only enable if any now events, disable otherwise (and update on a periodic refresh)
+        [self.locManager startMonitoringSignificantLocationChanges];
+        if (completionBlock) {
+            completionBlock(events, error);
+        }
+    }];
 }
 
 #pragma mark - CLLocationManagerDelegate
