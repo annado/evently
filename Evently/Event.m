@@ -37,7 +37,7 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
     FBRequestConnection *connection = [[FBRequestConnection alloc] init];
     NSMutableSet *pendingEventRequests = [[NSMutableSet alloc] init];
     
-    for (NSInteger i = 0; i < sizeof(AttendanceStatuses) / sizeof(EventAttendanceYes); i++) {
+    for (NSInteger i = 0; i < 4; i++) {
         
         NSInteger attendanceStatus = AttendanceStatuses[i];
         if ((queryStatus & attendanceStatus) > 0) {
@@ -221,7 +221,7 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
         case EventAttendanceNo: return @"declined";
         case EventAttendanceNotReplied: return @"not_replied";
         default:
-            NSLog(@"Invalid status: %ld", (long)status);
+            NSAssert(NO, @"Invalid status: %ld", (long)status);
             return nil;
     }
 }
