@@ -11,5 +11,6 @@
 
 @interface EventDetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, EventRSVPProtocol>
 @property (nonatomic, strong) Event *event;
+@property (nonatomic, assign) BOOL checkedIn;
 - (id)initWithEvent:(Event *)event;
 @end

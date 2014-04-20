@@ -30,9 +30,7 @@
 - (void)setEvent:(Event *)event
 {
     _event = event;
-    [[User currentUser] getCheckinForEvent:_event completion:^(EventCheckin *checkin, NSError *error) {
-        self.checkedIn = (checkin) ? YES : NO;
-    }];
+    self.checkedIn = [[User currentUser] isCheckedInToEvent:_event];
 }
 
 - (void)setCheckedIn:(BOOL)isCheckedIn

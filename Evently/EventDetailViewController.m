@@ -82,9 +82,8 @@ static NSString *CheckinCellIdentifier = @"UserCheckedInCell";
     if (_event.isHappeningNow) {
         UIBarButtonItem *checkinButton = [[UIBarButtonItem alloc] initWithTitle:@"Check in" style:UIBarButtonItemStylePlain target:self action:@selector(onCheckinButton:)];
         self.navigationItem.rightBarButtonItem = checkinButton;
-        [[User currentUser] getCheckinForEvent:_event completion:^(EventCheckin *checkin, NSError *error) {
-            [self setCheckedIn:(checkin ? YES : NO)];
-        }];
+        
+        self.checkedIn = [[User currentUser] isCheckedInToEvent:_event];
     }
 }
 
@@ -96,6 +95,7 @@ static NSString *CheckinCellIdentifier = @"UserCheckedInCell";
 
 - (void)setCheckedIn:(BOOL)checkedin
 {
+    _checkedIn = checkedin;
     if (checkedin) {
         self.navigationItem.rightBarButtonItem.title = @"Checked in";
         self.navigationItem.rightBarButtonItem.enabled = NO;

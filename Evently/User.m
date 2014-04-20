@@ -17,6 +17,7 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
 
 @dynamic name;
 @dynamic facebookID;
+@synthesize checkins;
 
 + (User *)currentUser
 {
@@ -38,6 +39,7 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
     [PFFacebookUtils logInWithPermissions:permissionsArray block:^(PFUser *user, NSError *error) {
         if (!user) {
             // callback used only for error case
+            NSLog(@"Login failed: %@", error);
             block(nil, error);
         } else if (user.isNew) {
             NSLog(@"User with facebook signed up and logged in!");
@@ -47,6 +49,18 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
             }];
         } else {
             NSLog(@"User with facebook logged in!");
+            // data migration
+//            PFRelation *relation = [[User currentUser] relationForKey:@"checkins"];
+//            PFQuery *query = [EventCheckin query];
+//            [query whereKey:@"user" equalTo:[User currentUser]];
+//            NSArray *checkins = [query findObjects];
+//            NSLog(@"checkins: %@", checkins);
+//            for (int i = 0; i < checkins.count; i++) {
+//                [relation addObject:checkins[i]];
+//            }
+//            [[User currentUser] save];
+            
+            [[User currentUser] fetchCheckins];
             [[User currentUser] requestFacebookProfileWithCompletion:^(NSError *error) {
                 block([User currentUser], error);
                 [[NSNotificationCenter defaultCenter] postNotificationName:UserDidLoginNotification object:nil];
@@ -55,13 +69,28 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
     }];
 }
 
+- (void)fetchCheckins
+{
+    PFRelation *relation = [self relationForKey:@"checkins"];
+    
+    [[relation query] findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (error) {
+            // There was an error
+            NSLog(@"Failed to query checkins");
+        } else {
+            self.checkins = objects;
+        }
+    }];
+
+}
+
 - (void)requestFacebookProfileWithCompletion:(void (^)(NSError *error))block
 {
     FBRequest *request = [FBRequest requestForMe];
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (!error) {
             NSDictionary *userData = (NSDictionary *)result;
-            // NSLog(@"userData: %@", userData);
+//            NSLog(@"userData: %@", userData);
             
             self[@"name"] = userData[@"name"];
             self[@"facebookID"] = userData[@"id"];
@@ -96,11 +125,31 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
     }];
 }
 
+- (EventCheckin *)checkinForEvent:(Event *)event
+{
+    EventCheckin *checkin = [[EventCheckin alloc] initWithUser:self forEvent:event];
+    PFRelation *relation = [self relationForKey:@"checkins"];
+    [relation addObject:checkin];
+    
+    
+    [self saveInBackground];
+    return checkin;
+}
+
+- (BOOL)isCheckedInToEvent:(Event *)event
+{
+    // Assumes currentUser (for now)
+    NSString *eventID = event.facebookID;
+    NSUInteger i = [self.checkins indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+        return [eventID isEqualToString:obj[@"facebookID"]];
+    }];
+    return (i != NSNotFound);
+}
+
 + (void)logOut
 {
     [super logOut];
     [[NSNotificationCenter defaultCenter] postNotificationName:UserDidLogoutNotification object:nil];
-
 }
 
 + (User *)userWithDictionary:(NSDictionary *)dictionary {

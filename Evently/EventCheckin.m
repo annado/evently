@@ -20,6 +20,18 @@
     return @"EventCheckin";
 }
 
+- (id)initWithUser:(User *)user forEvent:(Event *)event
+{
+    self = [super init];
+    if (self) {
+        self.user = user;
+        self.eventFacebookID = event.facebookID;
+        self.arrivalTime = [[NSDate alloc] init];
+        [self saveInBackground];
+    }
+    return self;
+}
+
 // TODO call didDepartEvent on previous event?
 // TODO idempotent checkin?
 // TODO allow checking back into an event?
@@ -29,8 +41,6 @@
         return;
     }
     
-    NSDate *now = [[NSDate alloc] init];
-
     // Check user into current event
     PFQuery *query = [EventCheckin query];
     [query whereKey:@"user" equalTo:user];
@@ -42,11 +52,7 @@
             block(error);
         } else {
             if (!object) {
-                object = [[EventCheckin alloc] init];
-                object[@"user"] = user;
-                object[@"event_facebook_id"] = event.facebookID;
-                object[@"arrival_time"] = now;
-                [object saveInBackground];
+                [user checkinForEvent:event];
             }
             block(nil);
         }
