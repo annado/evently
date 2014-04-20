@@ -27,6 +27,7 @@ typedef enum {
 @property (nonatomic, strong) NSString *description;
 @property (nonatomic, strong) NSURL *coverPhotoURL;
 @property (nonatomic, strong) Location *location;
+@property (nonatomic, assign) BOOL isDateOnly;
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSDate *startTime;
 @property (nonatomic, strong) NSDate *endTime;

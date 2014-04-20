@@ -16,8 +16,10 @@ extern NSString *const UserDidLogoutNotification;
 @interface User : PFUser<PFSubclassing>
 @property (retain) NSString *name;
 @property (retain) NSString *facebookID;
+@property (retain) NSNumber *allowAutomaticCheckin;
 @property (nonatomic, strong) NSArray *checkins;
 
+- (id)initWithDictionary:(NSDictionary *)dictionary;
 - (BOOL)isLoggedIn;
 - (void)requestFacebookProfileWithCompletion:(void (^)(NSError *error))block;
 - (NSURL *)avatarURL;
@@ -27,5 +29,4 @@ extern NSString *const UserDidLogoutNotification;
 
 + (void)logInWithCompletion:(void (^)(User *user, NSError *error))block;
 + (User *)currentUser;
-+ (User *)userWithDictionary:(NSDictionary *)dictionary;
 @end

@@ -26,6 +26,46 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
     return dateFormatter;
 }
 
+- (id)initWithDictionary:(NSDictionary *)dictionary {
+    self = [super init];
+    if (self) {
+        _location = [Location locationWithDictionary:dictionary];
+        _location.name = dictionary[@"location"];
+        
+        _facebookID = dictionary[@"id"];
+        _name = dictionary[@"name"];
+        _description = dictionary[@"description"];
+        
+        NSDictionary *cover = dictionary[@"cover"];
+        if (cover) {
+            _coverPhotoURL = [NSURL URLWithString:dictionary[@"cover"][@"source"]];
+        }
+        
+        NSDateFormatter *formatter = [Event dateFormatter];
+        
+        _isDateOnly = [dictionary[@"is_date_only"] boolValue];
+        
+        if (_isDateOnly) {
+            [formatter setDateFormat:@"yyyy-MM-dd"];
+            _date = [formatter dateFromString:dictionary[@"start_time"]];
+        } else {
+            [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZ"];
+            _startTime = [formatter dateFromString:dictionary[@"start_time"]];
+            _endTime = [formatter dateFromString:dictionary[@"end_time"]];
+        }
+        _isHappeningNow = [self computeIsHappeningNow];
+        
+        if (dictionary[@"rsvp_status"]) {
+            _userAttendanceStatus = [Event attendanceStatusForRsvpString:dictionary[@"rsvp_status"]];
+        }
+        _attendingUsers = [[NSMutableArray alloc] init];
+        _unsureUsers = [[NSMutableArray alloc] init];
+        _declinedUsers = [[NSMutableArray alloc] init];
+        _notRepliedUsers = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
 // TODO properly handle errors
 + (void)eventsForUser:(User *)user
            withStatus:(NSInteger)queryStatus
@@ -97,7 +137,7 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
             
             if (!error) {
                 for (NSDictionary *dictionary in result[@"data"]) {
-                    User *user = [User userWithDictionary:dictionary];
+                    User *user = [[User alloc] initWithDictionary:dictionary];
                     NSString *status = dictionary[@"rsvp_status"];
                     if ([status isEqualToString:@"attending"]) {
                         [event.attendingUsers addObject:user];
@@ -153,44 +193,6 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
         }
     }];
     
-}
-
-- (id)initWithDictionary:(NSDictionary *)dictionary {
-    self = [super init];
-    if (self) {
-        _location = [Location locationWithDictionary:dictionary];
-        _location.name = dictionary[@"location"];
-        
-        _facebookID = dictionary[@"id"];
-        _name = dictionary[@"name"];
-        _description = dictionary[@"description"];
-        
-        NSDictionary *cover = dictionary[@"cover"];
-        if (cover) {
-            _coverPhotoURL = [NSURL URLWithString:dictionary[@"cover"][@"source"]];
-        }
-        
-        NSDateFormatter *formatter = [Event dateFormatter];
-        
-        if (dictionary[@"is_date_only"]) {
-            [formatter setDateFormat:@"yyyy-MM-dd"];
-            _date = [formatter dateFromString:dictionary[@"start_time"]];
-        } else {
-            [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZ"];
-            _startTime = [formatter dateFromString:dictionary[@"start_time"]];
-            _endTime = [formatter dateFromString:dictionary[@"end_time"]];
-        }
-        _isHappeningNow = [self computeIsHappeningNow];
-        
-        if (dictionary[@"rsvp_status"]) {
-            _userAttendanceStatus = [Event attendanceStatusForRsvpString:dictionary[@"rsvp_status"]];
-        }
-        _attendingUsers = [[NSMutableArray alloc] init];
-        _unsureUsers = [[NSMutableArray alloc] init];
-        _declinedUsers = [[NSMutableArray alloc] init];
-        _notRepliedUsers = [[NSMutableArray alloc] init];
-    }
-    return self;
 }
 
 - (BOOL)computeIsHappeningNow {

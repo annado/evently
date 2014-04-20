@@ -17,11 +17,22 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
 
 @dynamic name;
 @dynamic facebookID;
+@dynamic allowAutomaticCheckin;
 @synthesize checkins;
 
 + (User *)currentUser
 {
     return (User *)[PFUser currentUser];
+}
+
+- (id)initWithDictionary:(NSDictionary *)dictionary {
+    self = [super init];
+    if (self) {
+        self.name = dictionary[@"name"];
+        self.facebookID = dictionary[@"id"];
+        self.allowAutomaticCheckin = [NSNumber numberWithBool:NO];
+    }
+    return self;
 }
 
 - (BOOL)isLoggedIn
@@ -150,13 +161,6 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
 {
     [super logOut];
     [[NSNotificationCenter defaultCenter] postNotificationName:UserDidLogoutNotification object:nil];
-}
-
-+ (User *)userWithDictionary:(NSDictionary *)dictionary {
-    User *user = [[User alloc] init];
-    user[@"name"] = dictionary[@"name"];
-    user[@"facebookID"] = dictionary[@"id"];
-    return user;
 }
 
 @end
