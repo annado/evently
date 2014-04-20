@@ -141,7 +141,7 @@
     }];
 }
 
-#pragma mark - Remote Notifications
+#pragma mark - Push Notifications
 - (void)application:(UIApplication *)application
 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
@@ -154,6 +154,11 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 - (void)application:(UIApplication *)application
 didReceiveRemoteNotification:(NSDictionary *)userInfo {
     [PFPush handlePush:userInfo];
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    NSLog(@"received local notification while in foreground: %@", notification);
 }
 
 #pragma mark - CLLocationManagerDelegate

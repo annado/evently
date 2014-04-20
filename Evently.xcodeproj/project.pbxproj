@@ -38,6 +38,7 @@
 		580A1D4818EB50C10011A042 /* EventlyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 580A1D4718EB50C10011A042 /* EventlyTests.m */; };
 		580A1D5518EB50F00011A042 /* SignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 580A1D5318EB50F00011A042 /* SignInViewController.m */; };
 		580A1D5618EB50F00011A042 /* SignInViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 580A1D5418EB50F00011A042 /* SignInViewController.xib */; };
+		58450C8819047876004376E7 /* EventNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C8719047876004376E7 /* EventNotification.m */; };
 		5863441F18ED3257009CFD7B /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5863441E18ED3257009CFD7B /* User.m */; };
 		5863442318ED37AE009CFD7B /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5863442118ED37AE009CFD7B /* ProfileViewController.m */; };
 		5863442418ED37AE009CFD7B /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5863442218ED37AE009CFD7B /* ProfileViewController.xib */; };
@@ -106,6 +107,8 @@
 		580A1D5218EB50F00011A042 /* SignInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignInViewController.h; sourceTree = "<group>"; };
 		580A1D5318EB50F00011A042 /* SignInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignInViewController.m; sourceTree = "<group>"; };
 		580A1D5418EB50F00011A042 /* SignInViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignInViewController.xib; sourceTree = "<group>"; };
+		58450C8619047876004376E7 /* EventNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventNotification.h; sourceTree = "<group>"; };
+		58450C8719047876004376E7 /* EventNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventNotification.m; sourceTree = "<group>"; };
 		5863441D18ED3257009CFD7B /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		5863441E18ED3257009CFD7B /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		5863442018ED37AE009CFD7B /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
@@ -258,6 +261,8 @@
 				3B8828CC18F23B3700D5E87C /* Location.m */,
 				3B8828D118F24CB600D5E87C /* EventCheckin.h */,
 				3B8828D218F24CB600D5E87C /* EventCheckin.m */,
+				58450C8619047876004376E7 /* EventNotification.h */,
+				58450C8719047876004376E7 /* EventNotification.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -444,6 +449,7 @@
 				58001AF618FB01DA007ECAF9 /* EventRSVPCell.m in Sources */,
 				58001AEE18FB0122007ECAF9 /* EventDetailHeader.m in Sources */,
 				58001B0518FE4986007ECAF9 /* UserCheckedInCell.m in Sources */,
+				58450C8819047876004376E7 /* EventNotification.m in Sources */,
 				58001AEA18FA19CB007ECAF9 /* EventDetailViewController.m in Sources */,
 				580A1D2F18EB50C10011A042 /* main.m in Sources */,
 				5863442318ED37AE009CFD7B /* ProfileViewController.m in Sources */,

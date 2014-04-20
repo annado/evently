@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface EventNotifications : NSObject
+@interface EventNotification : NSObject
 
 @end
