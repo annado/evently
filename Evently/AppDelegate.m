@@ -108,15 +108,25 @@
     return (AppDelegate *)[UIApplication sharedApplication].delegate;
 }
 
-- (void)loadEventsWithCompletion:(void (^)(NSArray *events, NSError *error))completionBlock {
+- (void)stopMonitoringLocationChanges {
+    NSLog(@"Stop monitoring location changes");
     [self.locManager stopMonitoringSignificantLocationChanges];
+}
+
+- (void)startMonitoringLocationChanges {
+    NSLog(@"Start monitoring location changes");
+    // TODO only enable if any now events, disable otherwise (and update on a periodic refresh)
+    [self.locManager startMonitoringSignificantLocationChanges];
+}
+
+- (void)loadEventsWithCompletion:(void (^)(NSArray *events, NSError *error))completionBlock {
+    [self stopMonitoringLocationChanges];
     [Event eventsForUser:[User currentUser] withStatus:EventAttendanceAll withIncludeAttendees:NO withCompletion:^(NSArray *events, NSError *error) {
         // TODO: ugly code, refactor
         NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"startTime" ascending:YES]];
         self.nowEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(isHappeningNow == YES)"]] sortedArrayUsingDescriptors:sortDescriptors];
         self.upcomingEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(isHappeningNow == NO && startTime >= %@)", [NSDate date]]] sortedArrayUsingDescriptors:sortDescriptors];
-        // TODO only enable if any now events, disable otherwise (and update on a periodic refresh)
-        [self.locManager startMonitoringSignificantLocationChanges];
+        [self startMonitoringLocationChanges];
         if (completionBlock) {
             completionBlock(events, error);
         }
@@ -130,9 +140,19 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-    CLLocation *mostRecentLocation = locations[locations.count - 1];
+    CLLocation *mostRecentLocation = locations.lastObject;
     NSLog(@"Background location %.06f %.06f %@", mostRecentLocation.coordinate.latitude, mostRecentLocation.coordinate.longitude, mostRecentLocation.timestamp);
-    [self checkinForLocationIfNeeded:mostRecentLocation];
+    if ([AppDelegate date:mostRecentLocation.timestamp isGreaterThanMinutesAgo:1]) {
+        NSLog(@"Location is fresh");
+        [self checkinForLocationIfNeeded:mostRecentLocation];
+    } else {
+        NSLog(@"Location is too stale, ignoring");
+    }
+}
+
++ (BOOL)date:(NSDate *)date isGreaterThanMinutesAgo:(NSInteger)minutes {
+    NSDate *dateAgo = [NSDate dateWithTimeIntervalSinceNow:-60*minutes];
+    return [date compare:dateAgo] == NSOrderedDescending;
 }
 
 - (void)checkinForLocationIfNeeded:(CLLocation *)location {

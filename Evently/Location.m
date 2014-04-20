@@ -24,9 +24,24 @@
 
     if (dictionary[@"latitude"] && dictionary[@"longitude"]) {
         location.latLon = [[CLLocation alloc] initWithLatitude:[dictionary[@"latitude"] floatValue] longitude:[dictionary[@"longitude"] floatValue]];
+    } else if(location.name) {
+        // TODO perhaps this method should get a block instead of returning a Location, since this code is async
+        [self.class locationFromAddress:location.name completionHandler:^(CLPlacemark *placemark) {
+            location.latLon = placemark.location;
+        }];
     }
     
     return location;
+}
+
+// TODO should this be in a different class?
++ (void)locationFromAddress:(NSString *)address completionHandler:(void(^)(CLPlacemark *))completionHandler {
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    [geocoder geocodeAddressString:address completionHandler:^(NSArray *placemarks, NSError *error) {
+        if (!error) {
+            completionHandler(placemarks.firstObject);
+        }
+    }];
 }
 
 - (NSString *)displayLocation

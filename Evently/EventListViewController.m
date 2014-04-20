@@ -37,11 +37,7 @@ const NSInteger kUpcomingSection = 1;
 {
     [super viewDidLoad];
 
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(loadEvents)
-     name:UIApplicationWillEnterForegroundNotification
-     object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadEvents) name:UIApplicationWillEnterForegroundNotification object:nil];
 
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(loadEvents) forControlEvents:UIControlEventValueChanged];

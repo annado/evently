@@ -7,6 +7,11 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "AppDelegate.h"
+
+@interface AppDelegate (PrivateMethodsExposedForTests)
++ (BOOL)date:(NSDate *)date isGreaterThanMinutesAgo:(NSInteger)minutes;
+@end
 
 @interface EventlyTests : XCTestCase
 
@@ -26,9 +31,10 @@
     [super tearDown];
 }
 
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+- (void)testDateIsGreaterThanMinutesAgo {
+    NSDate *tenMinutesAgo = [NSDate dateWithTimeIntervalSinceNow:-60*10];
+    XCTAssertTrue([AppDelegate date:tenMinutesAgo isGreaterThanMinutesAgo:12]);
+    XCTAssertFalse([AppDelegate date:tenMinutesAgo isGreaterThanMinutesAgo:8]);
 }
 
 @end

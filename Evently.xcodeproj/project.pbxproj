@@ -589,6 +589,7 @@
 		};
 		580A1D4F18EB50C10011A042 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C7F6CD6B069E4FF9930FF9A5 /* Pods.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Evently.app/Evently";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -611,6 +612,7 @@
 		};
 		580A1D5018EB50C10011A042 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C7F6CD6B069E4FF9930FF9A5 /* Pods.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Evently.app/Evently";
 				FRAMEWORK_SEARCH_PATHS = (
