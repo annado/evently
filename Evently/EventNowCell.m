@@ -7,17 +7,27 @@
 //
 
 #import "EventNowCell.h"
+#import "EventCheckin.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
 
 @interface EventNowCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
-@property (weak, nonatomic) IBOutlet UILabel *locationLabel;
-@property (weak, nonatomic) IBOutlet UIButton *checkinButton;
-@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *coverImage;
 
 @property (nonatomic, strong) NSDateFormatter *timeFormatter;
+
+@property (weak, nonatomic) IBOutlet UIButton *checkInButton;
+@property (weak, nonatomic) IBOutlet UILabel *checkedInCountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *attendingCountLabel;
+
+@property (weak, nonatomic) IBOutlet UIImageView *checkedInUserImage1;
+@property (weak, nonatomic) IBOutlet UIImageView *checkedInUserImage2;
+@property (weak, nonatomic) IBOutlet UIImageView *checkedInUserImage3;
+@property (weak, nonatomic) IBOutlet UIImageView *checkedInUserImage4;
+
+@property (nonatomic, strong) NSArray *checkedInUserImages;
 
 @end
 
@@ -28,6 +38,16 @@
     // Initialization code
     self.timeFormatter = [[NSDateFormatter alloc] init];
     self.timeFormatter.dateFormat = @"h:mm a";
+    
+    self.coverImage.contentMode = UIViewContentModeScaleAspectFill;
+    self.coverImage.layer.masksToBounds = YES;
+    
+    self.checkedInUserImages = @[self.checkedInUserImage1, self.checkedInUserImage2, self.checkedInUserImage3, self.checkedInUserImage4];
+    
+    for (UIImageView *imageView in self.checkedInUserImages) {
+        imageView.layer.cornerRadius = 20.0;
+        imageView.layer.masksToBounds = YES;
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -42,11 +62,25 @@
     
     self.titleLabel.text = event.name;
     self.timeLabel.text = [self.timeFormatter stringFromDate:event.startTime];
-    self.locationLabel.text = event.location.streetAddress;
-    [self.backgroundImageView setImageWithURL:event.coverPhotoURL];
-    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
-        
-    self.layer.masksToBounds = YES;
+    [self.coverImage setImageWithURL:event.coverPhotoURL];
+    
+    self.attendingCountLabel.text = [NSString stringWithFormat:@"%i", [event.attendingUsers count]];
+    
+    // TODO refactor this into model, use a more efficient query
+    [EventCheckin checkinsForEvent:event withCompletion:^(NSArray *checkins, NSError *error) {
+        if (!error) {
+            NSInteger checkinCount = [checkins count];
+            self.checkedInCountLabel.text = [NSString stringWithFormat:@"%i", checkinCount];
+            for (int i = 0; i < [self.checkedInUserImages count] && i < checkinCount; i++) {
+                EventCheckin *checkIn = checkins[i];
+                [checkIn[@"user"] fetchIfNeededInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+                    User *user = (User *)object;
+                    [self.checkedInUserImages[i] setImageWithURL:[user avatarURL]];
+                }];
+            }
+        }
+    }];
+    
 }
 
 @end

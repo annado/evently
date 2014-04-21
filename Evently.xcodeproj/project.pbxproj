@@ -156,13 +156,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3B8828C418F0FD3600D5E87C /* Clients */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Clients;
-			sourceTree = "<group>";
-		};
 		580A1D1618EB50C10011A042 = {
 			isa = PBXGroup;
 			children = (
@@ -200,7 +193,6 @@
 			children = (
 				58450C891904DE2F004376E7 /* Helpers */,
 				FE4D9A1518F3D7C8003351C3 /* Views */,
-				3B8828C418F0FD3600D5E87C /* Clients */,
 				5863441C18ED3247009CFD7B /* Models */,
 				580A1D5118EB50CC0011A042 /* Controllers */,
 				580A1D3118EB50C10011A042 /* AppDelegate.h */,

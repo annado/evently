@@ -132,7 +132,7 @@
 
 - (void)loadEventsWithCompletion:(void (^)(NSArray *events, NSError *error))completionBlock {
     [[GeofenceMonitor sharedInstance] clearGeofences];
-    [Event eventsForUser:[User currentUser] withStatus:EventAttendanceAll withIncludeAttendees:NO withCompletion:^(NSArray *events, NSError *error) {
+    [Event eventsForUser:[User currentUser] withStatus:EventAttendanceAll withIncludeAttendees:YES withCompletion:^(NSArray *events, NSError *error) {
         // TODO: ugly code, refactor
         NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"startTime" ascending:YES]];
         self.nowEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(isHappeningNow == YES)"]] sortedArrayUsingDescriptors:sortDescriptors];
