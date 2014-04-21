@@ -18,6 +18,7 @@
 @property (retain) NSDate *departureTime;
 
 - (id)initWithUser:(User *)user forEvent:(Event *)event;
+- (NSString *)displayText;
 
 + (NSString *)parseClassName;
 + (void) user:(User *)user didArriveAtEvent:(Event *)event withCompletion:(void (^)(NSError *error))block;

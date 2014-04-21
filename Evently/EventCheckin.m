@@ -26,10 +26,40 @@
     if (self) {
         self.user = user;
         self.eventFacebookID = event.facebookID;
-        self.arrivalTime = [[NSDate alloc] init];
         [self saveInBackground];
     }
     return self;
+}
+
+- (NSString *)displayText
+{
+
+    NSString *name = self.user.name;
+    NSString *when = [NSDateFormatter localizedStringFromDate:self.arrivalTime
+                                                    dateStyle:NSDateFormatterNoStyle
+                                                    timeStyle:NSDateFormatterShortStyle];
+    NSString *text = [NSString stringWithFormat:@"%@ checked in at %@", name, when];
+    return text;
+}
+
++ (void)migrateUnderscorePropertyNamesToCamelCase
+{
+    PFQuery *query = [PFQuery queryWithClassName:@"EventCheckin"];
+    [query whereKey:@"arrivalTime" equalTo:[NSNull null]];
+    
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            for (int i = 0; i < objects.count; i++) {
+                EventCheckin *checkin = objects[i];
+                checkin.arrivalTime = checkin[@"arrival_time"];
+                checkin.departureTime = checkin[@"departure_time"];
+                checkin.eventFacebookID = checkin[@"event_facebook_id"];
+                [checkin saveInBackground];
+            }
+        } else {
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
 }
 
 // TODO call didDepartEvent on previous event?
@@ -44,7 +74,7 @@
     // Check user into current event
     PFQuery *query = [EventCheckin query];
     [query whereKey:@"user" equalTo:user];
-    [query whereKey:@"event_facebook_id" equalTo:event.facebookID];
+    [query whereKey:@"eventFacebookID" equalTo:event.facebookID];
     
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         if (error && [error code] != 101) {
@@ -69,7 +99,7 @@
     
     PFQuery *query = [EventCheckin query];
     [query whereKey:@"user" equalTo:user];
-    [query whereKey:@"event_facebook_id" equalTo:event.facebookID];
+    [query whereKey:@"eventFacebookID" equalTo:event.facebookID];
     
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         if (error && [error code] != 101) {
@@ -77,7 +107,7 @@
             block(error);
         } else {
             if (object) {
-                object[@"departure_time"] = now;
+                object[@"departureTime"] = now;
                 [object saveInBackground];
             }
             block(nil);
@@ -94,9 +124,9 @@
     NSDate *now = [[NSDate alloc] init];
     
     PFQuery *query = [EventCheckin query];
-    [query whereKey:@"event_facebook_id" equalTo:event.facebookID];
-    [query whereKey:@"arrival_time" lessThanOrEqualTo:now];
-    [query whereKeyDoesNotExist:@"departure_time"];
+    [query whereKey:@"eventFacebookID" equalTo:event.facebookID];
+    [query whereKey:@"arrivalTime" lessThanOrEqualTo:now];
+    [query whereKeyDoesNotExist:@"departureTime"];
     [query includeKey:@"user"];
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -121,7 +151,7 @@
     }
     
     PFQuery *query = [EventCheckin query];
-    [query whereKey:@"event_facebook_id" equalTo:event.facebookID];
+    [query whereKey:@"eventFacebookID" equalTo:event.facebookID];
     [query includeKey:@"user"];
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -138,8 +168,8 @@
     
     PFQuery *query = [EventCheckin query];
     [query whereKey:@"user" equalTo:user];
-    [query whereKey:@"arrival_time" lessThanOrEqualTo:now];
-    [query whereKeyDoesNotExist:@"departure_time"];
+    [query whereKey:@"arrivalTime" lessThanOrEqualTo:now];
+    [query whereKeyDoesNotExist:@"departureTime"];
     
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         if (error && [error code] != 101) {
@@ -147,7 +177,7 @@
             block(nil, error);
         } else {
             if (object) {
-                [Event eventForFacebookID:object[@"event_facebook_id"] withIncludeAttendees:includeAttendees withCompletion:block];
+                [Event eventForFacebookID:object[@"eventFacebookID"] withIncludeAttendees:includeAttendees withCompletion:block];
             } else {
                 block(nil, nil);
             }

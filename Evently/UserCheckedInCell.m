@@ -35,13 +35,12 @@
 
     self.avatarImageView.layer.cornerRadius = 20;
 
-    NSString *name = _checkin.user.name;
-    NSString *text = [NSString stringWithFormat:@"%@ checked in at 9:36pm", name];
+    NSString *text = [_checkin displayText];
     [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:13.0]];
     self.textLabel.textColor = [UIColor darkGrayColor];
-    NSRange r = [text rangeOfString:name];
+//    NSRange r = [text rangeOfString:_checkin.user.name];
     self.textLabel.text = text;
-    [self.textLabel addLinkToURL:[NSURL URLWithString:@"action://show-help"] withRange:r];
+    // TODO: [self.textLabel addLinkToURL:[NSURL URLWithString:@"action://show-help"] withRange:r];
 }
 
 @end

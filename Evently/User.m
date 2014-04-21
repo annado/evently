@@ -120,7 +120,7 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
 {
     PFQuery *query = [EventCheckin query];
     [query whereKey:@"user" equalTo:self];
-    [query whereKey:@"event_facebook_id" equalTo:event.facebookID];
+    [query whereKey:@"eventFacebookID" equalTo:event.facebookID];
     
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         if (error && [error code] != 101) {
