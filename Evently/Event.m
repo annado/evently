@@ -303,10 +303,7 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
 }
 
 - (void)checkinCurrentUser {
-    User *user = [User currentUser];
-    [EventCheckin user:user didArriveAtEvent:self withCompletion:^(NSError *error) {
-        NSLog(@"User did checkin to event: %@", user[@"facebookID"]);
-    }];
+    [[User currentUser] checkinForEvent:self];
 }
 
 + (void)addGeofencesForEvents:(NSArray *)events {

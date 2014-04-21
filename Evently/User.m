@@ -8,6 +8,7 @@
 
 #import "User.h"
 #import "EventCheckin.h"
+#import "EventNotification.h"
 #import <Parse/PFObject+Subclass.h>
 
 NSString * const UserDidLoginNotification = @"UserDidLoginNotification";
@@ -60,17 +61,6 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
             }];
         } else {
             NSLog(@"User with facebook logged in!");
-            // data migration
-//            PFRelation *relation = [[User currentUser] relationForKey:@"checkins"];
-//            PFQuery *query = [EventCheckin query];
-//            [query whereKey:@"user" equalTo:[User currentUser]];
-//            NSArray *checkins = [query findObjects];
-//            NSLog(@"checkins: %@", checkins);
-//            for (int i = 0; i < checkins.count; i++) {
-//                [relation addObject:checkins[i]];
-//            }
-//            [[User currentUser] save];
-            
             [[User currentUser] fetchCheckins];
             [[User currentUser] requestFacebookProfileWithCompletion:^(NSError *error) {
                 block([User currentUser], error);
@@ -101,8 +91,6 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (!error) {
             NSDictionary *userData = (NSDictionary *)result;
-//            NSLog(@"userData: %@", userData);
-            
             self[@"name"] = userData[@"name"];
             self[@"facebookID"] = userData[@"id"];
             [self saveInBackground];
@@ -139,20 +127,32 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
 - (EventCheckin *)checkinForEvent:(Event *)event
 {
     EventCheckin *checkin = [[EventCheckin alloc] initWithUser:self forEvent:event];
-    PFRelation *relation = [self relationForKey:@"checkins"];
-    [relation addObject:checkin];
-    
-    
-    [self saveInBackground];
+
+    [checkin saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        PFRelation *relation = [self relationForKey:@"checkins"];
+        [relation addObject:checkin];
+        [self saveInBackground];
+        [EventNotification sendPushNotificationForCheckin:checkin toEvent:event];
+    }];
     return checkin;
 }
 
 - (BOOL)isCheckedInToEvent:(Event *)event
 {
     // Assumes currentUser (for now)
+    if (self.checkins) {
+        return [self isCheckedInToEvent:event forCheckins:self.checkins];
+    } else {
+        return NO;
+    }
+}
+
+// TODO: this is ugly
+- (BOOL)isCheckedInToEvent:(Event *)event forCheckins:(NSArray *)checkins
+{
     NSString *eventID = event.facebookID;
     NSUInteger i = [self.checkins indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-        return [eventID isEqualToString:obj[@"facebookID"]];
+        return [eventID isEqualToString:obj[@"eventFacebookID"]];
     }];
     return (i != NSNotFound);
 }

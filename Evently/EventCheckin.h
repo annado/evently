@@ -19,6 +19,7 @@
 
 - (id)initWithUser:(User *)user forEvent:(Event *)event;
 - (NSString *)displayText;
+- (NSString *)displayTextWithEventName:(Event *)event;
 
 + (NSString *)parseClassName;
 + (void) user:(User *)user didArriveAtEvent:(Event *)event withCompletion:(void (^)(NSError *error))block;

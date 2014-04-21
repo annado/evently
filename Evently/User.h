@@ -26,6 +26,7 @@ extern NSString *const UserDidLogoutNotification;
 - (EventCheckin *)checkinForEvent:(Event *)event;
 - (void)getCheckinForEvent:(Event *)event completion:(void (^)(EventCheckin *checkin, NSError *error))block;
 - (BOOL)isCheckedInToEvent:(Event *)event;
+- (BOOL)isCheckedInToEvent:(Event *)event forCheckins:(NSArray *)checkins;
 
 + (void)logInWithCompletion:(void (^)(User *user, NSError *error))block;
 + (User *)currentUser;

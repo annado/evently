@@ -12,4 +12,5 @@
 - (id)initWithEvent:(Event *)event;
 + (NSString *)getEventIDForNotification:(UILocalNotification *)notification;
 + (void)handleForegroundLocalNotification:(UILocalNotification *)localNotification;
++ (void)sendPushNotificationForCheckin:(EventCheckin *)checkin toEvent:(Event *)event;
 @end

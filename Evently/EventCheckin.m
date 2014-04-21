@@ -26,6 +26,7 @@
     if (self) {
         self.user = user;
         self.eventFacebookID = event.facebookID;
+        self.arrivalTime = [[NSDate alloc] init];
         [self saveInBackground];
     }
     return self;
@@ -39,6 +40,13 @@
                                                     dateStyle:NSDateFormatterNoStyle
                                                     timeStyle:NSDateFormatterShortStyle];
     NSString *text = [NSString stringWithFormat:@"%@ checked in at %@", name, when];
+    return text;
+}
+
+- (NSString *)displayTextWithEventName:(Event *)event
+{
+    NSString *name = self.user.name;
+    NSString *text = [NSString stringWithFormat:@"%@ checked in to %@", name, event.name];
     return text;
 }
 
