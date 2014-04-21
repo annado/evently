@@ -44,6 +44,8 @@
 		5863442318ED37AE009CFD7B /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5863442118ED37AE009CFD7B /* ProfileViewController.m */; };
 		5863442418ED37AE009CFD7B /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5863442218ED37AE009CFD7B /* ProfileViewController.xib */; };
 		6E928ECB3068458E93E99D3A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 161D78BE570642A8B3EFB03A /* libPods.a */; };
+		FE1F022A1904DAFC004F6410 /* GeofenceMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F02291904DAFC004F6410 /* GeofenceMonitor.m */; };
+		FE1F022D1904ED0A004F6410 /* ZyngaFence.gpx in Resources */ = {isa = PBXBuildFile; fileRef = FE1F022C1904ED0A004F6410 /* ZyngaFence.gpx */; };
 		FE4D9A1318F3D581003351C3 /* EventListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4D9A1118F3D581003351C3 /* EventListViewController.m */; };
 		FE4D9A1418F3D581003351C3 /* EventListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE4D9A1218F3D581003351C3 /* EventListViewController.xib */; };
 		FE4D9A1918F3D7E0003351C3 /* EventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4D9A1718F3D7E0003351C3 /* EventCell.m */; };
@@ -118,6 +120,9 @@
 		5863442118ED37AE009CFD7B /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		5863442218ED37AE009CFD7B /* ProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileViewController.xib; sourceTree = "<group>"; };
 		C7F6CD6B069E4FF9930FF9A5 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		FE1F02291904DAFC004F6410 /* GeofenceMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeofenceMonitor.m; sourceTree = "<group>"; };
+		FE1F022B1904DB03004F6410 /* GeofenceMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeofenceMonitor.h; sourceTree = "<group>"; };
+		FE1F022C1904ED0A004F6410 /* ZyngaFence.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ZyngaFence.gpx; sourceTree = "<group>"; };
 		FE4D9A1018F3D581003351C3 /* EventListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventListViewController.h; sourceTree = "<group>"; };
 		FE4D9A1118F3D581003351C3 /* EventListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventListViewController.m; sourceTree = "<group>"; };
 		FE4D9A1218F3D581003351C3 /* EventListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventListViewController.xib; sourceTree = "<group>"; };
@@ -209,6 +214,7 @@
 		580A1D2918EB50C10011A042 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				FE1F022C1904ED0A004F6410 /* ZyngaFence.gpx */,
 				580A1D2A18EB50C10011A042 /* Evently-Info.plist */,
 				580A1D2B18EB50C10011A042 /* InfoPlist.strings */,
 				580A1D2E18EB50C10011A042 /* main.m */,
@@ -276,6 +282,8 @@
 				3B8828D218F24CB600D5E87C /* EventCheckin.m */,
 				58450C8619047876004376E7 /* EventNotification.h */,
 				58450C8719047876004376E7 /* EventNotification.m */,
+				FE1F022B1904DB03004F6410 /* GeofenceMonitor.h */,
+				FE1F02291904DAFC004F6410 /* GeofenceMonitor.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -390,6 +398,7 @@
 				580A1D5618EB50F00011A042 /* SignInViewController.xib in Resources */,
 				3B00387B18FDD4A7004CDE83 /* EventNowCell.xib in Resources */,
 				5863442418ED37AE009CFD7B /* ProfileViewController.xib in Resources */,
+				FE1F022D1904ED0A004F6410 /* ZyngaFence.gpx in Resources */,
 				58001AF718FB01DA007ECAF9 /* EventRSVPCell.xib in Resources */,
 				FE4D9A1418F3D581003351C3 /* EventListViewController.xib in Resources */,
 				58001B0118FCDE34007ECAF9 /* CheckinButton.xib in Resources */,
@@ -464,6 +473,7 @@
 				58001B0518FE4986007ECAF9 /* UserCheckedInCell.m in Sources */,
 				58450C8819047876004376E7 /* EventNotification.m in Sources */,
 				58001AEA18FA19CB007ECAF9 /* EventDetailViewController.m in Sources */,
+				FE1F022A1904DAFC004F6410 /* GeofenceMonitor.m in Sources */,
 				580A1D2F18EB50C10011A042 /* main.m in Sources */,
 				5863442318ED37AE009CFD7B /* ProfileViewController.m in Sources */,
 				3B00387A18FDD4A7004CDE83 /* EventNowCell.m in Sources */,

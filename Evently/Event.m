@@ -9,6 +9,7 @@
 #import "Event.h"
 #import "EventCheckin.h"
 #import "EventNotification.h"
+#import "GeofenceMonitor.h"
 
 const CLLocationDistance kNearDistance = 150; // meters
 
@@ -301,19 +302,28 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
     return nil;
 }
 
-- (BOOL)nearLocation:(CLLocation *)location {
-    if (self.location.latLon) {
-        CLLocationDistance distance = [self.location.latLon distanceFromLocation:location];
-        return distance <= kNearDistance;
-    }
-    return NO;
-}
-
 - (void)checkinCurrentUser {
     User *user = [User currentUser];
     [EventCheckin user:user didArriveAtEvent:self withCompletion:^(NSError *error) {
         NSLog(@"User did checkin to event: %@", user[@"facebookID"]);
     }];
+}
+
++ (void)addGeofencesForEvents:(NSArray *)events {
+    if(![[GeofenceMonitor sharedInstance] checkLocationManager]) {
+        return;
+    }
+    
+    for (Event *event in events) {
+        if (event.location.latLon) {
+            NSMutableDictionary * fenceDict = [NSMutableDictionary new];
+            [fenceDict setValue:event.facebookID forKey:@"identifier"];
+            [fenceDict setValue:@(event.location.latLon.coordinate.latitude) forKey:@"latitude"];
+            [fenceDict setValue:@(event.location.latLon.coordinate.longitude) forKey:@"longitude"];
+            [fenceDict setValue:@(kNearDistance) forKey:@"radius"];
+            [[GeofenceMonitor sharedInstance] addGeofence:fenceDict];
+        }
+    }
 }
 
 @end

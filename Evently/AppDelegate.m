@@ -15,10 +15,9 @@
 #import "EventListViewController.h"
 #import "CRToast.h"
 #import "EventNotification.h"
+#import "GeofenceMonitor.h"
 
-@interface AppDelegate ()
-
-@property (nonatomic, strong) CLLocationManager* locManager;
+@interface AppDelegate () <GeofenceMonitorDelegate>
 
 @end
 
@@ -44,14 +43,12 @@
         NSLog(@"LocalNotification: %@", eventFacebookID);
     }
     
+    [GeofenceMonitor sharedInstance].delegate = self;
     [self setDefaultAppearance];
     [self setInitialRootViewController];
     
     [self.window makeKeyAndVisible];
     
-    self.locManager = [[CLLocationManager alloc] init];
-    self.locManager.delegate = self;
-
     return YES;
 }
 
@@ -133,28 +130,27 @@
     return (AppDelegate *)[UIApplication sharedApplication].delegate;
 }
 
-- (void)stopMonitoringLocationChanges {
-    NSLog(@"Stop monitoring location changes");
-    [self.locManager stopMonitoringSignificantLocationChanges];
-}
-
-- (void)startMonitoringLocationChanges {
-    NSLog(@"Start monitoring location changes");
-    // TODO only enable if any now events, disable otherwise (and update on a periodic refresh)
-    [self.locManager startMonitoringSignificantLocationChanges];
-}
-
 - (void)loadEventsWithCompletion:(void (^)(NSArray *events, NSError *error))completionBlock {
-    [self stopMonitoringLocationChanges];
+    [[GeofenceMonitor sharedInstance] clearGeofences];
     [Event eventsForUser:[User currentUser] withStatus:EventAttendanceAll withIncludeAttendees:NO withCompletion:^(NSArray *events, NSError *error) {
         // TODO: ugly code, refactor
         NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"startTime" ascending:YES]];
         self.nowEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(isHappeningNow == YES)"]] sortedArrayUsingDescriptors:sortDescriptors];
         self.upcomingEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(isHappeningNow == NO && startTime >= %@)", [NSDate date]]] sortedArrayUsingDescriptors:sortDescriptors];
-        [self startMonitoringLocationChanges];
+        [Event addGeofencesForEvents:self.nowEvents];
         if (completionBlock) {
             completionBlock(events, error);
         }
+    }];
+}
+
+#pragma mark - GeofenceMonitorDelegate
+
+- (void)geofenceMonitor:(GeofenceMonitor *)geofenceMonitor didEnterRegion:(CLRegion *)region {
+    NSLog(@"Entered Region - %@", region.identifier);
+    [Event eventForFacebookID:region.identifier withIncludeAttendees:NO withCompletion:^(Event *event, NSError *error) {
+        [event checkinCurrentUser];
+        [self fireLocalNotificationWithMessage:[NSString stringWithFormat:@"You've been checked in to %@", event.name]];
     }];
 }
 
@@ -175,33 +171,9 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    [EventNotification handleForegroundLocalNotification:notification];
-}
-
-#pragma mark - CLLocationManagerDelegate
-
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-	NSLog(@"Background Fail %@", [error localizedDescription]);
-}
-
-- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-    CLLocation *mostRecentLocation = locations.lastObject;
-    NSLog(@"Background location %.06f %.06f %@", mostRecentLocation.coordinate.latitude, mostRecentLocation.coordinate.longitude, mostRecentLocation.timestamp);
-    if ([DateHelper date:mostRecentLocation.timestamp isGreaterThanMinutesAgo:1]) {
-        NSLog(@"Location is fresh, checking if any events are nearby...");
-        [self checkinForLocationIfNeeded:mostRecentLocation];
-    } else {
-        NSLog(@"Location is too stale, ignoring");
-    }
-}
-
-- (void)checkinForLocationIfNeeded:(CLLocation *)location {
-    for (Event *event in self.nowEvents) {
-        if ([event nearLocation:location]) {
-            [event checkinCurrentUser];
-            [self fireLocalNotificationWithMessage:[NSString stringWithFormat:@"You've been checked in to %@", event.name]];
-            return;
-        }
+    UIApplicationState state = [[UIApplication sharedApplication] applicationState];
+    if (state == UIApplicationStateActive) {
+        [EventNotification handleForegroundLocalNotification:notification];
     }
 }
 
