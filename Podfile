@@ -5,3 +5,4 @@ pod 'Facebook-iOS-SDK', :inhibit_warnings => true
 pod 'Parse', '~>1.2.18'
 pod 'TTTAttributedLabel'
 pod 'SIAlertView', :inhibit_warnings => true
+pod 'CRToast', '~> 0.0'

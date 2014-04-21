@@ -12,6 +12,7 @@
 #import "User.h"
 #import "EventCheckin.h"
 #import "EventListViewController.h"
+#import "CRToast.h"
 
 @interface AppDelegate ()
 
@@ -158,7 +159,11 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    NSLog(@"received local notification while in foreground: %@", notification);
+    NSDictionary *options = @{
+                              kCRToastTextKey : notification.alertBody,
+                              kCRToastBackgroundColorKey : [UIColor orangeColor],
+                              };
+    [CRToastManager showNotificationWithOptions:options completionBlock:nil];
 }
 
 #pragma mark - CLLocationManagerDelegate
@@ -171,7 +176,7 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
     CLLocation *mostRecentLocation = locations.lastObject;
     NSLog(@"Background location %.06f %.06f %@", mostRecentLocation.coordinate.latitude, mostRecentLocation.coordinate.longitude, mostRecentLocation.timestamp);
     if ([AppDelegate date:mostRecentLocation.timestamp isGreaterThanMinutesAgo:1]) {
-        NSLog(@"Location is fresh");
+        NSLog(@"Location is fresh, checking if any events are nearby...");
         [self checkinForLocationIfNeeded:mostRecentLocation];
     } else {
         NSLog(@"Location is too stale, ignoring");
