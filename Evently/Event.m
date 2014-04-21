@@ -8,10 +8,15 @@
 
 #import "Event.h"
 #import "EventCheckin.h"
+#import "EventNotification.h"
 
 const CLLocationDistance kNearDistance = 150; // meters
 
 NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, EventAttendanceNo, EventAttendanceNotReplied };
+
+@interface Event ()
+@property (nonatomic, strong) EventNotification *notification;
+@end
 
 @implementation Event
 
@@ -62,6 +67,8 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
         _unsureUsers = [[NSMutableArray alloc] init];
         _declinedUsers = [[NSMutableArray alloc] init];
         _notRepliedUsers = [[NSMutableArray alloc] init];
+        
+        _notification = [[EventNotification alloc] initWithEvent:self];
     }
     return self;
 }

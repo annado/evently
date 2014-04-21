@@ -7,12 +7,14 @@
 //
 
 #import "AppDelegate.h"
+#import "DateHelper.h"
 #import "SignInViewController.h"
 #import "ProfileViewController.h"
 #import "User.h"
 #import "EventCheckin.h"
 #import "EventListViewController.h"
 #import "CRToast.h"
+#import "EventNotification.h"
 
 @interface AppDelegate ()
 
@@ -26,28 +28,24 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    /* Parse init */
-    
-    // Parse subclasses
-    [User registerSubclass];
-    [EventCheckin registerSubclass];
-    
-    [Parse setApplicationId:@"2DhYRY420kuYwMv12BZrEzpbjebGS9wVlCtJKdnz"
-                  clientKey:@"9zookCNyg4AOaVed5UnrSdCVx6wwEgNeEgmj9s2j"];
+    [self initParse];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
-    [PFFacebookUtils initializeFacebook];
 
     // Register for push notifications
     [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge|
      UIRemoteNotificationTypeAlert|
      UIRemoteNotificationTypeSound];
     
-    [self setDefaultAppearance];
+    UILocalNotification *localNotification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
+    if (localNotification) {
+        NSString *eventFacebookID = [EventNotification getEventIDForNotification:localNotification];
 
-    // Set root controller (logged in/out state)
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRootViewController) name:UserDidLoginNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRootViewController) name:UserDidLogoutNotification object:nil];
-    [self updateRootViewController];
+        // TODO: open app to this Event [anna]
+        NSLog(@"LocalNotification: %@", eventFacebookID);
+    }
+    
+    [self setDefaultAppearance];
+    [self setInitialRootViewController];
     
     [self.window makeKeyAndVisible];
     
@@ -55,6 +53,17 @@
     self.locManager.delegate = self;
 
     return YES;
+}
+
+- (void)initParse
+{
+    // Parse subclasses
+    [User registerSubclass];
+    [EventCheckin registerSubclass];
+    
+    [Parse setApplicationId:@"2DhYRY420kuYwMv12BZrEzpbjebGS9wVlCtJKdnz"
+                  clientKey:@"9zookCNyg4AOaVed5UnrSdCVx6wwEgNeEgmj9s2j"];
+    [PFFacebookUtils initializeFacebook];
 }
 
 - (BOOL)application:(UIApplication *)application
@@ -89,6 +98,13 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (void)setInitialRootViewController
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRootViewController) name:UserDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRootViewController) name:UserDidLogoutNotification object:nil];
+    [self updateRootViewController];
 }
 
 - (void)updateRootViewController
@@ -159,11 +175,7 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    NSDictionary *options = @{
-                              kCRToastTextKey : notification.alertBody,
-                              kCRToastBackgroundColorKey : [UIColor orangeColor],
-                              };
-    [CRToastManager showNotificationWithOptions:options completionBlock:nil];
+    [EventNotification handleForegroundLocalNotification:notification];
 }
 
 #pragma mark - CLLocationManagerDelegate
@@ -175,17 +187,12 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     CLLocation *mostRecentLocation = locations.lastObject;
     NSLog(@"Background location %.06f %.06f %@", mostRecentLocation.coordinate.latitude, mostRecentLocation.coordinate.longitude, mostRecentLocation.timestamp);
-    if ([AppDelegate date:mostRecentLocation.timestamp isGreaterThanMinutesAgo:1]) {
+    if ([DateHelper date:mostRecentLocation.timestamp isGreaterThanMinutesAgo:1]) {
         NSLog(@"Location is fresh, checking if any events are nearby...");
         [self checkinForLocationIfNeeded:mostRecentLocation];
     } else {
         NSLog(@"Location is too stale, ignoring");
     }
-}
-
-+ (BOOL)date:(NSDate *)date isGreaterThanMinutesAgo:(NSInteger)minutes {
-    NSDate *dateAgo = [NSDate dateWithTimeIntervalSinceNow:-60*minutes];
-    return [date compare:dateAgo] == NSOrderedDescending;
 }
 
 - (void)checkinForLocationIfNeeded:(CLLocation *)location {

@@ -39,6 +39,7 @@
 		580A1D5518EB50F00011A042 /* SignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 580A1D5318EB50F00011A042 /* SignInViewController.m */; };
 		580A1D5618EB50F00011A042 /* SignInViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 580A1D5418EB50F00011A042 /* SignInViewController.xib */; };
 		58450C8819047876004376E7 /* EventNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C8719047876004376E7 /* EventNotification.m */; };
+		58450C8C1904DE3B004376E7 /* DateHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C8B1904DE3B004376E7 /* DateHelper.m */; };
 		5863441F18ED3257009CFD7B /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5863441E18ED3257009CFD7B /* User.m */; };
 		5863442318ED37AE009CFD7B /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5863442118ED37AE009CFD7B /* ProfileViewController.m */; };
 		5863442418ED37AE009CFD7B /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5863442218ED37AE009CFD7B /* ProfileViewController.xib */; };
@@ -109,6 +110,8 @@
 		580A1D5418EB50F00011A042 /* SignInViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignInViewController.xib; sourceTree = "<group>"; };
 		58450C8619047876004376E7 /* EventNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventNotification.h; sourceTree = "<group>"; };
 		58450C8719047876004376E7 /* EventNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventNotification.m; sourceTree = "<group>"; };
+		58450C8A1904DE3B004376E7 /* DateHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateHelper.h; sourceTree = "<group>"; };
+		58450C8B1904DE3B004376E7 /* DateHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateHelper.m; sourceTree = "<group>"; };
 		5863441D18ED3257009CFD7B /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		5863441E18ED3257009CFD7B /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		5863442018ED37AE009CFD7B /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
@@ -190,6 +193,7 @@
 		580A1D2818EB50C10011A042 /* Evently */ = {
 			isa = PBXGroup;
 			children = (
+				58450C891904DE2F004376E7 /* Helpers */,
 				FE4D9A1518F3D7C8003351C3 /* Views */,
 				3B8828C418F0FD3600D5E87C /* Clients */,
 				5863441C18ED3247009CFD7B /* Models */,
@@ -248,6 +252,15 @@
 				58001AE918FA19CB007ECAF9 /* EventDetailViewController.xib */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		58450C891904DE2F004376E7 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				58450C8A1904DE3B004376E7 /* DateHelper.h */,
+				58450C8B1904DE3B004376E7 /* DateHelper.m */,
+			);
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 		5863441C18ED3247009CFD7B /* Models */ = {
@@ -454,6 +467,7 @@
 				580A1D2F18EB50C10011A042 /* main.m in Sources */,
 				5863442318ED37AE009CFD7B /* ProfileViewController.m in Sources */,
 				3B00387A18FDD4A7004CDE83 /* EventNowCell.m in Sources */,
+				58450C8C1904DE3B004376E7 /* DateHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

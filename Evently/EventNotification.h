@@ -9,5 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface EventNotification : NSObject
-
+- (id)initWithEvent:(Event *)event;
++ (NSString *)getEventIDForNotification:(UILocalNotification *)notification;
++ (void)handleForegroundLocalNotification:(UILocalNotification *)localNotification;
 @end
