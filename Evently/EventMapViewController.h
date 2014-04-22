@@ -10,5 +10,5 @@
 #import <MapKit/MapKit.h>
 
 @interface EventMapViewController : UIViewController <MKMapViewDelegate>
-
+- (id)initWithEvent:(Event *)event;
 @end

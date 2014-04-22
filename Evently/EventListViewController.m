@@ -142,7 +142,7 @@ const NSInteger kUpcomingSection = 1;
     Event *event;
     if (indexPath.section == 0) {
         event = [AppDelegate sharedInstance].nowEvents[indexPath.row];
-        EventMapViewController *eventMapViewController = [[EventMapViewController alloc] init];
+        EventMapViewController *eventMapViewController = [[EventMapViewController alloc] initWithEvent:event];
         // TODO: move somewhere else?
         [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
                                                       forBarMetrics:UIBarMetricsDefault];

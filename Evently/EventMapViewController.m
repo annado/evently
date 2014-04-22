@@ -29,7 +29,7 @@
     return self;
 }
 
-- (id)initWIthEvent:(Event *)event
+- (id)initWithEvent:(Event *)event
 {
     self = [super init];
     if (self) {
