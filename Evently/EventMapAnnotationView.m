@@ -16,7 +16,7 @@
     if (self)
     {
         // Set the frame size to the appropriate values.
-        CGRect  myFrame = self.frame;
+        CGRect myFrame = self.frame;
         myFrame.size.width = 40;
         myFrame.size.height = 40;
         self.frame = myFrame;

@@ -8,6 +8,7 @@
 
 #import "EventMapViewController.h"
 #import "EventMapAnnotation.h"
+#import "EventMapAnnotationView.h"
 
 #import "EventDetailViewController.h"
 
@@ -41,7 +42,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    self.mapView.delegate = self;
+    
+    if (_event.location.latLon) {
+        CLLocationCoordinate2D coordinate = _event.location.latLon.coordinate;
+        EventMapAnnotation *annotation = [[EventMapAnnotation alloc] initWithTitle:_event.location.name location:coordinate];
+        [self.mapView addAnnotation:annotation];
+        [self.mapView selectAnnotation:annotation animated:YES];
+        [self zoomMapToFitAnnotations];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -54,16 +63,19 @@
 {
     EventDetailViewController *eventDetailViewController = [[EventDetailViewController alloc] initWithEvent:_event];
     [self.navigationController pushViewController:eventDetailViewController animated:YES];
-//    [self presentViewController:eventDetailViewController animated:YES completion: nil];
 
 }
 
+- (void)zoomMapToFitAnnotations
+{
+    [self.mapView showAnnotations:self.mapView.annotations animated:YES];
+}
+
+#pragma mark - MKMapViewDelegate methods
+
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
-    CLLocationCoordinate2D coordinate = self.mapView.userLocation.location.coordinate;
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coordinate, 1000.0, 1000.0);
-    
-    [self.mapView setRegion:region animated:YES];
+    [self zoomMapToFitAnnotations];
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id < MKAnnotation >)annotation
@@ -75,24 +87,16 @@
     // Handle any custom annotations.
     if ([annotation isKindOfClass:[EventMapAnnotation class]])
     {
-        // Try to dequeue an existing pin view first.
-        MKPinAnnotationView *pinView = (MKPinAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"MapAnnotationView"];
+        EventMapAnnotation *location = (EventMapAnnotation *)annotation;
+        EventMapAnnotationView *annotationView = (EventMapAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"MapAnnotationView"];
         
-        if (!pinView)
-        {
-            // If an existing pin view was not available, create one.
-            pinView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation
-                                                      reuseIdentifier:@"MapAnnotationView"];
-            pinView.pinColor = MKPinAnnotationColorRed;
-            pinView.animatesDrop = YES;
-            pinView.canShowCallout = YES;
-            
-            // If appropriate, customize the callout by adding accessory views (code not shown).
+        if (annotationView) {
+            annotationView = [location annotationView];
+        } else {
+            annotationView.annotation = location;
         }
-        else
-            pinView.annotation = annotation;
         
-        return pinView;
+        return annotationView;
     }
     
     return nil;

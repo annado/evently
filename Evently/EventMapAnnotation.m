@@ -7,20 +7,31 @@
 //
 
 #import "EventMapAnnotation.h"
+#import "EventMapAnnotationView.h"
 
 @interface EventMapAnnotation ()
 @property (nonatomic, strong) EventCheckin *checkin;
+@property (nonatomic, copy) NSString *title;
 @end
 
 @implementation EventMapAnnotation
 
-- (id)initWithLocation:(CLLocationCoordinate2D)coordinate
+- (id)initWithTitle:(NSString *)title location:(CLLocationCoordinate2D)coordinate
 {
     self = [super init];
     if (self) {
         _coordinate = coordinate;
+        _title = title;
     }
     return self;
+}
+
+- (EventMapAnnotationView *)annotationView
+{
+    EventMapAnnotationView *annotationView = [[EventMapAnnotationView alloc] initWithAnnotation:self reuseIdentifier:@"MapAnnotationView"];
+    annotationView.enabled = YES;
+    annotationView.canShowCallout = YES;
+    return annotationView;
 }
 
 @end

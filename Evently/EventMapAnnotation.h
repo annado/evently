@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 
+@class EventMapAnnotationView;
+
 @interface EventMapAnnotation : NSObject <MKAnnotation>
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
+- (id)initWithTitle:(NSString *)title location:(CLLocationCoordinate2D)coordinate;
+- (EventMapAnnotationView *)annotationView;
 @end
