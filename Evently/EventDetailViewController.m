@@ -149,7 +149,15 @@ static NSString *CheckinCellIdentifier = @"UserCheckedInCell";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return (indexPath.row == 0) ? [EventDetailCell heightForEvent:_event] : [EventRSVPCell heightForEvent:_event];
+    if (indexPath.row == 0) {
+        return [EventDetailCell heightForEvent:_event];
+    } else if (indexPath.row == 1) {
+        return [EventRSVPCell heightForEvent:_event];
+    } else {
+        // TODO get height based on number of facebook attendees
+        NSLog(@"Got collection view height");
+        return 180;
+    }
 }
 
 #pragma mark - EventRSVPCell protocol

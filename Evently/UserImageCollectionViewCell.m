@@ -21,7 +21,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        // Custom initialization
     }
     return self;
 }
@@ -29,6 +29,8 @@
 - (void)setUserImageURL:(NSURL *)userImageURL {
     _userImageURL = userImageURL;
     [self.userImageView setImageWithURL:userImageURL];
+    self.userImageView.layer.cornerRadius = 10.0;
+    self.userImageView.layer.masksToBounds = YES;
 }
 
 /*

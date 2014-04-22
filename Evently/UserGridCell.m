@@ -23,6 +23,9 @@
     // Initialization code
     [self.imageGrid registerNib:[UINib nibWithNibName:@"UserImageCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"UserImageCollectionViewCell"];
     self.imageGrid.dataSource = self;
+    self.imageGrid.delegate = self;
+    
+    self.imageGrid.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -40,18 +43,42 @@
 - (void)setUserFacebookIds:(NSArray *)userFacebookIds {
     _userFacebookIds = userFacebookIds;
     [self.imageGrid reloadData];
-    // Tell the collection view to reloadData
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return self.userFacebookIds.count;
 }
 
-// The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UserImageCollectionViewCell *cell = [self.imageGrid dequeueReusableCellWithReuseIdentifier:@"UserImageCollectionViewCell" forIndexPath:indexPath];
     cell.userImageURL = [User avatarURL:self.userFacebookIds[indexPath.row][@"facebookID"]];
     return cell;
 }
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return CGSizeMake(50, 50);
+}
+
+//- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+//    return
+//}
+//
+//- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+//    
+//}
+//
+//- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+//    
+//}
+//
+//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+//    
+//}
+//
+//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+//    
+//}
+
+
 
 @end

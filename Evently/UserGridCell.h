@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UserGridCell : UITableViewCell <UICollectionViewDataSource>
+@interface UserGridCell : UITableViewCell <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) NSString *gridTitle;
 @property (nonatomic, strong) NSArray *userFacebookIds;
