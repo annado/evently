@@ -8,6 +8,7 @@
 
 #import "EventListViewController.h"
 #import "EventDetailViewController.h"
+#import "EventMapViewController.h"
 #import "EventCell.h"
 #import "EventNowCell.h"
 #import "AppDelegate.h"
@@ -141,11 +142,21 @@ const NSInteger kUpcomingSection = 1;
     Event *event;
     if (indexPath.section == 0) {
         event = [AppDelegate sharedInstance].nowEvents[indexPath.row];
+        EventMapViewController *eventMapViewController = [[EventMapViewController alloc] init];
+        // TODO: move somewhere else?
+        [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
+                                                      forBarMetrics:UIBarMetricsDefault];
+        self.navigationController.navigationBar.shadowImage = [UIImage new];
+        self.navigationController.navigationBar.translucent = YES;
+        self.navigationController.view.backgroundColor = [UIColor clearColor];
+
+        [self.navigationController pushViewController:eventMapViewController animated:YES];
+
     } else {
         event = [AppDelegate sharedInstance].upcomingEvents[indexPath.row];
+        EventDetailViewController *eventDetailViewController = [[EventDetailViewController alloc] initWithEvent:event];
+        [self.navigationController pushViewController:eventDetailViewController animated:YES];
     }
-    EventDetailViewController *eventDetailViewController = [[EventDetailViewController alloc] initWithEvent:event];
-    [self.navigationController pushViewController:eventDetailViewController animated:YES];
 }
 
 @end

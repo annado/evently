@@ -44,6 +44,10 @@
 		580A1D5618EB50F00011A042 /* SignInViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 580A1D5418EB50F00011A042 /* SignInViewController.xib */; };
 		58450C8819047876004376E7 /* EventNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C8719047876004376E7 /* EventNotification.m */; };
 		58450C8C1904DE3B004376E7 /* DateHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C8B1904DE3B004376E7 /* DateHelper.m */; };
+		58450C9019063B08004376E7 /* EventMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C8E19063B08004376E7 /* EventMapViewController.m */; };
+		58450C9119063B08004376E7 /* EventMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58450C8F19063B08004376E7 /* EventMapViewController.xib */; };
+		58450C9719063C54004376E7 /* EventMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C9619063C54004376E7 /* EventMapAnnotation.m */; };
+		58450C9A19063E37004376E7 /* EventMapAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C9919063E37004376E7 /* EventMapAnnotationView.m */; };
 		5863441F18ED3257009CFD7B /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5863441E18ED3257009CFD7B /* User.m */; };
 		5863442318ED37AE009CFD7B /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5863442118ED37AE009CFD7B /* ProfileViewController.m */; };
 		5863442418ED37AE009CFD7B /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5863442218ED37AE009CFD7B /* ProfileViewController.xib */; };
@@ -124,6 +128,13 @@
 		58450C8719047876004376E7 /* EventNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventNotification.m; sourceTree = "<group>"; };
 		58450C8A1904DE3B004376E7 /* DateHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateHelper.h; sourceTree = "<group>"; };
 		58450C8B1904DE3B004376E7 /* DateHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateHelper.m; sourceTree = "<group>"; };
+		58450C8D19063B08004376E7 /* EventMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventMapViewController.h; sourceTree = "<group>"; };
+		58450C8E19063B08004376E7 /* EventMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventMapViewController.m; sourceTree = "<group>"; };
+		58450C8F19063B08004376E7 /* EventMapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventMapViewController.xib; sourceTree = "<group>"; };
+		58450C9519063C54004376E7 /* EventMapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventMapAnnotation.h; sourceTree = "<group>"; };
+		58450C9619063C54004376E7 /* EventMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventMapAnnotation.m; sourceTree = "<group>"; };
+		58450C9819063E37004376E7 /* EventMapAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventMapAnnotationView.h; sourceTree = "<group>"; };
+		58450C9919063E37004376E7 /* EventMapAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventMapAnnotationView.m; sourceTree = "<group>"; };
 		5863441D18ED3257009CFD7B /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		5863441E18ED3257009CFD7B /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		5863442018ED37AE009CFD7B /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
@@ -258,6 +269,9 @@
 				58001AE718FA19CB007ECAF9 /* EventDetailViewController.h */,
 				58001AE818FA19CB007ECAF9 /* EventDetailViewController.m */,
 				58001AE918FA19CB007ECAF9 /* EventDetailViewController.xib */,
+				58450C8D19063B08004376E7 /* EventMapViewController.h */,
+				58450C8E19063B08004376E7 /* EventMapViewController.m */,
+				58450C8F19063B08004376E7 /* EventMapViewController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -286,6 +300,8 @@
 				58450C8719047876004376E7 /* EventNotification.m */,
 				FE1F022B1904DB03004F6410 /* GeofenceMonitor.h */,
 				FE1F02291904DAFC004F6410 /* GeofenceMonitor.m */,
+				58450C9519063C54004376E7 /* EventMapAnnotation.h */,
+				58450C9619063C54004376E7 /* EventMapAnnotation.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -320,6 +336,8 @@
 				3BC41F1E1905FED600AC81F3 /* UserImageCollectionViewCell.h */,
 				3BC41F1F1905FED600AC81F3 /* UserImageCollectionViewCell.m */,
 				3BC41F211905FEEF00AC81F3 /* UserImageCollectionViewCell.xib */,
+				58450C9819063E37004376E7 /* EventMapAnnotationView.h */,
+				58450C9919063E37004376E7 /* EventMapAnnotationView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -412,6 +430,7 @@
 				FE4D9A1418F3D581003351C3 /* EventListViewController.xib in Resources */,
 				3BC41F221905FEEF00AC81F3 /* UserImageCollectionViewCell.xib in Resources */,
 				58001B0118FCDE34007ECAF9 /* CheckinButton.xib in Resources */,
+				58450C9119063B08004376E7 /* EventMapViewController.xib in Resources */,
 				58001AF218FB0171007ECAF9 /* EventDetailHeader.xib in Resources */,
 				58001B0618FE4986007ECAF9 /* UserCheckedInCell.xib in Resources */,
 				FE4D9A1A18F3D7E0003351C3 /* EventCell.xib in Resources */,
@@ -470,6 +489,7 @@
 			files = (
 				58001AFF18FCDE20007ECAF9 /* CheckinButton.m in Sources */,
 				3B8828D318F24CB600D5E87C /* EventCheckin.m in Sources */,
+				58450C9019063B08004376E7 /* EventMapViewController.m in Sources */,
 				FE4D9A1318F3D581003351C3 /* EventListViewController.m in Sources */,
 				3BC41F201905FED600AC81F3 /* UserImageCollectionViewCell.m in Sources */,
 				3B8828CA18F0FE1F00D5E87C /* Event.m in Sources */,
@@ -478,6 +498,8 @@
 				3B8828CD18F23B3700D5E87C /* Location.m in Sources */,
 				5863441F18ED3257009CFD7B /* User.m in Sources */,
 				580A1D3318EB50C10011A042 /* AppDelegate.m in Sources */,
+				58450C9719063C54004376E7 /* EventMapAnnotation.m in Sources */,
+				58450C9A19063E37004376E7 /* EventMapAnnotationView.m in Sources */,
 				FE4D9A1918F3D7E0003351C3 /* EventCell.m in Sources */,
 				580A1D5518EB50F00011A042 /* SignInViewController.m in Sources */,
 				58001AF618FB01DA007ECAF9 /* EventRSVPCell.m in Sources */,
