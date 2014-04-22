@@ -12,6 +12,10 @@
 		3B8828CA18F0FE1F00D5E87C /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828C918F0FE1F00D5E87C /* Event.m */; };
 		3B8828CD18F23B3700D5E87C /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828CC18F23B3700D5E87C /* Location.m */; };
 		3B8828D318F24CB600D5E87C /* EventCheckin.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828D218F24CB600D5E87C /* EventCheckin.m */; };
+		3BC41F1C1905BF7300AC81F3 /* UserGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC41F1A1905BF7300AC81F3 /* UserGridCell.m */; };
+		3BC41F1D1905BF7300AC81F3 /* UserGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BC41F1B1905BF7300AC81F3 /* UserGridCell.xib */; };
+		3BC41F201905FED600AC81F3 /* UserImageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC41F1F1905FED600AC81F3 /* UserImageCollectionViewCell.m */; };
+		3BC41F221905FEEF00AC81F3 /* UserImageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BC41F211905FEEF00AC81F3 /* UserImageCollectionViewCell.xib */; };
 		58001AEA18FA19CB007ECAF9 /* EventDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58001AE818FA19CB007ECAF9 /* EventDetailViewController.m */; };
 		58001AEB18FA19CB007ECAF9 /* EventDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58001AE918FA19CB007ECAF9 /* EventDetailViewController.xib */; };
 		58001AEE18FB0122007ECAF9 /* EventDetailHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 58001AED18FB0122007ECAF9 /* EventDetailHeader.m */; };
@@ -73,6 +77,12 @@
 		3B8828CC18F23B3700D5E87C /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		3B8828D118F24CB600D5E87C /* EventCheckin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCheckin.h; sourceTree = "<group>"; };
 		3B8828D218F24CB600D5E87C /* EventCheckin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCheckin.m; sourceTree = "<group>"; };
+		3BC41F191905BF7300AC81F3 /* UserGridCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserGridCell.h; sourceTree = "<group>"; };
+		3BC41F1A1905BF7300AC81F3 /* UserGridCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserGridCell.m; sourceTree = "<group>"; };
+		3BC41F1B1905BF7300AC81F3 /* UserGridCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserGridCell.xib; sourceTree = "<group>"; };
+		3BC41F1E1905FED600AC81F3 /* UserImageCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserImageCollectionViewCell.h; sourceTree = "<group>"; };
+		3BC41F1F1905FED600AC81F3 /* UserImageCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserImageCollectionViewCell.m; sourceTree = "<group>"; };
+		3BC41F211905FEEF00AC81F3 /* UserImageCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserImageCollectionViewCell.xib; sourceTree = "<group>"; };
 		58001AE718FA19CB007ECAF9 /* EventDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailViewController.h; sourceTree = "<group>"; };
 		58001AE818FA19CB007ECAF9 /* EventDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailViewController.m; sourceTree = "<group>"; };
 		58001AE918FA19CB007ECAF9 /* EventDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventDetailViewController.xib; sourceTree = "<group>"; };
@@ -304,6 +314,12 @@
 				58001B0218FE4986007ECAF9 /* UserCheckedInCell.h */,
 				58001B0318FE4986007ECAF9 /* UserCheckedInCell.m */,
 				58001B0418FE4986007ECAF9 /* UserCheckedInCell.xib */,
+				3BC41F191905BF7300AC81F3 /* UserGridCell.h */,
+				3BC41F1A1905BF7300AC81F3 /* UserGridCell.m */,
+				3BC41F1B1905BF7300AC81F3 /* UserGridCell.xib */,
+				3BC41F1E1905FED600AC81F3 /* UserImageCollectionViewCell.h */,
+				3BC41F1F1905FED600AC81F3 /* UserImageCollectionViewCell.m */,
+				3BC41F211905FEEF00AC81F3 /* UserImageCollectionViewCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -386,6 +402,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				580A1D2D18EB50C10011A042 /* InfoPlist.strings in Resources */,
+				3BC41F1D1905BF7300AC81F3 /* UserGridCell.xib in Resources */,
 				58001AFC18FBB1A1007ECAF9 /* EventDetailCell.xib in Resources */,
 				580A1D5618EB50F00011A042 /* SignInViewController.xib in Resources */,
 				3B00387B18FDD4A7004CDE83 /* EventNowCell.xib in Resources */,
@@ -393,6 +410,7 @@
 				FE1F022D1904ED0A004F6410 /* ZyngaFence.gpx in Resources */,
 				58001AF718FB01DA007ECAF9 /* EventRSVPCell.xib in Resources */,
 				FE4D9A1418F3D581003351C3 /* EventListViewController.xib in Resources */,
+				3BC41F221905FEEF00AC81F3 /* UserImageCollectionViewCell.xib in Resources */,
 				58001B0118FCDE34007ECAF9 /* CheckinButton.xib in Resources */,
 				58001AF218FB0171007ECAF9 /* EventDetailHeader.xib in Resources */,
 				58001B0618FE4986007ECAF9 /* UserCheckedInCell.xib in Resources */,
@@ -453,7 +471,9 @@
 				58001AFF18FCDE20007ECAF9 /* CheckinButton.m in Sources */,
 				3B8828D318F24CB600D5E87C /* EventCheckin.m in Sources */,
 				FE4D9A1318F3D581003351C3 /* EventListViewController.m in Sources */,
+				3BC41F201905FED600AC81F3 /* UserImageCollectionViewCell.m in Sources */,
 				3B8828CA18F0FE1F00D5E87C /* Event.m in Sources */,
+				3BC41F1C1905BF7300AC81F3 /* UserGridCell.m in Sources */,
 				58001AFB18FBB1A1007ECAF9 /* EventDetailCell.m in Sources */,
 				3B8828CD18F23B3700D5E87C /* Location.m in Sources */,
 				5863441F18ED3257009CFD7B /* User.m in Sources */,

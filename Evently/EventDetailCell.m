@@ -9,9 +9,11 @@
 #import "EventDetailCell.h"
 
 @interface EventDetailCell ()
+
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *locationIcon;
+
 @end
 
 @implementation EventDetailCell

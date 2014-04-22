@@ -101,7 +101,7 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
 
 - (NSURL *)avatarURL
 {
-    return [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", self[@"facebookID"]]];
+    return [User avatarURL:self[@"facebookID"]];
 }
 
 - (void)getCheckinForEvent:(Event *)event completion:(void (^)(EventCheckin *checkin, NSError *error))block
@@ -161,6 +161,11 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
 {
     [super logOut];
     [[NSNotificationCenter defaultCenter] postNotificationName:UserDidLogoutNotification object:nil];
+}
+
++ (NSURL *)avatarURL:(NSString *)facebookID {
+    return [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", facebookID]];
+
 }
 
 @end

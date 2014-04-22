@@ -15,6 +15,7 @@
 #import "EventRSVPCell.h"
 #import "EventCheckin.h"
 #import "UserCheckedInCell.h"
+#import "UserGridCell.h"
 
 @interface EventDetailViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -65,6 +66,7 @@ static NSString *CheckinCellIdentifier = @"UserCheckedInCell";
     [self.tableView registerNib:[UINib nibWithNibName:@"UserCheckedInCell" bundle:nil] forCellReuseIdentifier:CheckinCellIdentifier];
 
     [self.tableView registerNib:[UINib nibWithNibName:@"EventDetailHeader" bundle:nil] forHeaderFooterViewReuseIdentifier:@"EventDetailHeader"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"UserGridCell" bundle:nil] forCellReuseIdentifier:@"UserGridCell"];
 
     EventDetailHeader *eventDetailHeader = [[EventDetailHeader alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 250)];
     eventDetailHeader.event = _event;
@@ -110,7 +112,7 @@ static NSString *CheckinCellIdentifier = @"UserCheckedInCell";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
-        return 2;
+        return 3;
     } else {
         return self.checkins.count;
     }
@@ -129,9 +131,14 @@ static NSString *CheckinCellIdentifier = @"UserCheckedInCell";
             EventDetailCell *cell = [self.tableView dequeueReusableCellWithIdentifier:DetailCellIdentifier forIndexPath:indexPath];
             cell.event = _event;
             return cell;
-        } else {
+        } else if (indexPath.row == 1) {
             EventRSVPCell *cell = [self.tableView dequeueReusableCellWithIdentifier:RSVPCellIdentifier forIndexPath:indexPath];
             cell.event = _event;
+            return cell;
+        } else {
+            UserGridCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"UserGridCell" forIndexPath:indexPath];
+            cell.gridTitle = @"Attending";
+            cell.userFacebookIds = _event.attendingUsers;
             return cell;
         }
     } else {
