@@ -24,11 +24,11 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
 + (NSDateFormatter *)dateFormatter {
     static NSDateFormatter *dateFormatter;
     static dispatch_once_t once;
-    
+
     dispatch_once(&once, ^{
         dateFormatter = [[NSDateFormatter alloc] init];
     });
-    
+
     return dateFormatter;
 }
 
@@ -37,20 +37,20 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
     if (self) {
         _location = [Location locationWithDictionary:dictionary];
         _location.name = dictionary[@"location"];
-        
+
         _facebookID = dictionary[@"id"];
         _name = dictionary[@"name"];
         _description = dictionary[@"description"];
-        
+
         NSDictionary *cover = dictionary[@"cover"];
         if (cover) {
             _coverPhotoURL = [NSURL URLWithString:dictionary[@"cover"][@"source"]];
         }
-        
+
         NSDateFormatter *formatter = [Event dateFormatter];
-        
+
         _isDateOnly = [dictionary[@"is_date_only"] boolValue];
-        
+
         if (_isDateOnly) {
             [formatter setDateFormat:@"yyyy-MM-dd"];
             _date = [formatter dateFromString:dictionary[@"start_time"]];
@@ -60,7 +60,7 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
             _endTime = [formatter dateFromString:dictionary[@"end_time"]];
         }
         _isHappeningNow = [self computeIsHappeningNow];
-        
+
         if (dictionary[@"rsvp_status"]) {
             _userAttendanceStatus = [Event attendanceStatusForRsvpString:dictionary[@"rsvp_status"]];
         }
@@ -68,7 +68,7 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
         _unsureUsers = [[NSMutableArray alloc] init];
         _declinedUsers = [[NSMutableArray alloc] init];
         _notRepliedUsers = [[NSMutableArray alloc] init];
-        
+
         if (dictionary[@"invited"] && dictionary[@"invited"][@"data"]) {
             for (NSDictionary *userDictionary in dictionary[@"invited"][@"data"]) {
                 User *user = [[User alloc] initWithDictionary:userDictionary];
@@ -86,7 +86,7 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
                 }
             }
         }
-        
+
         _notification = [[EventNotification alloc] initWithEvent:self];
     }
     return self;
@@ -97,14 +97,14 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
            withStatus:(NSInteger)queryStatus
            withIncludeAttendees:(BOOL)includeAttendees
            withCompletion:(void (^)(NSArray *events, NSError *error))block {
-    
+
     NSMutableArray *allEvents = [[NSMutableArray alloc] init];
     NSLock *lock = [[NSLock alloc] init];
     FBRequestConnection *connection = [[FBRequestConnection alloc] init];
     NSMutableSet *pendingEventRequests = [[NSMutableSet alloc] init];
-    
+
     for (NSInteger i = 0; i < 4; i++) {
-        
+
         NSInteger attendanceStatus = AttendanceStatuses[i];
         if ((queryStatus & attendanceStatus) > 0) {
 
@@ -114,13 +114,13 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
             }
 
             NSString *path = [NSString stringWithFormat:format, user[@"facebookID"], [Event suffixForStatus:attendanceStatus]];
-            
+
             FBRequest *eventRequest = [FBRequest requestForGraphPath:path];
             [pendingEventRequests addObject:eventRequest];
-            
+
             [connection addRequest:eventRequest completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                 NSMutableArray *events = [[NSMutableArray alloc] init];
-                
+
                 if (!error) {
                     for (NSDictionary *dictionary in result[@"data"]) {
                         Event *event = [[Event alloc] initWithDictionary:dictionary];
@@ -129,32 +129,32 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
                 } else {
                     NSLog(@"Error requesting events: %@", [error description]);
                 }
-                
+
                 // critical section
                 [lock lock];
                 [allEvents addObjectsFromArray:events];
                 [pendingEventRequests removeObject:eventRequest];
                 [lock unlock];
-                
+
                 if ([pendingEventRequests count] == 0) {
                     block(allEvents, error);
                 }
             }];
         }
     }
-    
+
     [connection start];
 }
 
 + (void)eventForFacebookID:(NSString *)facebookID withIncludeAttendees:(BOOL)includeAttendees withCompletion:(void (^)(Event *event, NSError *error))block {
-    
+
     NSString *format = @"/%@?fields=id,cover,description,end_time,location,name,start_time,venue";
     if (includeAttendees) {
         format = [format stringByAppendingString:@",invited"];
     }
-    
+
     NSString *path = [NSString stringWithFormat:format, facebookID];
-    
+
     [FBRequestConnection startWithGraphPath:path completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (!error) {
             Event *event = [[Event alloc] initWithDictionary:result];
@@ -164,13 +164,10 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
             block(nil, error);
         }
     }];
-    
+
 }
 
 - (BOOL)computeIsHappeningNow {
-    // For testing
-    return YES;
-    
     if (_date) {
         return [self isToday:_date];
     } else {
@@ -235,7 +232,7 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
 - (void)setUserAttendanceStatus:(NSInteger)userAttendanceStatus
 {
     NSString *path = [NSString stringWithFormat:@"/%@/%@", _facebookID, [Event suffixForStatus:userAttendanceStatus]];
-    
+
     if (path) {
         [FBRequestConnection startWithGraphPath:path
                                      parameters:nil
@@ -265,7 +262,7 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
         case EventAttendanceNotReplied:
             return @"Not replied";
     }
-    
+
     return nil;
 }
 
@@ -277,7 +274,7 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
     if(![[GeofenceMonitor sharedInstance] checkLocationManager]) {
         return;
     }
-    
+
     for (Event *event in events) {
         if (event.location.latLon) {
             NSMutableDictionary * fenceDict = [NSMutableDictionary new];
