@@ -26,9 +26,9 @@
     return self;
 }
 
-- (EventAttendeeAnnotationView *)annotationView
+- (MKPinAnnotationView *)annotationView
 {
-    EventAttendeeAnnotationView *annotationView = [[EventAttendeeAnnotationView alloc] initWithAnnotation:self reuseIdentifier:@"EventLocationAnnotationView"];
+    MKPinAnnotationView *annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:self reuseIdentifier:@"PinAnnotationView"];
     annotationView.enabled = YES;
     annotationView.canShowCallout = YES;
     return annotationView;

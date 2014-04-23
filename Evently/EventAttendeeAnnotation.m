@@ -9,23 +9,24 @@
 #import "UIImageView+AFNetworking.h"
 #import "EventAttendeeAnnotation.h"
 #import "EventAttendeeAnnotationView.h"
+#import "EventCheckin.h"
 
 @interface EventAttendeeAnnotation ()
-@property (nonatomic, strong) User *user;
+@property (nonatomic, strong) EventCheckin *checkin;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *subtitle;
 @end
 
 @implementation EventAttendeeAnnotation
 
-- (id)initWithUser:(User *)user location:(CLLocationCoordinate2D)coordinate
+- (id)initWithEventCheckin:(EventCheckin *)checkin location:(CLLocationCoordinate2D)coordinate
 {
     self = [super init];
     if (self) {
         _coordinate = coordinate;
-        _user = user;
-        _title = _user.name;
-        _subtitle = @"checked in at 7:40pm";
+        _checkin = checkin;
+        _title = _checkin.user.name;
+        _subtitle = _checkin.displayTextWithoutName;
     }
     return self;
 }
@@ -35,7 +36,7 @@
     EventAttendeeAnnotationView *annotationView = [[EventAttendeeAnnotationView alloc] initWithAnnotation:self reuseIdentifier:@"EventAttendeeAnnotationView"];
     annotationView.enabled = YES;
     annotationView.canShowCallout = YES;
-    [annotationView.imageView setImageWithURL:[_user avatarURL]];
+    [annotationView.imageView setImageWithURL:[_checkin.user avatarURL]];
     return annotationView;
 }
 

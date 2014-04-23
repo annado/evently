@@ -12,6 +12,7 @@
 #import "EventAttendeeAnnotationView.h"
 
 #import "EventDetailViewController.h"
+#import "EventCheckin.h"
 
 @interface EventMapViewController ()
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
@@ -44,6 +45,13 @@
 {
     [super viewDidLoad];
     self.mapView.delegate = self;
+    
+    [EventCheckin checkinsForEvent:_event withCompletion:^(NSArray *checkins, NSError *error) {
+        for (int i = 0; i < checkins.count; i++) {
+            [self addPinForEventCheckin:checkins[i]];
+        }
+    }];
+
     [self addEventLocationPin];
 }
 
@@ -68,14 +76,21 @@
         EventLocationAnnotation *annotation = [[EventLocationAnnotation alloc] initWithTitle:_event.location.name location:coordinate];
         [self.mapView addAnnotation:annotation];
         [self.mapView selectAnnotation:annotation animated:YES];
-        
-        // current user pin (test)
-        EventAttendeeAnnotation *annotation2 = [[EventAttendeeAnnotation alloc] initWithUser:[User currentUser] location:coordinate];
-        [self.mapView addAnnotation:annotation2];
-        [self.mapView selectAnnotation:annotation2 animated:YES];
-        
-        [self zoomMapToFitAnnotations];
     }
+}
+
+- (void)addPinForEventCheckin:(EventCheckin *)checkin
+{
+    CLLocationCoordinate2D coordinate = _event.location.latLon.coordinate; // TODO
+    
+    coordinate.latitude += 10;
+    coordinate.latitude += 10;
+
+    EventAttendeeAnnotation *annotation = [[EventAttendeeAnnotation alloc] initWithEventCheckin:checkin location:coordinate];
+    [self.mapView addAnnotation:annotation];
+    [self.mapView selectAnnotation:annotation animated:YES];
+    
+    [self zoomMapToFitAnnotations];
 }
 
 - (void)zoomMapToFitAnnotations
@@ -99,7 +114,7 @@
     // Handle any custom annotations.
     if ([annotation isKindOfClass:[EventLocationAnnotation class]]) {
         EventLocationAnnotation *location = (EventLocationAnnotation *)annotation;
-        EventAttendeeAnnotationView *annotationView = (EventAttendeeAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"EventLocationAnnotationView"];
+        MKPinAnnotationView *annotationView = (MKPinAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"EventLocationAnnotationView"];
         
         if (annotationView) {
             annotationView.annotation = location;

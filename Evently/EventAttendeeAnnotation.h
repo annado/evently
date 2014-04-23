@@ -13,6 +13,6 @@
 
 @interface EventAttendeeAnnotation : NSObject <MKAnnotation>
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
-- (id)initWithUser:(User *)user location:(CLLocationCoordinate2D)coordinate;
+- (id)initWithEventCheckin:(EventCheckin *)checkin location:(CLLocationCoordinate2D)coordinate;
 - (EventAttendeeAnnotationView *)annotationView;
 @end

@@ -14,5 +14,5 @@
 @interface EventLocationAnnotation : NSObject <MKAnnotation>
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 - (id)initWithTitle:(NSString *)title location:(CLLocationCoordinate2D)coordinate;
-- (EventAttendeeAnnotationView *)annotationView;
+- (MKPinAnnotationView *)annotationView;
 @end

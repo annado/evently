@@ -43,6 +43,16 @@
     return text;
 }
 
+- (NSString *)displayTextWithoutName
+{
+    NSString *when = [NSDateFormatter localizedStringFromDate:self.arrivalTime
+                                                    dateStyle:NSDateFormatterNoStyle
+                                                    timeStyle:NSDateFormatterShortStyle];
+    NSString *text = [NSString stringWithFormat:@"checked in at %@", when];
+    return text;
+}
+
+
 - (NSString *)displayTextWithEventName:(Event *)event
 {
     NSString *name = self.user.name;
