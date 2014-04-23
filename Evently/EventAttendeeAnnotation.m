@@ -8,11 +8,12 @@
 
 #import "UIImageView+AFNetworking.h"
 #import "EventAttendeeAnnotation.h"
-#import "EventLocationAnnotationView.h"
+#import "EventAttendeeAnnotationView.h"
 
 @interface EventAttendeeAnnotation ()
 @property (nonatomic, strong) User *user;
 @property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *subtitle;
 @end
 
 @implementation EventAttendeeAnnotation
@@ -24,19 +25,17 @@
         _coordinate = coordinate;
         _user = user;
         _title = _user.name;
+        _subtitle = @"checked in at 7:40pm";
     }
     return self;
 }
 
-- (EventLocationAnnotationView *)annotationView
+- (EventAttendeeAnnotationView *)annotationView
 {
-    EventLocationAnnotationView *annotationView = [[EventLocationAnnotationView alloc] initWithAnnotation:self reuseIdentifier:@"EventAttendeeAnnotationView"];
+    EventAttendeeAnnotationView *annotationView = [[EventAttendeeAnnotationView alloc] initWithAnnotation:self reuseIdentifier:@"EventAttendeeAnnotationView"];
     annotationView.enabled = YES;
     annotationView.canShowCallout = YES;
-
-    // TODO: load asynchronously?
-    annotationView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[_user avatarURL]]];
-
+    [annotationView.imageView setImageWithURL:[_user avatarURL]];
     return annotationView;
 }
 

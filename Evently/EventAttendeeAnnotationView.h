@@ -8,6 +8,6 @@
 
 #import <MapKit/MapKit.h>
 
-@interface EventLocationAnnotationView : MKAnnotationView
-
+@interface EventAttendeeAnnotationView : MKAnnotationView
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @end

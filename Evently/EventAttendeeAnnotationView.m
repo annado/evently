@@ -5,10 +5,14 @@
 //  Created by Anna Do on 4/21/14.
 //  Copyright (c) 2014 Evently. All rights reserved.
 //
+#import "UIImageView+AFNetworking.h"
+#import "EventAttendeeAnnotationView.h"
+#import "EventAttendeeAnnotation.h"
 
-#import "EventLocationAnnotationView.h"
+@interface EventAttendeeAnnotationView ()
+@end
 
-@implementation EventLocationAnnotationView
+@implementation EventAttendeeAnnotationView
 
 - (id)initWithAnnotation:(id <MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -24,6 +28,15 @@
         // The opaque property is YES by default. Setting it to
         // NO allows map content to show through any unrendered parts of your view.
         self.opaque = NO;
+
+        UIView *containerView = [[NSBundle mainBundle] loadNibNamed:@"EventAttendeeAnnotationView" owner:self options:nil][0];
+        containerView.frame = self.bounds;
+        [self addSubview:containerView];
+        
+        self.imageView.layer.cornerRadius = 25;
+        self.imageView.clipsToBounds = YES;
+        self.imageView.layer.borderColor = [UIColor colorWithRed:242.0/255 green:133.0/255 blue:0 alpha:0.6].CGColor;
+        self.imageView.layer.borderWidth = 3.0;
     }
     return self;
 }

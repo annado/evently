@@ -9,7 +9,7 @@
 #import "EventMapViewController.h"
 #import "EventAttendeeAnnotation.h"
 #import "EventLocationAnnotation.h"
-#import "EventLocationAnnotationView.h"
+#import "EventAttendeeAnnotationView.h"
 
 #import "EventDetailViewController.h"
 
@@ -44,19 +44,7 @@
 {
     [super viewDidLoad];
     self.mapView.delegate = self;
-    
-    if (_event.location.latLon) {
-        CLLocationCoordinate2D coordinate = _event.location.latLon.coordinate;
-        EventLocationAnnotation *annotation = [[EventLocationAnnotation alloc] initWithTitle:_event.location.name location:coordinate];
-        [self.mapView addAnnotation:annotation];
-        [self.mapView selectAnnotation:annotation animated:YES];
-
-        EventAttendeeAnnotation *annotation2 = [[EventAttendeeAnnotation alloc] initWithUser:[User currentUser] location:coordinate];
-        [self.mapView addAnnotation:annotation2];
-        [self.mapView selectAnnotation:annotation2 animated:YES];
-        
-        [self zoomMapToFitAnnotations];
-    }
+    [self addEventLocationPin];
 }
 
 - (void)didReceiveMemoryWarning
@@ -70,6 +58,24 @@
     EventDetailViewController *eventDetailViewController = [[EventDetailViewController alloc] initWithEvent:_event];
     [self.navigationController pushViewController:eventDetailViewController animated:YES];
 
+}
+
+- (void)addEventLocationPin
+{
+    if (_event.location.latLon) {
+        // location pin
+        CLLocationCoordinate2D coordinate = _event.location.latLon.coordinate;
+        EventLocationAnnotation *annotation = [[EventLocationAnnotation alloc] initWithTitle:_event.location.name location:coordinate];
+        [self.mapView addAnnotation:annotation];
+        [self.mapView selectAnnotation:annotation animated:YES];
+        
+        // current user pin (test)
+        EventAttendeeAnnotation *annotation2 = [[EventAttendeeAnnotation alloc] initWithUser:[User currentUser] location:coordinate];
+        [self.mapView addAnnotation:annotation2];
+        [self.mapView selectAnnotation:annotation2 animated:YES];
+        
+        [self zoomMapToFitAnnotations];
+    }
 }
 
 - (void)zoomMapToFitAnnotations
@@ -93,7 +99,7 @@
     // Handle any custom annotations.
     if ([annotation isKindOfClass:[EventLocationAnnotation class]]) {
         EventLocationAnnotation *location = (EventLocationAnnotation *)annotation;
-        EventLocationAnnotationView *annotationView = (EventLocationAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"EventLocationAnnotationView"];
+        EventAttendeeAnnotationView *annotationView = (EventAttendeeAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"EventLocationAnnotationView"];
         
         if (annotationView) {
             annotationView.annotation = location;
@@ -104,7 +110,7 @@
         return annotationView;
     } else if ([annotation isKindOfClass:[EventAttendeeAnnotation class]]) {
         EventAttendeeAnnotation *location = (EventAttendeeAnnotation *)annotation;
-        EventLocationAnnotationView *annotationView = (EventLocationAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"EventAttendeeAnnotationView"];
+        EventAttendeeAnnotationView *annotationView = (EventAttendeeAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"EventAttendeeAnnotationView"];
         
         if (annotationView) {
             annotationView.annotation = location;

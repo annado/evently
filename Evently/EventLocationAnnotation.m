@@ -7,7 +7,7 @@
 //
 
 #import "EventLocationAnnotation.h"
-#import "EventLocationAnnotationView.h"
+#import "EventAttendeeAnnotationView.h"
 
 @interface EventLocationAnnotation ()
 @property (nonatomic, strong) EventCheckin *checkin;
@@ -26,9 +26,9 @@
     return self;
 }
 
-- (EventLocationAnnotationView *)annotationView
+- (EventAttendeeAnnotationView *)annotationView
 {
-    EventLocationAnnotationView *annotationView = [[EventLocationAnnotationView alloc] initWithAnnotation:self reuseIdentifier:@"EventLocationAnnotationView"];
+    EventAttendeeAnnotationView *annotationView = [[EventAttendeeAnnotationView alloc] initWithAnnotation:self reuseIdentifier:@"EventLocationAnnotationView"];
     annotationView.enabled = YES;
     annotationView.canShowCallout = YES;
     return annotationView;
