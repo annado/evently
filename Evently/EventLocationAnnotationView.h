@@ -8,6 +8,6 @@
 
 #import <MapKit/MapKit.h>
 
-@interface EventMapAnnotationView : MKAnnotationView
+@interface EventLocationAnnotationView : MKAnnotationView
 
 @end

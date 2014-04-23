@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Evently. All rights reserved.
 //
 
-#import "EventMapAnnotationView.h"
+#import "EventLocationAnnotationView.h"
 
-@implementation EventMapAnnotationView
+@implementation EventLocationAnnotationView
 
 - (id)initWithAnnotation:(id <MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier
 {

@@ -46,8 +46,9 @@
 		58450C8C1904DE3B004376E7 /* DateHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C8B1904DE3B004376E7 /* DateHelper.m */; };
 		58450C9019063B08004376E7 /* EventMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C8E19063B08004376E7 /* EventMapViewController.m */; };
 		58450C9119063B08004376E7 /* EventMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58450C8F19063B08004376E7 /* EventMapViewController.xib */; };
-		58450C9719063C54004376E7 /* EventMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C9619063C54004376E7 /* EventMapAnnotation.m */; };
-		58450C9A19063E37004376E7 /* EventMapAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C9919063E37004376E7 /* EventMapAnnotationView.m */; };
+		58450C9719063C54004376E7 /* EventLocationAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C9619063C54004376E7 /* EventLocationAnnotation.m */; };
+		58450C9D1907473F004376E7 /* EventLocationAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C9C1907473F004376E7 /* EventLocationAnnotationView.m */; };
+		58450CA019074797004376E7 /* EventAttendeeAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C9F19074797004376E7 /* EventAttendeeAnnotation.m */; };
 		5863441F18ED3257009CFD7B /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5863441E18ED3257009CFD7B /* User.m */; };
 		5863442318ED37AE009CFD7B /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5863442118ED37AE009CFD7B /* ProfileViewController.m */; };
 		5863442418ED37AE009CFD7B /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5863442218ED37AE009CFD7B /* ProfileViewController.xib */; };
@@ -131,10 +132,12 @@
 		58450C8D19063B08004376E7 /* EventMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventMapViewController.h; sourceTree = "<group>"; };
 		58450C8E19063B08004376E7 /* EventMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventMapViewController.m; sourceTree = "<group>"; };
 		58450C8F19063B08004376E7 /* EventMapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventMapViewController.xib; sourceTree = "<group>"; };
-		58450C9519063C54004376E7 /* EventMapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventMapAnnotation.h; sourceTree = "<group>"; };
-		58450C9619063C54004376E7 /* EventMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventMapAnnotation.m; sourceTree = "<group>"; };
-		58450C9819063E37004376E7 /* EventMapAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventMapAnnotationView.h; sourceTree = "<group>"; };
-		58450C9919063E37004376E7 /* EventMapAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventMapAnnotationView.m; sourceTree = "<group>"; };
+		58450C9519063C54004376E7 /* EventLocationAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventLocationAnnotation.h; sourceTree = "<group>"; };
+		58450C9619063C54004376E7 /* EventLocationAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventLocationAnnotation.m; sourceTree = "<group>"; };
+		58450C9B1907473F004376E7 /* EventLocationAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventLocationAnnotationView.h; sourceTree = "<group>"; };
+		58450C9C1907473F004376E7 /* EventLocationAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventLocationAnnotationView.m; sourceTree = "<group>"; };
+		58450C9E19074797004376E7 /* EventAttendeeAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventAttendeeAnnotation.h; sourceTree = "<group>"; };
+		58450C9F19074797004376E7 /* EventAttendeeAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventAttendeeAnnotation.m; sourceTree = "<group>"; };
 		5863441D18ED3257009CFD7B /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		5863441E18ED3257009CFD7B /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		5863442018ED37AE009CFD7B /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
@@ -300,8 +303,10 @@
 				58450C8719047876004376E7 /* EventNotification.m */,
 				FE1F022B1904DB03004F6410 /* GeofenceMonitor.h */,
 				FE1F02291904DAFC004F6410 /* GeofenceMonitor.m */,
-				58450C9519063C54004376E7 /* EventMapAnnotation.h */,
-				58450C9619063C54004376E7 /* EventMapAnnotation.m */,
+				58450C9519063C54004376E7 /* EventLocationAnnotation.h */,
+				58450C9619063C54004376E7 /* EventLocationAnnotation.m */,
+				58450C9E19074797004376E7 /* EventAttendeeAnnotation.h */,
+				58450C9F19074797004376E7 /* EventAttendeeAnnotation.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -309,6 +314,8 @@
 		FE4D9A1518F3D7C8003351C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				58450C9B1907473F004376E7 /* EventLocationAnnotationView.h */,
+				58450C9C1907473F004376E7 /* EventLocationAnnotationView.m */,
 				FE4D9A1618F3D7E0003351C3 /* EventCell.h */,
 				FE4D9A1718F3D7E0003351C3 /* EventCell.m */,
 				FE4D9A1818F3D7E0003351C3 /* EventCell.xib */,
@@ -336,8 +343,6 @@
 				3BC41F1E1905FED600AC81F3 /* UserImageCollectionViewCell.h */,
 				3BC41F1F1905FED600AC81F3 /* UserImageCollectionViewCell.m */,
 				3BC41F211905FEEF00AC81F3 /* UserImageCollectionViewCell.xib */,
-				58450C9819063E37004376E7 /* EventMapAnnotationView.h */,
-				58450C9919063E37004376E7 /* EventMapAnnotationView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -492,19 +497,20 @@
 				58450C9019063B08004376E7 /* EventMapViewController.m in Sources */,
 				FE4D9A1318F3D581003351C3 /* EventListViewController.m in Sources */,
 				3BC41F201905FED600AC81F3 /* UserImageCollectionViewCell.m in Sources */,
+				58450CA019074797004376E7 /* EventAttendeeAnnotation.m in Sources */,
 				3B8828CA18F0FE1F00D5E87C /* Event.m in Sources */,
 				3BC41F1C1905BF7300AC81F3 /* UserGridCell.m in Sources */,
 				58001AFB18FBB1A1007ECAF9 /* EventDetailCell.m in Sources */,
 				3B8828CD18F23B3700D5E87C /* Location.m in Sources */,
 				5863441F18ED3257009CFD7B /* User.m in Sources */,
 				580A1D3318EB50C10011A042 /* AppDelegate.m in Sources */,
-				58450C9719063C54004376E7 /* EventMapAnnotation.m in Sources */,
-				58450C9A19063E37004376E7 /* EventMapAnnotationView.m in Sources */,
+				58450C9719063C54004376E7 /* EventLocationAnnotation.m in Sources */,
 				FE4D9A1918F3D7E0003351C3 /* EventCell.m in Sources */,
 				580A1D5518EB50F00011A042 /* SignInViewController.m in Sources */,
 				58001AF618FB01DA007ECAF9 /* EventRSVPCell.m in Sources */,
 				58001AEE18FB0122007ECAF9 /* EventDetailHeader.m in Sources */,
 				58001B0518FE4986007ECAF9 /* UserCheckedInCell.m in Sources */,
+				58450C9D1907473F004376E7 /* EventLocationAnnotationView.m in Sources */,
 				58450C8819047876004376E7 /* EventNotification.m in Sources */,
 				58001AEA18FA19CB007ECAF9 /* EventDetailViewController.m in Sources */,
 				FE1F022A1904DAFC004F6410 /* GeofenceMonitor.m in Sources */,

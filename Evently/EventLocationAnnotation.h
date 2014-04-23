@@ -1,5 +1,5 @@
 //
-//  MapAnnotation.h
+//  EventLocationAnnotation.h
 //  Evently
 //
 //  Created by Anna Do on 4/21/14.
@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 
-@class EventMapAnnotationView;
+@class EventLocationAnnotationView;
 
-@interface EventMapAnnotation : NSObject <MKAnnotation>
+@interface EventLocationAnnotation : NSObject <MKAnnotation>
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 - (id)initWithTitle:(NSString *)title location:(CLLocationCoordinate2D)coordinate;
-- (EventMapAnnotationView *)annotationView;
+- (EventLocationAnnotationView *)annotationView;
 @end

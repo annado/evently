@@ -1,20 +1,20 @@
 //
-//  MapAnnotation.m
+//  EventLocationAnnotation.m
 //  Evently
 //
 //  Created by Anna Do on 4/21/14.
 //  Copyright (c) 2014 Evently. All rights reserved.
 //
 
-#import "EventMapAnnotation.h"
-#import "EventMapAnnotationView.h"
+#import "EventLocationAnnotation.h"
+#import "EventLocationAnnotationView.h"
 
-@interface EventMapAnnotation ()
+@interface EventLocationAnnotation ()
 @property (nonatomic, strong) EventCheckin *checkin;
 @property (nonatomic, copy) NSString *title;
 @end
 
-@implementation EventMapAnnotation
+@implementation EventLocationAnnotation
 
 - (id)initWithTitle:(NSString *)title location:(CLLocationCoordinate2D)coordinate
 {
@@ -26,9 +26,9 @@
     return self;
 }
 
-- (EventMapAnnotationView *)annotationView
+- (EventLocationAnnotationView *)annotationView
 {
-    EventMapAnnotationView *annotationView = [[EventMapAnnotationView alloc] initWithAnnotation:self reuseIdentifier:@"MapAnnotationView"];
+    EventLocationAnnotationView *annotationView = [[EventLocationAnnotationView alloc] initWithAnnotation:self reuseIdentifier:@"EventLocationAnnotationView"];
     annotationView.enabled = YES;
     annotationView.canShowCallout = YES;
     return annotationView;

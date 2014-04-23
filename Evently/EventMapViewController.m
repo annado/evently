@@ -7,8 +7,9 @@
 //
 
 #import "EventMapViewController.h"
-#import "EventMapAnnotation.h"
-#import "EventMapAnnotationView.h"
+#import "EventAttendeeAnnotation.h"
+#import "EventLocationAnnotation.h"
+#import "EventLocationAnnotationView.h"
 
 #import "EventDetailViewController.h"
 
@@ -46,9 +47,14 @@
     
     if (_event.location.latLon) {
         CLLocationCoordinate2D coordinate = _event.location.latLon.coordinate;
-        EventMapAnnotation *annotation = [[EventMapAnnotation alloc] initWithTitle:_event.location.name location:coordinate];
+        EventLocationAnnotation *annotation = [[EventLocationAnnotation alloc] initWithTitle:_event.location.name location:coordinate];
         [self.mapView addAnnotation:annotation];
         [self.mapView selectAnnotation:annotation animated:YES];
+
+        EventAttendeeAnnotation *annotation2 = [[EventAttendeeAnnotation alloc] initWithUser:[User currentUser] location:coordinate];
+        [self.mapView addAnnotation:annotation2];
+        [self.mapView selectAnnotation:annotation2 animated:YES];
+        
         [self zoomMapToFitAnnotations];
     }
 }
@@ -85,19 +91,30 @@
         return nil;
     
     // Handle any custom annotations.
-    if ([annotation isKindOfClass:[EventMapAnnotation class]])
-    {
-        EventMapAnnotation *location = (EventMapAnnotation *)annotation;
-        EventMapAnnotationView *annotationView = (EventMapAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"MapAnnotationView"];
+    if ([annotation isKindOfClass:[EventLocationAnnotation class]]) {
+        EventLocationAnnotation *location = (EventLocationAnnotation *)annotation;
+        EventLocationAnnotationView *annotationView = (EventLocationAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"EventLocationAnnotationView"];
         
         if (annotationView) {
-            annotationView = [location annotationView];
-        } else {
             annotationView.annotation = location;
+        } else {
+            annotationView = [location annotationView];
+        }
+        
+        return annotationView;
+    } else if ([annotation isKindOfClass:[EventAttendeeAnnotation class]]) {
+        EventAttendeeAnnotation *location = (EventAttendeeAnnotation *)annotation;
+        EventLocationAnnotationView *annotationView = (EventLocationAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"EventAttendeeAnnotationView"];
+        
+        if (annotationView) {
+            annotationView.annotation = location;
+        } else {
+            annotationView = [location annotationView];
         }
         
         return annotationView;
     }
+
     
     return nil;
 }
