@@ -21,24 +21,30 @@
     {
         // Set the frame size to the appropriate values.
         CGRect myFrame = self.frame;
-        myFrame.size.width = 40;
-        myFrame.size.height = 40;
+        myFrame.size.width = 50;
+        myFrame.size.height = 50;
         self.frame = myFrame;
         
         // The opaque property is YES by default. Setting it to
         // NO allows map content to show through any unrendered parts of your view.
         self.opaque = NO;
 
+        // Pull in nib
         UIView *containerView = [[NSBundle mainBundle] loadNibNamed:@"EventAttendeeAnnotationView" owner:self options:nil][0];
         containerView.frame = self.bounds;
         [self addSubview:containerView];
         
-        self.imageView.layer.cornerRadius = 25;
-        self.imageView.clipsToBounds = YES;
-        self.imageView.layer.borderColor = [UIColor colorWithRed:242.0/255 green:133.0/255 blue:0 alpha:0.6].CGColor;
-        self.imageView.layer.borderWidth = 3.0;
+        [self setAvatarStyle];
     }
     return self;
+}
+
+- (void)setAvatarStyle
+{
+    self.imageView.layer.cornerRadius = 25;
+    self.imageView.clipsToBounds = YES;
+    self.imageView.layer.borderColor = [UIColor colorWithRed:242.0/255 green:133.0/255 blue:0 alpha:0.6].CGColor;
+    self.imageView.layer.borderWidth = 3.0;
 }
 
 /*
