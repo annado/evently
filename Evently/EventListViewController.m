@@ -52,7 +52,18 @@ const NSInteger kUpcomingSection = 1;
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(onLogoutButtonTap)];
     
+    [self initialBeginRefresh];
     [self loadEvents];
+}
+
+- (void)initialBeginRefresh {
+    [self.refreshControl beginRefreshing];
+    // UIRefreshControl is hidden if TableView is completely empty
+    if (self.tableView.contentOffset.y == 0) {
+        [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^(void){
+            self.tableView.contentOffset = CGPointMake(0, -self.refreshControl.frame.size.height);
+        } completion:nil];
+    }
 }
 
 - (void)loadEvents {
@@ -75,6 +86,11 @@ const NSInteger kUpcomingSection = 1;
 - (BOOL)hasNowEvents
 {
     return [AppDelegate sharedInstance].nowEvents.count > 0;
+}
+
+- (BOOL)hasUpcomingEvents
+{
+    return [AppDelegate sharedInstance].upcomingEvents.count > 0;
 }
 
 #pragma mark - UITableViewDataSource
@@ -101,7 +117,7 @@ const NSInteger kUpcomingSection = 1;
         case kHappeningNowSection:
             return [self hasNowEvents] ? @"Happening Now" : nil;
         case kUpcomingSection:
-            return @"Upcoming";
+            return [self hasUpcomingEvents] ? @"Upcoming" : nil;
         default:
             break;
     }
