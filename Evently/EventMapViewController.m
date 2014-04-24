@@ -13,10 +13,12 @@
 
 #import "EventDetailViewController.h"
 #import "EventCheckin.h"
+#import "LocationMessage.h"
 
 @interface EventMapViewController ()
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (nonatomic, strong) Event *event;
+@property (nonatomic, strong) PNChannel *eventChannel;
 @end
 
 @implementation EventMapViewController
@@ -25,9 +27,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Details" style:UIBarButtonItemStylePlain target:self action:@selector(onDetailsButton)];
-
     }
     return self;
 }
@@ -55,6 +55,29 @@
     [self addEventLocationPin];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    if (self.event) {
+        self.eventChannel = [PNChannel channelWithName:self.event.facebookID shouldObservePresence:NO];
+        [PubNub subscribeOnChannel:self.eventChannel];
+        
+        NSLog(@"Subscribed to channel %@ near (%f, %F)", self.eventChannel.name, self.event.location.latLon.coordinate.latitude, self.event.location.latLon.coordinate.longitude);
+        [[PNObservationCenter defaultCenter] addMessageReceiveObserver:self withBlock:^(PNMessage *message) {
+            if ([message.channel.name isEqualToString:self.eventChannel.name]) {
+                LocationMessage *locationMessage = [LocationMessage deserializeMessage:message.message];
+                [self processLocationMessage:locationMessage];
+            }
+        }];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    if (self.event) {
+        [PubNub unsubscribeFromChannel:self.eventChannel];
+        [[PNObservationCenter defaultCenter] removeMessageReceiveObserver:self];
+        NSLog(@"Unsubscribed from channel %@", self.eventChannel.name);
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -66,6 +89,10 @@
     EventDetailViewController *eventDetailViewController = [[EventDetailViewController alloc] initWithEvent:_event];
     [self.navigationController pushViewController:eventDetailViewController animated:YES];
 
+}
+
+- (void)processLocationMessage:(LocationMessage *)locationMessage {
+  NSLog(@"LocationMessage: %@ at (%f, %f)", locationMessage.userFacebookId, locationMessage.latitude, locationMessage.longitude);
 }
 
 - (void)addEventLocationPin

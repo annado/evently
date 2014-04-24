@@ -16,8 +16,11 @@
 #import "CRToast.h"
 #import "EventNotification.h"
 #import "GeofenceMonitor.h"
+#import "LocationMessage.h"
 
 @interface AppDelegate () <GeofenceMonitorDelegate>
+
+@property (nonatomic, strong) NSMutableArray *eventChannels;
 
 @end
 
@@ -29,7 +32,10 @@
     
     [self initParse];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
-
+    
+    // Setup PubNub
+    [self initPubNub];
+    
     // Register for push notifications
     [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge|
      UIRemoteNotificationTypeAlert|
@@ -61,6 +67,18 @@
     [Parse setApplicationId:@"2DhYRY420kuYwMv12BZrEzpbjebGS9wVlCtJKdnz"
                   clientKey:@"9zookCNyg4AOaVed5UnrSdCVx6wwEgNeEgmj9s2j"];
     [PFFacebookUtils initializeFacebook];
+}
+
+- (void)initPubNub
+{
+    [PubNub setDelegate:self];
+    PNConfiguration *pnConfig = [PNConfiguration configurationForOrigin:@"pubsub.pubnub.com"
+                                                             publishKey:@"pub-c-c946c570-8c5e-4b33-b8f4-a54e4e8c9f4e"
+                                                           subscribeKey:@"sub-c-d45c86be-cb56-11e3-94ea-02ee2ddab7fe"
+                                                              secretKey:nil];
+    
+    [PubNub setConfiguration:pnConfig];
+    [PubNub connect];
 }
 
 - (BOOL)application:(UIApplication *)application
@@ -133,15 +151,32 @@
 - (void)loadEventsWithCompletion:(void (^)(NSArray *events, NSError *error))completionBlock {
     [[GeofenceMonitor sharedInstance] clearGeofences];
     [Event eventsForUser:[User currentUser] withStatus:EventAttendanceAll withIncludeAttendees:YES withCompletion:^(NSArray *events, NSError *error) {
+        
         // TODO: ugly code, refactor
         NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"startTime" ascending:YES]];
         self.nowEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(isHappeningNow == YES)"]] sortedArrayUsingDescriptors:sortDescriptors];
         self.upcomingEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(isHappeningNow == NO && startTime >= %@)", [NSDate date]]] sortedArrayUsingDescriptors:sortDescriptors];
         [Event addGeofencesForEvents:self.nowEvents];
+        
+        // Set up event channels
+        self.eventChannels = [[NSMutableArray alloc] init];
+        for (Event *event in self.nowEvents) {
+            PNChannel *eventChannel = [PNChannel channelWithName:event.facebookID];
+            [self.eventChannels addObject:eventChannel];
+        }
+        
         if (completionBlock) {
             completionBlock(events, error);
         }
     }];
+}
+
+- (void)publishLocation {
+    LocationMessage *message = [[LocationMessage alloc] initWithUser:[User currentUser] latitude:25.0 longitude:25.0];
+    
+    for (PNChannel *eventChannel in self.eventChannels) {
+        [PubNub sendMessage:[message serializeMessage] toChannel:eventChannel compressed:NO];
+    }
 }
 
 #pragma mark - GeofenceMonitorDelegate

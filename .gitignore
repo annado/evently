@@ -16,4 +16,5 @@ DerivedData
 .idea/
 *.hmap
 *.xccheckout
+script/*.log
 
