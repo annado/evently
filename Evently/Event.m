@@ -109,7 +109,7 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
         if ((queryStatus & attendanceStatus) > 0) {
 
             NSString *format = @"/%@/events/%@?fields=id,cover,description,end_time,location,name,start_time,venue,rsvp_status";
-            if (includeAttendees) {
+            if (includeAttendees && attendanceStatus != EventAttendanceNotReplied) {
                 format = [format stringByAppendingString:@",invited"];
             }
 
@@ -127,7 +127,7 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
                         [events addObject:event];
                     }
                 } else {
-                    NSLog(@"Error requesting events: %@", [error description]);
+                    NSLog(@"Error requesting events at %@: %@", path, [error description]);
                 }
 
                 // critical section
