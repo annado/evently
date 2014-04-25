@@ -31,4 +31,5 @@ extern NSString *const UserDidLogoutNotification;
 + (void)logInWithCompletion:(void (^)(User *user, NSError *error))block;
 + (User *)currentUser;
 + (NSURL *)avatarURL:(NSString *)facebookID;
++ (void)findUserWithFacebookID:(NSString *)facebookID completion:(void (^)(User *user, NSError *error))block;
 @end

@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (nonatomic, strong) Event *event;
 @property (nonatomic, strong) PNChannel *eventChannel;
+@property (nonatomic, strong) NSMutableDictionary *attendeeAnnotations;
 @end
 
 @implementation EventMapViewController
@@ -28,6 +29,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Details" style:UIBarButtonItemStylePlain target:self action:@selector(onDetailsButton)];
+        self.attendeeAnnotations = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -92,32 +94,45 @@
 }
 
 - (void)processLocationMessage:(LocationMessage *)locationMessage {
-  NSLog(@"LocationMessage: %@ at (%f, %f)", locationMessage.userFacebookId, locationMessage.latitude, locationMessage.longitude);
+    NSLog(@"LocationMessage: %@ at (%f, %f)", locationMessage.userFacebookId, locationMessage.latitude, locationMessage.longitude);
+    
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(locationMessage.latitude, locationMessage.longitude);
+    [User findUserWithFacebookID:locationMessage.userFacebookId completion:^(User *user, NSError *error) {
+        [self addPinForUserLocation:user location:coordinate];
+    }];
 }
 
 - (void)addEventLocationPin
 {
     if (_event.location.latLon) {
-        // location pin
         CLLocationCoordinate2D coordinate = _event.location.latLon.coordinate;
         EventLocationAnnotation *annotation = [[EventLocationAnnotation alloc] initWithTitle:_event.location.name location:coordinate];
         [self.mapView addAnnotation:annotation];
-        [self.mapView selectAnnotation:annotation animated:YES];
     }
 }
 
 - (void)addPinForEventCheckin:(EventCheckin *)checkin
 {
     CLLocationCoordinate2D coordinate = _event.location.latLon.coordinate; // TODO
-    
-    coordinate.latitude += 10;
-    coordinate.latitude += 10;
-
     EventAttendeeAnnotation *annotation = [[EventAttendeeAnnotation alloc] initWithEventCheckin:checkin location:coordinate];
     [self.mapView addAnnotation:annotation];
-    [self.mapView selectAnnotation:annotation animated:YES];
-    
+//    [self.mapView selectAnnotation:annotation animated:YES];
     [self zoomMapToFitAnnotations];
+}
+
+- (void)addPinForUserLocation:(User *)user location:(CLLocationCoordinate2D)coordinate
+{
+    if (self.attendeeAnnotations[user.facebookID]) {
+        // update coordinates
+        EventAttendeeAnnotation *annotation = self.attendeeAnnotations[user.facebookID];
+        annotation.coordinate = coordinate;
+        [self zoomMapToFitAnnotations];
+    } else {
+        EventAttendeeAnnotation *annotation = [[EventAttendeeAnnotation alloc] initWithUser:user location:coordinate];
+        [self.mapView addAnnotation:annotation];
+        [self.attendeeAnnotations setObject:annotation forKey:user.facebookID];
+        [self zoomMapToFitAnnotations];
+    }
 }
 
 - (void)zoomMapToFitAnnotations

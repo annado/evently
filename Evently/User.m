@@ -26,6 +26,18 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
     return (User *)[PFUser currentUser];
 }
 
++ (void)findUserWithFacebookID:(NSString *)facebookID completion:(void (^)(User *user, NSError *error))block
+{
+    PFQuery *query = [User query];
+    query.cachePolicy = kPFCachePolicyCacheElseNetwork;
+    [query whereKey:@"facebookID" equalTo:facebookID];
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        if (!error) {
+            block((User *)object, error);
+        }
+    }];
+}
+
 - (id)initWithDictionary:(NSDictionary *)dictionary {
     self = [super init];
     if (self) {
