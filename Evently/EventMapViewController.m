@@ -54,7 +54,7 @@
         }
     }];
 
-    [self addEventLocationPin];
+    [self addPinForEventLocation];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -102,11 +102,10 @@
     }];
 }
 
-- (void)addEventLocationPin
+- (void)addPinForEventLocation
 {
     if (_event.location.latLon) {
-        CLLocationCoordinate2D coordinate = _event.location.latLon.coordinate;
-        EventLocationAnnotation *annotation = [[EventLocationAnnotation alloc] initWithTitle:_event.location.name location:coordinate];
+        EventLocationAnnotation *annotation = [[EventLocationAnnotation alloc] initWithEvent:_event];
         [self.mapView addAnnotation:annotation];
     }
 }
@@ -116,8 +115,7 @@
     CLLocationCoordinate2D coordinate = _event.location.latLon.coordinate; // TODO
     EventAttendeeAnnotation *annotation = [[EventAttendeeAnnotation alloc] initWithEventCheckin:checkin location:coordinate];
     [self.mapView addAnnotation:annotation];
-//    [self.mapView selectAnnotation:annotation animated:YES];
-    [self zoomMapToFitAnnotations];
+    [self zoomToFitAnnotationsWithAnimation:YES];
 }
 
 - (void)addPinForUserLocation:(User *)user location:(CLLocationCoordinate2D)coordinate
@@ -125,26 +123,33 @@
     if (self.attendeeAnnotations[user.facebookID]) {
         // update coordinates
         EventAttendeeAnnotation *annotation = self.attendeeAnnotations[user.facebookID];
-        annotation.coordinate = coordinate;
-        [self zoomMapToFitAnnotations];
+        [self animateCoordinateChange:annotation location:coordinate];
     } else {
         EventAttendeeAnnotation *annotation = [[EventAttendeeAnnotation alloc] initWithUser:user location:coordinate];
         [self.mapView addAnnotation:annotation];
         [self.attendeeAnnotations setObject:annotation forKey:user.facebookID];
-        [self zoomMapToFitAnnotations];
+        [self zoomToFitAnnotationsWithAnimation:YES];
     }
 }
 
-- (void)zoomMapToFitAnnotations
+- (void)animateCoordinateChange:(id <MKAnnotation>)annotation location:(CLLocationCoordinate2D)coordinate
 {
-    [self.mapView showAnnotations:self.mapView.annotations animated:YES];
+    [UIView animateWithDuration:1.0 animations:^{
+        annotation.coordinate = coordinate;
+        [self zoomToFitAnnotationsWithAnimation:YES];
+    }];
+}
+
+- (void)zoomToFitAnnotationsWithAnimation:(BOOL)animated
+{
+    [self.mapView showAnnotations:self.mapView.annotations animated:animated];
 }
 
 #pragma mark - MKMapViewDelegate methods
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
-    [self zoomMapToFitAnnotations];
+    [self zoomToFitAnnotationsWithAnimation:YES];
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id < MKAnnotation >)annotation

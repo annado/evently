@@ -6,31 +6,34 @@
 //  Copyright (c) 2014 Evently. All rights reserved.
 //
 
+#import "UIImageView+AFNetworking.h"
 #import "EventLocationAnnotation.h"
 #import "EventAttendeeAnnotationView.h"
 
 @interface EventLocationAnnotation ()
-@property (nonatomic, strong) EventCheckin *checkin;
+@property (nonatomic, strong) Event *event;
 @property (nonatomic, copy) NSString *title;
 @end
 
 @implementation EventLocationAnnotation
 
-- (id)initWithTitle:(NSString *)title location:(CLLocationCoordinate2D)coordinate
+- (id)initWithEvent:(Event *)event
 {
     self = [super init];
     if (self) {
-        _coordinate = coordinate;
-        _title = title;
+        _event = event;
+        _coordinate = _event.location.latLon.coordinate;
+        _title = _event.location.name;
     }
     return self;
 }
 
-- (MKPinAnnotationView *)annotationView
+- (EventAttendeeAnnotationView *)annotationView
 {
-    MKPinAnnotationView *annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:self reuseIdentifier:@"PinAnnotationView"];
+    EventAttendeeAnnotationView *annotationView = [[EventAttendeeAnnotationView alloc] initWithAnnotation:self reuseIdentifier:@"EventLocationAnnotationView"];
     annotationView.enabled = YES;
     annotationView.canShowCallout = YES;
+    [annotationView.imageView setImageWithURL:[_event coverPhotoURL]];
     return annotationView;
 }
 
