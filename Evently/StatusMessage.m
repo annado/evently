@@ -35,6 +35,15 @@
     return message;
 }
 
++ (StatusMessage *)statusMessageWithText:(NSString *)text userFacebookID:(NSString *)userFacebookID userFullName:(NSString *)userFullName date:(NSDate *)date {
+    StatusMessage *message = [[StatusMessage alloc] init];
+    message.text = text;
+    message.userFacebookID = userFacebookID;
+    message.userFullName = userFullName;
+    message.date = date;
+    return message;
+}
+
 + (void)updateStatusForUser:(User *)user event:(Event *)event statusMessage:(StatusMessage *)statusMessage {
     [PubNub sendMessage:[statusMessage serializeMessage] toChannel:event.statusChannel compressed:YES];
 }

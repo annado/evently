@@ -18,6 +18,7 @@
 #import "EventDetailViewController.h"
 #import "DAKeyboardControl.h"
 #import "MessagesViewController.h"
+#import "PubNub.h"
 
 @interface EventMapViewController ()
 @property (strong, nonatomic) PHFComposeBarView *composeBarView;
@@ -294,10 +295,13 @@
 - (void)composeBarViewDidPressButton:(PHFComposeBarView *)composeBarView
 {
     NSString *status = composeBarView.text;
-    EventAttendeeAnnotation *annotation = [self getAnnotationForCurrentUser];
-    if (annotation) {
-        [self setStatusForAnnotation:annotation status:status];
-    }
+//    EventAttendeeAnnotation *annotation = [self getAnnotationForCurrentUser];
+//    if (annotation) {
+//        [self setStatusForAnnotation:annotation status:status];
+//    }
+    StatusMessage *message = [StatusMessage statusMessageWithText:status userFacebookID:[User currentUser].facebookID userFullName:[User currentUser].name date:[NSDate date]];
+    [StatusMessage updateStatusForUser:[User currentUser] event:self.event statusMessage:message];
+    
     [composeBarView setText:@"" animated:YES];
     [composeBarView resignFirstResponder];
 }
