@@ -159,15 +159,7 @@ const NSInteger kUpcomingSection = 1;
     if (indexPath.section == 0) {
         event = [AppDelegate sharedInstance].nowEvents[indexPath.row];
         EventMapViewController *eventMapViewController = [[EventMapViewController alloc] initWithEvent:event];
-        // TODO: move somewhere else?
-        [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
-                                                      forBarMetrics:UIBarMetricsDefault];
-        self.navigationController.navigationBar.shadowImage = [UIImage new];
-        self.navigationController.navigationBar.translucent = YES;
-        self.navigationController.view.backgroundColor = [UIColor clearColor];
-
         [self.navigationController pushViewController:eventMapViewController animated:YES];
-
     } else {
         event = [AppDelegate sharedInstance].upcomingEvents[indexPath.row];
         EventDetailViewController *eventDetailViewController = [[EventDetailViewController alloc] initWithEvent:event];

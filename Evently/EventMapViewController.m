@@ -17,6 +17,7 @@
 #import "StatusMessage.h"
 #import "EventDetailViewController.h"
 #import "DAKeyboardControl.h"
+#import "MessagesViewController.h"
 
 @interface EventMapViewController ()
 @property (strong, nonatomic) PHFComposeBarView *composeBarView;
@@ -32,7 +33,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        UIBarButtonItem *chatButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ChatIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(onDetailsButton)];
+        UIBarButtonItem *chatButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ChatIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(onChatButton)];
         UIBarButtonItem *detailsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"InfoIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(onDetailsButton)];
         
         self.navigationItem.rightBarButtonItems = @[chatButton, detailsButton];
@@ -125,6 +126,12 @@
             NSLog(@"Subscribed to channel %@", self.event.statusChannel.name);
         }];
     }
+    
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
+                                                  forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    self.navigationController.navigationBar.translucent = YES;
+    self.navigationController.view.backgroundColor = [UIColor clearColor];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -133,6 +140,12 @@
         [[PNObservationCenter defaultCenter] removeMessageReceiveObserver:self];
         NSLog(@"Unsubscribed from channel %@", self.event.locationChannel);
     }
+
+    [self.navigationController.navigationBar setBackgroundImage:nil
+                                                  forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = nil;
+    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.view.backgroundColor = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -145,6 +158,10 @@
 {
     EventDetailViewController *eventDetailViewController = [[EventDetailViewController alloc] initWithEvent:_event];
     [self.navigationController pushViewController:eventDetailViewController animated:YES];
+}
+
+- (void)onChatButton {
+    [self.navigationController pushViewController:[[MessagesViewController alloc] init] animated:YES];
 }
 
 - (void)processLocationMessage:(LocationMessage *)locationMessage {
@@ -268,7 +285,6 @@
         _composeBarView = [[PHFComposeBarView alloc] initWithFrame:frame];
         [_composeBarView setMaxLinesCount:5];
         [_composeBarView setPlaceholder:@"Share your status"];
-        [_composeBarView setUtilityButtonImage:[UIImage imageNamed:@"Camera"]];
         [_composeBarView setDelegate:self];
         _composeBarView.buttonTintColor = [UIColor orangeColor];
     }
@@ -284,11 +300,6 @@
     }
     [composeBarView setText:@"" animated:YES];
     [composeBarView resignFirstResponder];
-}
-
-- (void)composeBarViewDidPressUtilityButton:(PHFComposeBarView *)composeBarView
-{
-    
 }
 
 - (void)keyboardWillToggle:(NSNotification *)notification {
