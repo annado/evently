@@ -82,6 +82,7 @@
         [UserEventLocation userEventLocationsForEvent:self.event withCompletion:^(NSArray *userEventLocations, NSError *error) {
             
             // Get the latest user event location
+            NSLog(@"Bootstrapping with %i existing user event locations", userEventLocations.count);
             [self addPinsForUserEventLocations:userEventLocations];
             
             // Subscribe to pub sub

@@ -197,7 +197,7 @@
 
 + (void) userEventLocationsForEvent:(Event *)event withCompletion:(void (^)(NSArray *userEventLocations, NSError *error))block {
     PFQuery *query = [UserEventLocation query];
-    [query whereKey:@"eventFacebookId" equalTo:event.facebookID];
+    [query whereKey:@"eventFacebookID" equalTo:event.facebookID];
     [query includeKey:@"user"];
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
