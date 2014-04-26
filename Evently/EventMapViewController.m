@@ -50,16 +50,7 @@
     self.mapView.delegate = self;
     
     [self addPinForEventLocation];
-
-    [EventCheckin checkinsForEvent:_event withCompletion:^(NSArray *checkins, NSError *error) {
-        for (int i = 0; i < checkins.count; i++) {
-            [self addPinForEventCheckin:checkins[i]];
-        }
-        if (checkins.count > 0) {
-            [self zoomToFitAnnotations:YES];
-        }
-    }];
-
+    [self addPinsForEventCheckins];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -127,6 +118,18 @@
         // this is only a problem if there is only 1 pin
         self.mapView.region = MKCoordinateRegionMake(_event.location.latLon.coordinate, MKCoordinateSpanMake(0.005, 0.005));
     }
+}
+
+- (void)addPinsForEventCheckins
+{
+    [EventCheckin checkinsForEvent:_event withCompletion:^(NSArray *checkins, NSError *error) {
+        for (int i = 0; i < checkins.count; i++) {
+            [self addPinForEventCheckin:checkins[i]];
+        }
+        if (checkins.count > 0) {
+            [self zoomToFitAnnotations:YES];
+        }
+    }];
 }
 
 - (void)addPinForEventCheckin:(EventCheckin *)checkin
