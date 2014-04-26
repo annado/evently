@@ -85,7 +85,7 @@
             [self addPinsForUserEventLocations:userEventLocations];
             
             // Subscribe to pub sub
-            self.eventChannel = [PNChannel channelWithName:self.event.facebookID shouldObservePresence:NO];
+            self.eventChannel = [self.event locationChannel];
             [PubNub subscribeOnChannel:self.eventChannel];
             [[PNObservationCenter defaultCenter] addMessageReceiveObserver:self withBlock:^(PNMessage *message) {
                 if ([message.channel.name isEqualToString:self.eventChannel.name]) {

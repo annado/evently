@@ -55,7 +55,7 @@ thread = Thread.new do
   loop do
     user.step
     pubnub.publish(
-      channel: event_id,
+      channel: "#{event_id}_location",
       message: user.location_message,
       &on_broadcast
     )
