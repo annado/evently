@@ -72,26 +72,28 @@
     [self addPinForEventLocation];
     
     [UserEventLocation userEventLocationsForEvent:_event withCompletion:^(NSArray *userEventLocations, NSError *error) {
-        for (UserEventLocation *userEventLocation in userEventLocations) {
-            [self addPinForUserEventLocation:userEventLocation];
-        }
-        if (userEventLocations.count > 0) {
-            [self zoomToFitAnnotations:YES];
-        }
+        [self addPinsForUserEventLocations:userEventLocations];
     }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     if (self.event) {
-        self.eventChannel = [PNChannel channelWithName:self.event.facebookID shouldObservePresence:NO];
-        [PubNub subscribeOnChannel:self.eventChannel];
-        
-        NSLog(@"Subscribed to channel %@ near (%f, %F)", self.eventChannel.name, self.event.location.latLon.coordinate.latitude, self.event.location.latLon.coordinate.longitude);
-        [[PNObservationCenter defaultCenter] addMessageReceiveObserver:self withBlock:^(PNMessage *message) {
-            if ([message.channel.name isEqualToString:self.eventChannel.name]) {
-                LocationMessage *locationMessage = [LocationMessage deserializeMessage:message.message];
-                [self processLocationMessage:locationMessage];
-            }
+        // Bootstrap the locations and then subscribe to events
+        [UserEventLocation userEventLocationsForEvent:self.event withCompletion:^(NSArray *userEventLocations, NSError *error) {
+            
+            // Get the latest user event location
+            [self addPinsForUserEventLocations:userEventLocations];
+            
+            // Subscribe to pub sub
+            self.eventChannel = [PNChannel channelWithName:self.event.facebookID shouldObservePresence:NO];
+            [PubNub subscribeOnChannel:self.eventChannel];
+            [[PNObservationCenter defaultCenter] addMessageReceiveObserver:self withBlock:^(PNMessage *message) {
+                if ([message.channel.name isEqualToString:self.eventChannel.name]) {
+                    LocationMessage *locationMessage = [LocationMessage deserializeMessage:message.message];
+                    [self processLocationMessage:locationMessage];
+                }
+            }];
+            NSLog(@"Subscribed to channel %@ near (%f, %F)", self.eventChannel.name, self.event.location.latLon.coordinate.latitude, self.event.location.latLon.coordinate.longitude);
         }];
     }
 }
@@ -125,6 +127,15 @@
     }];
 }
 
+- (void)addPinsForUserEventLocations:(NSArray *)userEventLocations {
+    for (UserEventLocation *userEventLocation in userEventLocations) {
+        [self addPinForUserLocation:userEventLocation.user location:[userEventLocation coordinate]];
+    }
+    if (userEventLocations.count > 0) {
+        [self zoomToFitAnnotations:YES];
+    }
+}
+
 - (void)addPinForEventLocation
 {
     if (_event.location.latLon) {
@@ -135,11 +146,6 @@
         // this is only a problem if there is only 1 pin
         self.mapView.region = MKCoordinateRegionMake(_event.location.latLon.coordinate, MKCoordinateSpanMake(0.005, 0.005));
     }
-}
-
-- (void)addPinForUserEventLocation:(UserEventLocation *)userEventLocation {
-    EventAttendeeAnnotation *annotation = [[EventAttendeeAnnotation alloc] initWithUserEventLocation:userEventLocation];
-    [self.mapView addAnnotation:annotation];
 }
 
 - (void)addPinForUserLocation:(User *)user location:(CLLocationCoordinate2D)coordinate
