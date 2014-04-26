@@ -38,7 +38,8 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
         _location = [Location locationWithDictionary:dictionary];
         _location.name = dictionary[@"location"];
 
-        _facebookID = dictionary[@"id"];
+        self.facebookID = dictionary[@"id"];
+        
         _name = dictionary[@"name"];
         _description = dictionary[@"description"];
 
@@ -90,6 +91,12 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
         _notification = [[EventNotification alloc] initWithEvent:self];
     }
     return self;
+}
+
+- (void)setFacebookID:(NSString *)facebookID {
+    _facebookID = facebookID;
+    _locationChannel = [PNChannel channelWithName:[NSString stringWithFormat:@"%@_location", self.facebookID]];
+    _statusChannel = [PNChannel channelWithName:[NSString stringWithFormat:@"%@_status", self.facebookID]];
 }
 
 // TODO properly handle errors
@@ -268,16 +275,6 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
 
 - (void)checkinUser:(User *)user {
     [UserEventLocation user:user didArriveAtEvent:self withCompletion:nil];
-}
-
-- (PNChannel *)locationChannel {
-    NSString *name = [NSString stringWithFormat:@"%@_location", self.facebookID];
-    return [PNChannel channelWithName:name];
-}
-
-- (PNChannel *)statusChannel {
-    NSString *name = [NSString stringWithFormat:@"%@_status", self.facebookID];
-    return [PNChannel channelWithName:name];
 }
 
 + (void)addGeofencesForEvents:(NSArray *)events {

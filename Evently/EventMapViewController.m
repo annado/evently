@@ -12,16 +12,17 @@
 #import "EventAttendeeAnnotation.h"
 #import "EventLocationAnnotation.h"
 #import "EventAttendeeAnnotationView.h"
-#import "UserEventLocation.h"
 
+#import "UserEventLocation.h"
+#import "StatusMessage.h"
 #import "EventDetailViewController.h"
 
 @interface EventMapViewController ()
 @property (strong, nonatomic) PHFComposeBarView *composeBarView;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (nonatomic, strong) Event *event;
-@property (nonatomic, strong) PNChannel *eventChannel;
 @property (nonatomic, strong) NSMutableDictionary *attendeeAnnotations;
+@property (nonatomic, strong) NSArray *statusMessages;
 @end
 
 @implementation EventMapViewController
@@ -80,30 +81,44 @@
     if (self.event) {
         // Bootstrap the locations and then subscribe to events
         [UserEventLocation userEventLocationsForEvent:self.event withCompletion:^(NSArray *userEventLocations, NSError *error) {
-            
             // Get the latest user event location
-            NSLog(@"Bootstrapping with %i existing user event locations", userEventLocations.count);
+            NSLog(@"Bootstrapping locations with %i existing user event locations", userEventLocations.count);
             [self addPinsForUserEventLocations:userEventLocations];
             
-            // Subscribe to pub sub
-            self.eventChannel = [self.event locationChannel];
-            [PubNub subscribeOnChannel:self.eventChannel];
+            // Subscribe to pubnub
+            [PubNub subscribeOnChannel:self.event.locationChannel];
             [[PNObservationCenter defaultCenter] addMessageReceiveObserver:self withBlock:^(PNMessage *message) {
-                if ([message.channel.name isEqualToString:self.eventChannel.name]) {
+                if ([message.channel.name isEqualToString:self.event.locationChannel.name]) {
                     LocationMessage *locationMessage = [LocationMessage deserializeMessage:message.message];
                     [self processLocationMessage:locationMessage];
                 }
             }];
-            NSLog(@"Subscribed to channel %@ near (%f, %F)", self.eventChannel.name, self.event.location.latLon.coordinate.latitude, self.event.location.latLon.coordinate.longitude);
+            NSLog(@"Subscribed to channel %@ near (%f, %F)", self.event.locationChannel.name, self.event.location.latLon.coordinate.latitude, self.event.location.latLon.coordinate.longitude);
+        }];
+        
+        // Bootstrap the statuses and then subscribe for updates
+        [StatusMessage getStatusesForEvent:self.event withCompletion:^(NSArray *statusMessages, NSError *error) {
+            NSLog(@"Bootstrapping statuses with %i existing statuses", statusMessages.count);
+            self.statusMessages = statusMessages;
+            
+            // Subscribe to pubnub
+            [PubNub subscribeOnChannel:self.event.statusChannel];
+            [[PNObservationCenter defaultCenter] addMessageReceiveObserver:self withBlock:^(PNMessage *message) {
+                if ([message.channel.name isEqualToString:self.event.statusChannel.name]) {
+                    StatusMessage *statusMessage = [StatusMessage deserializeMessage:message.message];
+                    [self processStatusMessage:statusMessage];
+                }
+            }];
+            NSLog(@"Subscribed to channel %@", self.event.statusChannel.name);
         }];
     }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     if (self.event) {
-        [PubNub unsubscribeFromChannel:self.eventChannel];
+        [PubNub unsubscribeFromChannel:self.event.locationChannel];
         [[PNObservationCenter defaultCenter] removeMessageReceiveObserver:self];
-        NSLog(@"Unsubscribed from channel %@", self.eventChannel.name);
+        NSLog(@"Unsubscribed from channel %@", self.event.locationChannel);
     }
 }
 
@@ -126,6 +141,11 @@
     [User findUserWithFacebookID:locationMessage.userFacebookId completion:^(User *user, NSError *error) {
         [self addPinForUserLocation:user location:coordinate];
     }];
+}
+
+- (void)processStatusMessage:(StatusMessage *)statusMessage {
+    NSLog(@"StatusMessage: %@, %@", statusMessage.userFacebookID, statusMessage.text);
+    // TODO
 }
 
 - (void)addPinsForUserEventLocations:(NSArray *)userEventLocations {

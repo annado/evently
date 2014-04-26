@@ -10,6 +10,7 @@
 		3B00387A18FDD4A7004CDE83 /* EventNowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B00387818FDD4A7004CDE83 /* EventNowCell.m */; };
 		3B00387B18FDD4A7004CDE83 /* EventNowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B00387918FDD4A7004CDE83 /* EventNowCell.xib */; };
 		3B2C7FFE1908C08200D9F28C /* LocationMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B2C7FFD1908C08200D9F28C /* LocationMessage.m */; };
+		3B319252190C621700F7E70F /* StatusMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B319251190C621700F7E70F /* StatusMessage.m */; };
 		3B8828CA18F0FE1F00D5E87C /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828C918F0FE1F00D5E87C /* Event.m */; };
 		3B8828CD18F23B3700D5E87C /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828CC18F23B3700D5E87C /* Location.m */; };
 		3B8828D318F24CB600D5E87C /* UserEventLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828D218F24CB600D5E87C /* UserEventLocation.m */; };
@@ -86,6 +87,8 @@
 		3B00387918FDD4A7004CDE83 /* EventNowCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventNowCell.xib; sourceTree = "<group>"; };
 		3B2C7FFC1908C08200D9F28C /* LocationMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationMessage.h; sourceTree = "<group>"; };
 		3B2C7FFD1908C08200D9F28C /* LocationMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationMessage.m; sourceTree = "<group>"; };
+		3B319250190C621700F7E70F /* StatusMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusMessage.h; sourceTree = "<group>"; };
+		3B319251190C621700F7E70F /* StatusMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusMessage.m; sourceTree = "<group>"; };
 		3B8828C818F0FE1F00D5E87C /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		3B8828C918F0FE1F00D5E87C /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		3B8828CB18F23B3700D5E87C /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
@@ -337,6 +340,8 @@
 				3B2C7FFD1908C08200D9F28C /* LocationMessage.m */,
 				FE00A1E9190C36C4004D6DDC /* RealtimeLocationManager.h */,
 				FE00A1EA190C36C4004D6DDC /* RealtimeLocationManager.m */,
+				3B319250190C621700F7E70F /* StatusMessage.h */,
+				3B319251190C621700F7E70F /* StatusMessage.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -535,6 +540,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B319252190C621700F7E70F /* StatusMessage.m in Sources */,
 				58001AFF18FCDE20007ECAF9 /* CheckinButton.m in Sources */,
 				3B8828D318F24CB600D5E87C /* UserEventLocation.m in Sources */,
 				58450CA8190B2990004376E7 /* ComposerViewController.m in Sources */,

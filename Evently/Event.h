@@ -38,6 +38,10 @@ typedef enum {
 @property (nonatomic, strong) NSMutableArray *declinedUsers;
 @property (nonatomic, strong) NSMutableArray *notRepliedUsers;
 
+// Pubnub
+@property (nonatomic, strong) PNChannel *locationChannel;
+@property (nonatomic, strong) PNChannel *statusChannel;
+
 // For the currentUser
 @property (nonatomic, assign) NSInteger userAttendanceStatus;
 @property (nonatomic, readonly, strong) NSString *displayUserAttendanceStatus;
@@ -50,8 +54,5 @@ typedef enum {
 - (NSString *)displayDate;
 - (void)checkinUser:(User *)user;
 
-// PubNub
-- (PNChannel *)locationChannel;
-- (PNChannel *)statusChannel;
 
 @end
