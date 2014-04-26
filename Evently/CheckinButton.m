@@ -7,7 +7,7 @@
 //
 
 #import "CheckinButton.h"
-#import "EventCheckin.h"
+#import "UserEventLocation.h"
 
 @interface CheckinButton ()
 @property (weak, nonatomic) IBOutlet UIButton *checkinButton;
@@ -30,7 +30,9 @@
 - (void)setEvent:(Event *)event
 {
     _event = event;
-    self.checkedIn = [[User currentUser] isCheckedInToEvent:_event];
+    [UserEventLocation user:[User currentUser] isAtEvent:_event withCompletion:^(BOOL isPresent, NSError *error) {
+        self.checkedIn = isPresent;
+    }];
 }
 
 - (void)setCheckedIn:(BOOL)isCheckedIn
@@ -43,7 +45,7 @@
 }
 
 - (IBAction)onCheckinButton:(id)sender {
-    [_event checkinCurrentUser];
+    [_event checkinUser:[User currentUser]];
     self.checkedIn = YES;
 }
 

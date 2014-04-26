@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-
 @interface EventNowCell : UITableViewCell
 
 @property (nonatomic, strong) Event *event;

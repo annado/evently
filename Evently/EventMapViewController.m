@@ -6,13 +6,13 @@
 //  Copyright (c) 2014 Evently. All rights reserved.
 //
 
-#import "EventCheckin.h"
 #import "LocationMessage.h"
 
 #import "EventMapViewController.h"
 #import "EventAttendeeAnnotation.h"
 #import "EventLocationAnnotation.h"
 #import "EventAttendeeAnnotationView.h"
+#import "UserEventLocation.h"
 
 #import "EventDetailViewController.h"
 
@@ -51,15 +51,14 @@
     
     [self addPinForEventLocation];
 
-    [EventCheckin checkinsForEvent:_event withCompletion:^(NSArray *checkins, NSError *error) {
-        for (int i = 0; i < checkins.count; i++) {
-            [self addPinForEventCheckin:checkins[i]];
+    [UserEventLocation userEventLocationsForEvent:_event withCompletion:^(NSArray *userEventLocations, NSError *error) {
+        for (UserEventLocation *userEventLocation in userEventLocations) {
+            [self addPinForUserEventLocation:userEventLocation];
         }
-        if (checkins.count > 0) {
+        if (userEventLocations.count > 0) {
             [self zoomToFitAnnotationsWithAnimation:YES];
         }
     }];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -129,10 +128,8 @@
     }
 }
 
-- (void)addPinForEventCheckin:(EventCheckin *)checkin
-{
-    CLLocationCoordinate2D coordinate = _event.location.latLon.coordinate; // TODO
-    EventAttendeeAnnotation *annotation = [[EventAttendeeAnnotation alloc] initWithEventCheckin:checkin location:coordinate];
+- (void)addPinForUserEventLocation:(UserEventLocation *)userEventLocation {
+    EventAttendeeAnnotation *annotation = [[EventAttendeeAnnotation alloc] initWithUserEventLocation:userEventLocation];
     [self.mapView addAnnotation:annotation];
     [self zoomToFitAnnotationsWithAnimation:YES];
 }
@@ -144,7 +141,7 @@
         EventAttendeeAnnotation *annotation = self.attendeeAnnotations[user.facebookID];
         [self animateCoordinateChange:annotation location:coordinate];
     } else {
-        EventAttendeeAnnotation *annotation = [[EventAttendeeAnnotation alloc] initWithUser:user location:coordinate];
+        EventAttendeeAnnotation *annotation = [[EventAttendeeAnnotation alloc] initWithUser:user coordinate:coordinate];
         [self.mapView addAnnotation:annotation];
         [self.attendeeAnnotations setObject:annotation forKey:user.facebookID];
         [self zoomToFitAnnotationsWithAnimation:YES];

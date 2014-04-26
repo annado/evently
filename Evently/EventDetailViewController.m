@@ -9,17 +9,16 @@
 #import "EventDetailViewController.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import <MapKit/MapKit.h>
-#import "EventCheckin.h"
+#import "UserEventLocation.h"
 #import "EventDetailHeader.h"
 #import "EventDetailCell.h"
 #import "EventRSVPCell.h"
-#import "EventCheckin.h"
 #import "UserCheckedInCell.h"
 #import "UserGridCell.h"
 
 @interface EventDetailViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) NSArray *checkins;
+@property (nonatomic, strong) NSArray *userEventLocations;
 @end
 
 @implementation EventDetailViewController
@@ -37,8 +36,8 @@ static NSString *CheckinCellIdentifier = @"UserCheckedInCell";
         _event = event;
         self.title = event.name;
         [self addCheckinButton];
-        [EventCheckin checkinsForEvent:_event withCompletion:^(NSArray *checkins, NSError *error) {
-            self.checkins = checkins;
+        [UserEventLocation userEventLocationsForEvent:_event withCompletion:^(NSArray *userEventLocations, NSError *error) {
+            self.userEventLocations = userEventLocations;
             [self.tableView reloadData];
         }];
     }
@@ -85,13 +84,15 @@ static NSString *CheckinCellIdentifier = @"UserCheckedInCell";
         UIBarButtonItem *checkinButton = [[UIBarButtonItem alloc] initWithTitle:@"Check in" style:UIBarButtonItemStylePlain target:self action:@selector(onCheckinButton:)];
         self.navigationItem.rightBarButtonItem = checkinButton;
         
-        self.checkedIn = [[User currentUser] isCheckedInToEvent:_event forCheckins:self.checkins];
+        [UserEventLocation user:[User currentUser] isAtEvent:_event withCompletion:^(BOOL isPresent, NSError *error) {
+            self.checkedIn = isPresent;
+        }];
     }
 }
 
 - (void)onCheckinButton:(UIBarButtonItem *)barButtonItem
 {
-    [_event checkinCurrentUser];
+    [_event checkinUser:[User currentUser]];
     [self setCheckedIn:YES];
 }
 
@@ -114,7 +115,7 @@ static NSString *CheckinCellIdentifier = @"UserCheckedInCell";
     if (section == 0) {
         return 3;
     } else {
-        return self.checkins.count;
+        return self.userEventLocations.count;
     }
 }
 
@@ -143,7 +144,7 @@ static NSString *CheckinCellIdentifier = @"UserCheckedInCell";
         }
     } else {
         UserCheckedInCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CheckinCellIdentifier forIndexPath:indexPath];
-        cell.checkin = self.checkins[indexPath.row];
+        cell.userEventLocation = self.userEventLocations[indexPath.row];
         return cell;
     }
 }

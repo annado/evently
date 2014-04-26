@@ -9,7 +9,6 @@
 #import "DateHelper.h"
 #import "EventNotification.h"
 #import "CRToast.h"
-#import "EventCheckin.h"
 
 @interface EventNotification ()
 @property (nonatomic, strong) Event *event;
@@ -73,7 +72,7 @@ static const NSString *EventIDKey = @"event.facebookID";
     return (i != NSNotFound);
 }
 
-+ (void)sendPushNotificationForCheckin:(EventCheckin *)checkin toEvent:(Event *)event
++ (void)sendPushNotificationForCheckin:(UserEventLocation *)userEventLocation toEvent:(Event *)event
 {
     PFQuery *pushQuery = [PFInstallation query];
     // TODO: constrain to attendees list or friends list
@@ -81,7 +80,7 @@ static const NSString *EventIDKey = @"event.facebookID";
     
     // Send push notification to query
     [PFPush sendPushMessageToQueryInBackground:pushQuery
-                                   withMessage:[checkin displayTextWithEventName:event]];
+                                   withMessage:[userEventLocation displayTextWithEventName:event]];
 }
 
 + (NSString *)getEventIDForNotification:(UILocalNotification *)notification

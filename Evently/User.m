@@ -7,7 +7,7 @@
 //
 
 #import "User.h"
-#import "EventCheckin.h"
+#import "UserEventLocation.h"
 #import "EventNotification.h"
 #import <Parse/PFObject+Subclass.h>
 
@@ -114,59 +114,6 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
 - (NSURL *)avatarURL
 {
     return [User avatarURL:self[@"facebookID"]];
-}
-
-- (void)getCheckinForEvent:(Event *)event completion:(void (^)(EventCheckin *checkin, NSError *error))block
-{
-    PFQuery *query = [EventCheckin query];
-    [query whereKey:@"user" equalTo:self];
-    [query whereKey:@"eventFacebookID" equalTo:event.facebookID];
-    
-    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-        if (error && [error code] != 101) {
-            NSLog(@"Error retrieving event for user: %@", [error description]);
-            block(nil, error);
-        } else {
-            if (object) {
-                block((EventCheckin *)object, error);
-            } else {
-                block(nil, nil);
-            }
-        }
-    }];
-}
-
-- (EventCheckin *)checkinForEvent:(Event *)event
-{
-    EventCheckin *checkin = [[EventCheckin alloc] initWithUser:self forEvent:event];
-
-    [checkin saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        PFRelation *relation = [self relationForKey:@"checkins"];
-        [relation addObject:checkin];
-        [self saveInBackground];
-        [EventNotification sendPushNotificationForCheckin:checkin toEvent:event];
-    }];
-    return checkin;
-}
-
-- (BOOL)isCheckedInToEvent:(Event *)event
-{
-    // Assumes currentUser (for now)
-    if (self.checkins) {
-        return [self isCheckedInToEvent:event forCheckins:self.checkins];
-    } else {
-        return NO;
-    }
-}
-
-// TODO: this is ugly
-- (BOOL)isCheckedInToEvent:(Event *)event forCheckins:(NSArray *)checkins
-{
-    NSString *eventID = event.facebookID;
-    NSUInteger i = [self.checkins indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-        return [eventID isEqualToString:obj[@"eventFacebookID"]];
-    }];
-    return (i != NSNotFound);
 }
 
 + (void)logOut

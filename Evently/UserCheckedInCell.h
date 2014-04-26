@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UserEventLocation.h"
 
 @interface UserCheckedInCell : UITableViewCell
-@property (nonatomic, strong) EventCheckin *checkin;
+@property (nonatomic, strong) UserEventLocation *userEventLocation;
+
 @end

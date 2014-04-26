@@ -11,12 +11,13 @@
 #import "SignInViewController.h"
 #import "ProfileViewController.h"
 #import "User.h"
-#import "EventCheckin.h"
+#import "UserEventLocation.h"
 #import "EventListViewController.h"
 #import "CRToast.h"
 #import "EventNotification.h"
 #import "GeofenceMonitor.h"
 #import "LocationMessage.h"
+#import "UserEventLocation.h"
 
 @interface AppDelegate () <GeofenceMonitorDelegate>
 
@@ -62,7 +63,7 @@
 {
     // Parse subclasses
     [User registerSubclass];
-    [EventCheckin registerSubclass];
+    [UserEventLocation registerSubclass];
     
     [Parse setApplicationId:@"2DhYRY420kuYwMv12BZrEzpbjebGS9wVlCtJKdnz"
                   clientKey:@"9zookCNyg4AOaVed5UnrSdCVx6wwEgNeEgmj9s2j"];
@@ -184,10 +185,12 @@
 - (void)geofenceMonitor:(GeofenceMonitor *)geofenceMonitor didEnterRegion:(CLRegion *)region {
     NSLog(@"Entered Region - %@", region.identifier);
     [Event eventForFacebookID:region.identifier withIncludeAttendees:NO withCompletion:^(Event *event, NSError *error) {
-        if (![[User currentUser] isCheckedInToEvent:event]) {
-            [event checkinCurrentUser];
-            [self fireLocalNotificationWithMessage:[NSString stringWithFormat:@"You've been checked in to %@", event.name]];
-        }
+        [UserEventLocation user:[User currentUser] isAtEvent:event withCompletion:^(BOOL isPresent, NSError *error) {
+            if (!isPresent) {
+                [event checkinUser:[User currentUser]];
+                [self fireLocalNotificationWithMessage:[NSString stringWithFormat:@"You've been checked in to %@", event.name]];
+            }
+        }];
     }];
 }
 

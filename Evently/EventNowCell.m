@@ -7,7 +7,7 @@
 //
 
 #import "EventNowCell.h"
-#import "EventCheckin.h"
+#import "UserEventLocation.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
 
 @interface EventNowCell ()
@@ -67,19 +67,19 @@
     self.attendingCountLabel.text = [NSString stringWithFormat:@"%i", [event.attendingUsers count]];
     
     // TODO refactor this into model, use a more efficient query
-    [EventCheckin checkinsForEvent:event withCompletion:^(NSArray *checkins, NSError *error) {
-        if (!error) {
-            NSInteger checkinCount = [checkins count];
-            self.checkedInCountLabel.text = [NSString stringWithFormat:@"%i", checkinCount];
-            for (int i = 0; i < [self.checkedInUserImages count] && i < checkinCount; i++) {
-                EventCheckin *checkIn = checkins[i];
-                [checkIn[@"user"] fetchIfNeededInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-                    User *user = (User *)object;
-                    [self.checkedInUserImages[i] setImageWithURL:[user avatarURL]];
-                }];
-            }
-        }
-    }];
+//    [UserEventLocation userEventLocationsForEvent:event withCompletion:^(NSArray *userEventLocations, NSError *error) {
+//        if (!error) {
+//            NSInteger checkinCount = [userEventLocations count];
+//            self.checkedInCountLabel.text = [NSString stringWithFormat:@"%i", checkinCount];
+//            for (int i = 0; i < [self.checkedInUserImages count] && i < checkinCount; i++) {
+//                UserEventLocation *userEventLocation = userEventLocations[i];
+//                [checkIn[@"user"] fetchIfNeededInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+//                    User *user = (User *)object;
+//                    [self.checkedInUserImages[i] setImageWithURL:[user avatarURL]];
+//                }];
+//            }
+//        }
+//    }];
     
 }
 

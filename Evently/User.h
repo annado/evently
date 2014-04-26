@@ -11,7 +11,7 @@
 extern NSString *const UserDidLoginNotification;
 extern NSString *const UserDidLogoutNotification;
 
-@class EventCheckin;
+@class UserEventLocation;
 
 @interface User : PFUser<PFSubclassing>
 @property (retain) NSString *name;
@@ -23,13 +23,10 @@ extern NSString *const UserDidLogoutNotification;
 - (BOOL)isLoggedIn;
 - (void)requestFacebookProfileWithCompletion:(void (^)(NSError *error))block;
 - (NSURL *)avatarURL;
-- (EventCheckin *)checkinForEvent:(Event *)event;
-- (void)getCheckinForEvent:(Event *)event completion:(void (^)(EventCheckin *checkin, NSError *error))block;
-- (BOOL)isCheckedInToEvent:(Event *)event;
-- (BOOL)isCheckedInToEvent:(Event *)event forCheckins:(NSArray *)checkins;
 
 + (void)logInWithCompletion:(void (^)(User *user, NSError *error))block;
 + (User *)currentUser;
 + (NSURL *)avatarURL:(NSString *)facebookID;
 + (void)findUserWithFacebookID:(NSString *)facebookID completion:(void (^)(User *user, NSError *error))block;
+
 @end

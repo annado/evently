@@ -45,8 +45,13 @@ typedef enum {
 + (void)eventsForUser:(User *)user withStatus:(NSInteger)status withIncludeAttendees:(BOOL)includeAttendees withCompletion:(void (^)(NSArray *events, NSError *error))block;
 + (void)eventForFacebookID:(NSString *)facebookID withIncludeAttendees:(BOOL)includeAttendees withCompletion:(void (^)(Event *event, NSError *error))completion;
 + (void)addGeofencesForEvents:(NSArray *)events;
+
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 - (NSString *)displayDate;
-- (void)checkinCurrentUser;
+- (void)checkinUser:(User *)user;
+
+// PubNub
+- (PNChannel *)locationChannel;
+- (PNChannel *)statusChannel;
 
 @end

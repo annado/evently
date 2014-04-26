@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "UserEventLocation.h"
 
 @interface EventNotification : NSObject
 - (id)initWithEvent:(Event *)event;
 + (NSString *)getEventIDForNotification:(UILocalNotification *)notification;
 + (void)handleForegroundLocalNotification:(UILocalNotification *)localNotification;
-+ (void)sendPushNotificationForCheckin:(EventCheckin *)checkin toEvent:(Event *)event;
++ (void)sendPushNotificationForCheckin:(UserEventLocation *)checkin toEvent:(Event *)event;
 @end

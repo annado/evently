@@ -7,7 +7,6 @@
 //
 
 #import "UserCheckedInCell.h"
-#import "EventCheckin.h"
 #import <TTTAttributedLabel/TTTAttributedLabel.h>
 
 @interface UserCheckedInCell ()
@@ -29,18 +28,16 @@
     // Configure the view for the selected state
 }
 
-- (void)setCheckin:(EventCheckin *)checkin
+- (void)setUserEventLocation:(UserEventLocation *)userEventLocation;
 {
-    _checkin = checkin;
+    _userEventLocation = userEventLocation;
 
     self.avatarImageView.layer.cornerRadius = 20;
 
-    NSString *text = [_checkin displayText];
+    NSString *text = [_userEventLocation displayText];
     [self.textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:13.0]];
     self.textLabel.textColor = [UIColor darkGrayColor];
-//    NSRange r = [text rangeOfString:_checkin.user.name];
     self.textLabel.text = text;
-    // TODO: [self.textLabel addLinkToURL:[NSURL URLWithString:@"action://show-help"] withRange:r];
 }
 
 @end

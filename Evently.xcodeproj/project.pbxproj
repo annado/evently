@@ -12,7 +12,7 @@
 		3B2C7FFE1908C08200D9F28C /* LocationMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B2C7FFD1908C08200D9F28C /* LocationMessage.m */; };
 		3B8828CA18F0FE1F00D5E87C /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828C918F0FE1F00D5E87C /* Event.m */; };
 		3B8828CD18F23B3700D5E87C /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828CC18F23B3700D5E87C /* Location.m */; };
-		3B8828D318F24CB600D5E87C /* EventCheckin.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828D218F24CB600D5E87C /* EventCheckin.m */; };
+		3B8828D318F24CB600D5E87C /* UserEventLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828D218F24CB600D5E87C /* UserEventLocation.m */; };
 		3BC41F1C1905BF7300AC81F3 /* UserGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC41F1A1905BF7300AC81F3 /* UserGridCell.m */; };
 		3BC41F1D1905BF7300AC81F3 /* UserGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BC41F1B1905BF7300AC81F3 /* UserGridCell.xib */; };
 		3BC41F201905FED600AC81F3 /* UserImageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC41F1F1905FED600AC81F3 /* UserImageCollectionViewCell.m */; };
@@ -87,8 +87,8 @@
 		3B8828C918F0FE1F00D5E87C /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		3B8828CB18F23B3700D5E87C /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
 		3B8828CC18F23B3700D5E87C /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
-		3B8828D118F24CB600D5E87C /* EventCheckin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCheckin.h; sourceTree = "<group>"; };
-		3B8828D218F24CB600D5E87C /* EventCheckin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCheckin.m; sourceTree = "<group>"; };
+		3B8828D118F24CB600D5E87C /* UserEventLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserEventLocation.h; sourceTree = "<group>"; };
+		3B8828D218F24CB600D5E87C /* UserEventLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserEventLocation.m; sourceTree = "<group>"; };
 		3BC41F191905BF7300AC81F3 /* UserGridCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserGridCell.h; sourceTree = "<group>"; };
 		3BC41F1A1905BF7300AC81F3 /* UserGridCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserGridCell.m; sourceTree = "<group>"; };
 		3BC41F1B1905BF7300AC81F3 /* UserGridCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserGridCell.xib; sourceTree = "<group>"; };
@@ -312,8 +312,8 @@
 				3B8828C918F0FE1F00D5E87C /* Event.m */,
 				3B8828CB18F23B3700D5E87C /* Location.h */,
 				3B8828CC18F23B3700D5E87C /* Location.m */,
-				3B8828D118F24CB600D5E87C /* EventCheckin.h */,
-				3B8828D218F24CB600D5E87C /* EventCheckin.m */,
+				3B8828D118F24CB600D5E87C /* UserEventLocation.h */,
+				3B8828D218F24CB600D5E87C /* UserEventLocation.m */,
 				58450C8619047876004376E7 /* EventNotification.h */,
 				58450C8719047876004376E7 /* EventNotification.m */,
 				FE1F022B1904DB03004F6410 /* GeofenceMonitor.h */,
@@ -515,7 +515,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				58001AFF18FCDE20007ECAF9 /* CheckinButton.m in Sources */,
-				3B8828D318F24CB600D5E87C /* EventCheckin.m in Sources */,
+				3B8828D318F24CB600D5E87C /* UserEventLocation.m in Sources */,
 				58450CA8190B2990004376E7 /* ComposerViewController.m in Sources */,
 				58450C9019063B08004376E7 /* EventMapViewController.m in Sources */,
 				FE4D9A1318F3D581003351C3 /* EventListViewController.m in Sources */,

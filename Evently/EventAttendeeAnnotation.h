@@ -8,12 +8,18 @@
 
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
+#import "UserEventLocation.h"
 
 @class EventAttendeeAnnotationView;
 
 @interface EventAttendeeAnnotation : NSObject <MKAnnotation>
+
+@property (nonatomic, strong) User *user;
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;
-- (id)initWithEventCheckin:(EventCheckin *)checkin location:(CLLocationCoordinate2D)coordinate;
-- (id)initWithUser:(User *)user location:(CLLocationCoordinate2D)coordinate;
+
+- (id)initWithUserEventLocation:(UserEventLocation *)userEventLocation;
+- (id)initWithUser:(User *)user coordinate:(CLLocationCoordinate2D)coordinate;
+
 - (EventAttendeeAnnotationView *)annotationView;
+
 @end

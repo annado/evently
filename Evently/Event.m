@@ -7,9 +7,9 @@
 //
 
 #import "Event.h"
-#import "EventCheckin.h"
 #import "EventNotification.h"
 #import "GeofenceMonitor.h"
+#import "UserEventLocation.h"
 
 const CLLocationDistance kNearDistance = 150; // meters
 
@@ -266,8 +266,18 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
     return nil;
 }
 
-- (void)checkinCurrentUser {
-    [[User currentUser] checkinForEvent:self];
+- (void)checkinUser:(User *)user {
+    [UserEventLocation user:user didArriveAtEvent:self withCompletion:nil];
+}
+
+- (PNChannel *)locationChannel {
+    NSString *name = [NSString stringWithFormat:@"%@_location", self.facebookID];
+    return [PNChannel channelWithName:name];
+}
+
+- (PNChannel *)statusChannel {
+    NSString *name = [NSString stringWithFormat:@"%@_status", self.facebookID];
+    return [PNChannel channelWithName:name];
 }
 
 + (void)addGeofencesForEvents:(NSArray *)events {
