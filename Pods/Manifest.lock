@@ -22,6 +22,9 @@ PODS:
   - Facebook-iOS-SDK (3.13.1)
   - Parse (1.2.18):
     - Facebook-iOS-SDK (~> 3.11)
+  - PHFComposeBarView (2.0.1):
+    - PHFDelegateChain (~> 1.0)
+  - PHFDelegateChain (1.0.1)
   - PubNub (3.6.1)
   - TTTAttributedLabel (1.9.5)
 
@@ -30,6 +33,7 @@ DEPENDENCIES:
   - CRToast (~> 0.0)
   - Facebook-iOS-SDK
   - Parse (~> 1.2.18)
+  - PHFComposeBarView (~> 2.0.1)
   - PubNub (= 3.6.1)
   - TTTAttributedLabel
 
@@ -38,6 +42,8 @@ SPEC CHECKSUMS:
   CRToast: 7def6720179d7c861b06222a82a4ad4bdfe476f0
   Facebook-iOS-SDK: 47ae9e54684c84f93d75d4e6ab47cd031abdf406
   Parse: 6dd57f2af9f89dc6facc755cec4e96f8b739b1fb
+  PHFComposeBarView: 9c9cff294c865550606ad873c5bd51d046fedadf
+  PHFDelegateChain: 2c80836ba0c1b2ca4b5e6d3fa241343465e0eb70
   PubNub: 617df10280cca88551f12f5e9a0f4a48fd27272e
   TTTAttributedLabel: 6154fd2407a03fb8d71abfa36f4710fff26a168e
 
