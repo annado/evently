@@ -3,7 +3,7 @@ require "pubnub"
 
 ### A user that wanders around ###
 class User
-  STEP_SIZE_DEGREES = 0.000001
+  STEP_SIZE_DEGREES = 0.0001
 
   def initialize(user_id, init_lat, init_lng)
     @user_id = user_id
@@ -12,8 +12,8 @@ class User
   end
 
   def step
-    @lng += STEP_SIZE_DEGREES * rand
-    @lat += STEP_SIZE_DEGREES * rand
+    @lng += STEP_SIZE_DEGREES * rand - STEP_SIZE_DEGREES / 2.0
+    @lat += STEP_SIZE_DEGREES * rand - STEP_SIZE_DEGREES / 2.0
   end
 
   def location_message
