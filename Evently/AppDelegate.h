@@ -11,6 +11,7 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate, PNDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (nonatomic, strong) NSArray *updateLocationEvents;
 @property (nonatomic, strong) NSArray *nowEvents;
 @property (nonatomic, strong) NSArray *upcomingEvents;
 

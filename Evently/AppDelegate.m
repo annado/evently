@@ -17,9 +17,9 @@
 #import "EventNotification.h"
 #import "GeofenceMonitor.h"
 #import "LocationMessage.h"
-#import "UserEventLocation.h"
 #import "RealtimeLocationManager.h"
 #import "DateHelper.h"
+#import "MessagesViewController.h"
 
 const NSTimeInterval kBackgroundPollInterval = 60*10;
 
@@ -73,23 +73,6 @@ const NSTimeInterval kBackgroundPollInterval = 60*10;
 - (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     NSLog(@"perform Background Fetch...");
     [self loadEventsWithCompletion:^(NSArray *events, NSError *error) {
-        BOOL foundEventsToMonitor = NO;
-        for (Event *event in self.nowEvents) {
-            NSDate *tenMinutesBeforeStart = [event.startTime dateByAddingTimeInterval:-60*10];
-            // TODO refactor date comparison into DateHelper
-            BOOL afterTenMinutesBeforeEventStart = [tenMinutesBeforeStart compare:[NSDate date]] == NSOrderedAscending;
-            BOOL beforeEventEnd = [[NSDate date] compare:event.endTime] == NSOrderedAscending;
-            if (afterTenMinutesBeforeEventStart && beforeEventEnd) {
-                foundEventsToMonitor = YES;
-            }
-        }
-        if (foundEventsToMonitor) {
-            NSLog(@"Found events to monitor, start updating location");
-            [[RealtimeLocationManager sharedInstance] startUpdatingLocationWithDelegate:self];
-        } else {
-            NSLog(@"Found no events to monitor, stop updating location");
-            [[RealtimeLocationManager sharedInstance] stopUpdatingLocation];
-        }
         completionHandler(UIBackgroundFetchResultNewData);
     }];
 }
@@ -160,6 +143,8 @@ const NSTimeInterval kBackgroundPollInterval = 60*10;
 
 - (void)updateRootViewController
 {
+//    self.window.rootViewController = [[MessagesViewController alloc] init];
+//    return;
     if ([[User currentUser] isLoggedIn]) {
         EventListViewController *eventListViewController = [[EventListViewController alloc] init];
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:eventListViewController];
@@ -194,6 +179,27 @@ const NSTimeInterval kBackgroundPollInterval = 60*10;
         self.upcomingEvents = [[events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(isHappeningNow == NO && startTime >= %@)", [NSDate date]]] sortedArrayUsingDescriptors:sortDescriptors];
         [Event addGeofencesForEvents:self.nowEvents];
         
+        NSMutableArray *updateLocationEvents = [[NSMutableArray alloc] init];
+        BOOL foundEventsToMonitor = NO;
+        for (Event *event in self.nowEvents) {
+            NSDate *tenMinutesBeforeStart = [event.startTime dateByAddingTimeInterval:-60*10];
+            // TODO refactor date comparison into DateHelper
+            BOOL afterTenMinutesBeforeEventStart = [tenMinutesBeforeStart compare:[NSDate date]] == NSOrderedAscending;
+            BOOL beforeEventEnd = [[NSDate date] compare:event.endTime] == NSOrderedAscending;
+            if (afterTenMinutesBeforeEventStart && beforeEventEnd) {
+                [updateLocationEvents addObject:event];
+                foundEventsToMonitor = YES;
+            }
+        }
+        self.updateLocationEvents = updateLocationEvents;
+        if (foundEventsToMonitor) {
+            NSLog(@"Found events to monitor, start updating location");
+            [[RealtimeLocationManager sharedInstance] startUpdatingLocationWithDelegate:self];
+        } else {
+            NSLog(@"Found no events to monitor, stop updating location");
+            [[RealtimeLocationManager sharedInstance] stopUpdatingLocation];
+        }
+
         // Set up event channels
         self.eventChannels = [[NSMutableArray alloc] init];
         for (Event *event in self.nowEvents) {
@@ -208,10 +214,9 @@ const NSTimeInterval kBackgroundPollInterval = 60*10;
 }
 
 - (void)publishLocation:(CLLocation *)location {
-    LocationMessage *message = [[LocationMessage alloc] initWithUser:[User currentUser] latitude:location.coordinate.latitude longitude:location.coordinate.longitude];
-    
-    for (PNChannel *eventChannel in self.eventChannels) {
-        [PubNub sendMessage:[message serializeMessage] toChannel:eventChannel compressed:NO];
+    for (Event *event in self.updateLocationEvents) {
+        NSLog(@"updating user location to %@ for event %@", location, event);
+        [UserEventLocation user:[User currentUser] didUpdateLocation:event withLatitude:location.coordinate.latitude withLongitude:location.coordinate.longitude];
     }
 }
 

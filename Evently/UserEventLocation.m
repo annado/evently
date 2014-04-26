@@ -176,7 +176,7 @@
     
     PFQuery *query = [UserEventLocation query];
     [query whereKey:@"user" equalTo:user];
-    [query whereKey:@"eventFacebookId" equalTo:event.facebookID];
+    [query whereKey:@"eventFacebookID" equalTo:event.facebookID];
     
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         if (error && [error code] != 101) {
