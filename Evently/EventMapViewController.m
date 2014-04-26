@@ -275,11 +275,6 @@
 
 #pragma mark - MKMapViewDelegate methods
 
-- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
-{
-    [self zoomToFitAnnotations:YES];
-}
-
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id < MKAnnotation >)annotation
 {
     // If the annotation is the user location, just return nil.
