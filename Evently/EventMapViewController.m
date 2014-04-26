@@ -155,8 +155,6 @@
 {
     [UIView animateWithDuration:1.0 animations:^{
         annotation.coordinate = coordinate;
-    } completion:^(BOOL finished) {
-        [self zoomToFitAnnotation:annotation animated:YES];
     }];
 }
 
