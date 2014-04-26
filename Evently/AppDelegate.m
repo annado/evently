@@ -213,7 +213,7 @@ const NSTimeInterval kBackgroundPollInterval = 60*10;
 
 - (void)publishLocation:(CLLocation *)location {
     for (Event *event in self.updateLocationEvents) {
-        NSLog(@"updating user location to %@ for event %@", location, event);
+//        NSLog(@"updating user location to %@ for event %@", location, event);
         [UserEventLocation user:[User currentUser] didUpdateLocation:event withLatitude:location.coordinate.latitude withLongitude:location.coordinate.longitude];
     }
 }
