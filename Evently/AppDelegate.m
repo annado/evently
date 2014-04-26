@@ -18,8 +18,12 @@
 #import "GeofenceMonitor.h"
 #import "LocationMessage.h"
 #import "UserEventLocation.h"
+#import "RealtimeLocationManager.h"
+#import "DateHelper.h"
 
-@interface AppDelegate () <GeofenceMonitorDelegate>
+const NSTimeInterval kBackgroundPollInterval = 60*10;
+
+@interface AppDelegate () <GeofenceMonitorDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *eventChannels;
 
@@ -56,7 +60,38 @@
     
     [self.window makeKeyAndVisible];
     
+    [application setMinimumBackgroundFetchInterval:kBackgroundPollInterval];
+
     return YES;
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    CLLocation *location = locations.lastObject;
+    [self publishLocation:location];
+}
+
+- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    NSLog(@"perform Background Fetch...");
+    [self loadEventsWithCompletion:^(NSArray *events, NSError *error) {
+        BOOL foundEventsToMonitor = NO;
+        for (Event *event in self.nowEvents) {
+            NSDate *tenMinutesBeforeStart = [event.startTime dateByAddingTimeInterval:-60*10];
+            // TODO refactor date comparison into DateHelper
+            BOOL afterTenMinutesBeforeEventStart = [tenMinutesBeforeStart compare:[NSDate date]] == NSOrderedAscending;
+            BOOL beforeEventEnd = [[NSDate date] compare:event.endTime] == NSOrderedAscending;
+            if (afterTenMinutesBeforeEventStart && beforeEventEnd) {
+                foundEventsToMonitor = YES;
+            }
+        }
+        if (foundEventsToMonitor) {
+            NSLog(@"Found events to monitor, start updating location");
+            [[RealtimeLocationManager sharedInstance] startUpdatingLocationWithDelegate:self];
+        } else {
+            NSLog(@"Found no events to monitor, stop updating location");
+            [[RealtimeLocationManager sharedInstance] stopUpdatingLocation];
+        }
+        completionHandler(UIBackgroundFetchResultNewData);
+    }];
 }
 
 - (void)initParse
@@ -172,8 +207,8 @@
     }];
 }
 
-- (void)publishLocation {
-    LocationMessage *message = [[LocationMessage alloc] initWithUser:[User currentUser] latitude:25.0 longitude:25.0];
+- (void)publishLocation:(CLLocation *)location {
+    LocationMessage *message = [[LocationMessage alloc] initWithUser:[User currentUser] latitude:location.coordinate.latitude longitude:location.coordinate.longitude];
     
     for (PNChannel *eventChannel in self.eventChannels) {
         [PubNub sendMessage:[message serializeMessage] toChannel:eventChannel compressed:NO];

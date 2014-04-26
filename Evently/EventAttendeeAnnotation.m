@@ -23,8 +23,8 @@
 - (id)initWithUserEventLocation:(UserEventLocation *)userEventLocation {
     self = [super init];
     if (self) {
-        self.user = userEventLocation.user;
-        self.coordinate = [userEventLocation coordinate];
+        _user = userEventLocation.user;
+        _coordinate = [userEventLocation coordinate];
     }
     return self;
 }
@@ -32,10 +32,16 @@
 - (id)initWithUser:(User *)user coordinate:(CLLocationCoordinate2D)coordinate {
     self = [super init];
     if (self) {
-        self.user = user;
-        self.coordinate = coordinate;
+        _user = user;
+        _coordinate = coordinate;
     }
     return self;
+}
+
+- (void)setStatus:(NSString *)status
+{
+    _status = status;
+    _title = status;
 }
 
 - (EventAttendeeAnnotationView *)annotationView

@@ -17,6 +17,7 @@
 #import "EventDetailViewController.h"
 
 @interface EventMapViewController ()
+@property (strong, nonatomic) PHFComposeBarView *composeBarView;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (nonatomic, strong) Event *event;
 @property (nonatomic, strong) PNChannel *eventChannel;
@@ -31,8 +32,26 @@
     if (self) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Details" style:UIBarButtonItemStylePlain target:self action:@selector(onDetailsButton)];
         self.attendeeAnnotations = [[NSMutableDictionary alloc] init];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillToggle:)
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillToggle:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
     }
     return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
 }
 
 - (id)initWithEvent:(Event *)event
@@ -48,15 +67,16 @@
 {
     [super viewDidLoad];
     self.mapView.delegate = self;
+    [self.view addSubview:self.composeBarView];
     
     [self addPinForEventLocation];
-
+    
     [UserEventLocation userEventLocationsForEvent:_event withCompletion:^(NSArray *userEventLocations, NSError *error) {
         for (UserEventLocation *userEventLocation in userEventLocations) {
             [self addPinForUserEventLocation:userEventLocation];
         }
         if (userEventLocations.count > 0) {
-            [self zoomToFitAnnotationsWithAnimation:YES];
+            [self zoomToFitAnnotations:YES];
         }
     }];
 }
@@ -96,17 +116,6 @@
     [self.navigationController pushViewController:eventDetailViewController animated:YES];
 }
 
-- (void)onShowComposer
-{
-    ComposerViewController *composerViewController = [[ComposerViewController alloc] init];
-    UINavigationController *navigationController = [[UINavigationController alloc]
-                                                    initWithRootViewController:composerViewController];
-    composerViewController.delegate = self;
-    self.modalPresentationStyle = UIModalPresentationCurrentContext;
-
-    [self presentViewController:navigationController animated:YES completion: nil];
-}
-
 - (void)processLocationMessage:(LocationMessage *)locationMessage {
     NSLog(@"LocationMessage: %@ at (%f, %f)", locationMessage.userFacebookId, locationMessage.latitude, locationMessage.longitude);
     
@@ -131,7 +140,6 @@
 - (void)addPinForUserEventLocation:(UserEventLocation *)userEventLocation {
     EventAttendeeAnnotation *annotation = [[EventAttendeeAnnotation alloc] initWithUserEventLocation:userEventLocation];
     [self.mapView addAnnotation:annotation];
-    [self zoomToFitAnnotationsWithAnimation:YES];
 }
 
 - (void)addPinForUserLocation:(User *)user location:(CLLocationCoordinate2D)coordinate
@@ -144,38 +152,121 @@
         EventAttendeeAnnotation *annotation = [[EventAttendeeAnnotation alloc] initWithUser:user coordinate:coordinate];
         [self.mapView addAnnotation:annotation];
         [self.attendeeAnnotations setObject:annotation forKey:user.facebookID];
-        [self zoomToFitAnnotationsWithAnimation:YES];
+        [self zoomToFitAnnotation:annotation animated:YES];
     }
+}
+
+- (void)setStatusForAnnotation:(EventAttendeeAnnotation *)annotation status:(NSString *)status
+{
+    if (annotation) {
+        [self.mapView deselectAnnotation:annotation animated:NO];
+        [self zoomToFitAnnotation:annotation animated:YES];
+        annotation.status = status;
+        [self.mapView selectAnnotation:annotation animated:YES];
+    }
+}
+
+- (EventAttendeeAnnotation *)getAnnotationForCurrentUser
+{
+    NSString *facebookID = [User currentUser].facebookID;
+    EventAttendeeAnnotation *annotation = self.attendeeAnnotations[facebookID];
+    return annotation;
 }
 
 - (void)animateCoordinateChange:(id <MKAnnotation>)annotation location:(CLLocationCoordinate2D)coordinate
 {
     [UIView animateWithDuration:1.0 animations:^{
         annotation.coordinate = coordinate;
-        [self zoomToFitAnnotationsWithAnimation:YES];
     }];
 }
 
-- (void)zoomToFitAnnotationsWithAnimation:(BOOL)animated
+- (void)zoomToFitAnnotation:(id <MKAnnotation>)annotation animated:(BOOL)animated
+{
+    if (![self isAnnotationVisible:annotation]) {
+        [self.mapView showAnnotations:self.mapView.annotations animated:animated];
+    }
+}
+
+- (void)zoomToFitAnnotations:(BOOL)animated
 {
     [self.mapView showAnnotations:self.mapView.annotations animated:animated];
 }
 
-#pragma mark - ComposerViewDelegate methods
-- (void)composeViewController:(ComposerViewController *)composerViewController
-                       posted:(NSString *)status
+- (BOOL)isAnnotationVisible:(id <MKAnnotation>)annotation
 {
-    if (!status) {
-        [self dismissViewControllerAnimated:YES completion:nil];
+    MKMapRect visibleMapRect = self.mapView.visibleMapRect;
+    NSSet *visibleAnnotations = [self.mapView annotationsInMapRect:visibleMapRect];
+    return [visibleAnnotations containsObject:annotation];
+}
+
+#pragma mark - ComposeBar methods
+- (PHFComposeBarView *)composeBarView
+{
+    if (!_composeBarView) {
+        CGRect viewBounds = [self.view bounds];
+        CGRect frame = CGRectMake(0.0f,
+                                  viewBounds.size.height - PHFComposeBarViewInitialHeight,
+                                  viewBounds.size.width,
+                                  PHFComposeBarViewInitialHeight);
+        _composeBarView = [[PHFComposeBarView alloc] initWithFrame:frame];
+        [_composeBarView setMaxLinesCount:5];
+        [_composeBarView setPlaceholder:@"Share your status"];
+        [_composeBarView setUtilityButtonImage:[UIImage imageNamed:@"Camera"]];
+        [_composeBarView setDelegate:self];
+        _composeBarView.buttonTintColor = [UIColor orangeColor];
     }
+    return _composeBarView;
+}
+
+- (void)composeBarViewDidPressButton:(PHFComposeBarView *)composeBarView
+{
+    NSString *status = composeBarView.text;
+    EventAttendeeAnnotation *annotation = [self getAnnotationForCurrentUser];
+    if (annotation) {
+        [self setStatusForAnnotation:annotation status:status];
+    }
+    [composeBarView setText:@"" animated:YES];
+    [composeBarView resignFirstResponder];
+}
+
+- (void)composeBarViewDidPressUtilityButton:(PHFComposeBarView *)composeBarView
+{
+    
+}
+
+- (void)keyboardWillToggle:(NSNotification *)notification {
+    NSDictionary* userInfo = [notification userInfo];
+    NSTimeInterval duration;
+    UIViewAnimationCurve animationCurve;
+    CGRect startFrame;
+    CGRect endFrame;
+    [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&duration];
+    [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey]    getValue:&animationCurve];
+    [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey]        getValue:&startFrame];
+    [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey]          getValue:&endFrame];
+    
+    NSInteger signCorrection = 1;
+    if (startFrame.origin.y < 0 || startFrame.origin.x < 0 || endFrame.origin.y < 0 || endFrame.origin.x < 0)
+        signCorrection = -1;
+    
+    CGFloat widthChange  = (endFrame.origin.x - startFrame.origin.x) * signCorrection;
+    CGFloat heightChange = (endFrame.origin.y - startFrame.origin.y) * signCorrection;
+    
+    CGFloat sizeChange = UIInterfaceOrientationIsLandscape([self interfaceOrientation]) ? widthChange : heightChange;
+    
+    CGRect newContainerFrame = [self.view frame];
+    newContainerFrame.size.height += sizeChange;
+    
+    [UIView animateWithDuration:duration
+                          delay:0
+                        options:(animationCurve << 16)|UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         [self.view setFrame:newContainerFrame];
+                     }
+                     completion:nil];
 }
 
 #pragma mark - MKMapViewDelegate methods
-
-- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
-{
-    [self zoomToFitAnnotationsWithAnimation:YES];
-}
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id < MKAnnotation >)annotation
 {

@@ -58,6 +58,7 @@
 		5863442318ED37AE009CFD7B /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5863442118ED37AE009CFD7B /* ProfileViewController.m */; };
 		5863442418ED37AE009CFD7B /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5863442218ED37AE009CFD7B /* ProfileViewController.xib */; };
 		6E928ECB3068458E93E99D3A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 161D78BE570642A8B3EFB03A /* libPods.a */; };
+		FE00A1EB190C36C4004D6DDC /* RealtimeLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FE00A1EA190C36C4004D6DDC /* RealtimeLocationManager.m */; };
 		FE1F022A1904DAFC004F6410 /* GeofenceMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F02291904DAFC004F6410 /* GeofenceMonitor.m */; };
 		FE1F022D1904ED0A004F6410 /* ZyngaFence.gpx in Resources */ = {isa = PBXBuildFile; fileRef = FE1F022C1904ED0A004F6410 /* ZyngaFence.gpx */; };
 		FE4D9A1318F3D581003351C3 /* EventListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4D9A1118F3D581003351C3 /* EventListViewController.m */; };
@@ -156,6 +157,8 @@
 		5863442118ED37AE009CFD7B /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		5863442218ED37AE009CFD7B /* ProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileViewController.xib; sourceTree = "<group>"; };
 		C7F6CD6B069E4FF9930FF9A5 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		FE00A1E9190C36C4004D6DDC /* RealtimeLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealtimeLocationManager.h; sourceTree = "<group>"; };
+		FE00A1EA190C36C4004D6DDC /* RealtimeLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealtimeLocationManager.m; sourceTree = "<group>"; };
 		FE1F02291904DAFC004F6410 /* GeofenceMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeofenceMonitor.m; sourceTree = "<group>"; };
 		FE1F022B1904DB03004F6410 /* GeofenceMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeofenceMonitor.h; sourceTree = "<group>"; };
 		FE1F022C1904ED0A004F6410 /* ZyngaFence.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ZyngaFence.gpx; sourceTree = "<group>"; };
@@ -324,6 +327,8 @@
 				58450C9F19074797004376E7 /* EventAttendeeAnnotation.m */,
 				3B2C7FFC1908C08200D9F28C /* LocationMessage.h */,
 				3B2C7FFD1908C08200D9F28C /* LocationMessage.m */,
+				FE00A1E9190C36C4004D6DDC /* RealtimeLocationManager.h */,
+				FE00A1EA190C36C4004D6DDC /* RealtimeLocationManager.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -415,6 +420,13 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Evently;
 				TargetAttributes = {
+					580A1D1E18EB50C10011A042 = {
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
 					580A1D3918EB50C10011A042 = {
 						TestTargetID = 580A1D1E18EB50C10011A042;
 					};
@@ -527,6 +539,7 @@
 				3B8828CD18F23B3700D5E87C /* Location.m in Sources */,
 				5863441F18ED3257009CFD7B /* User.m in Sources */,
 				580A1D3318EB50C10011A042 /* AppDelegate.m in Sources */,
+				FE00A1EB190C36C4004D6DDC /* RealtimeLocationManager.m in Sources */,
 				58450C9719063C54004376E7 /* EventLocationAnnotation.m in Sources */,
 				FE4D9A1918F3D7E0003351C3 /* EventCell.m in Sources */,
 				580A1D5518EB50F00011A042 /* SignInViewController.m in Sources */,

@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
-#import "ComposerViewController.h"
+#import "PHFComposeBarView.h"
 
 @interface EventMapViewController : UIViewController <MKMapViewDelegate,
-    ComposerViewDelegate>
+    PHFComposeBarViewDelegate>
 - (id)initWithEvent:(Event *)event;
 @end

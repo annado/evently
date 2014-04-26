@@ -13,9 +13,7 @@
 @synthesize locationManager;
 
 + (GeofenceMonitor *)sharedInstance {
-    
     static GeofenceMonitor * shared =nil;
-    
     static dispatch_once_t onceTocken;
     dispatch_once(&onceTocken, ^{
         shared = [[GeofenceMonitor alloc] init];

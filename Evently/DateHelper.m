@@ -16,7 +16,8 @@
 }
 
 + (BOOL)dateIsOlderThanNow:(NSDate *)date {
-    NSDate *now = [[NSDate alloc] init];
+    NSDate *now = [NSDate date];
     return [date compare:now] == NSOrderedAscending;
 }
+
 @end
