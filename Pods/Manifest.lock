@@ -1,30 +1,31 @@
 PODS:
-  - AFNetworking (2.2.1):
+  - AFNetworking (2.2.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
     - AFNetworking/UIKit
-  - AFNetworking/NSURLConnection (2.2.1):
+  - AFNetworking/NSURLConnection (2.2.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.2.1):
+  - AFNetworking/NSURLSession (2.2.3):
     - AFNetworking/NSURLConnection
-  - AFNetworking/Reachability (2.2.1)
-  - AFNetworking/Security (2.2.1)
-  - AFNetworking/Serialization (2.2.1)
-  - AFNetworking/UIKit (2.2.1):
+  - AFNetworking/Reachability (2.2.3)
+  - AFNetworking/Security (2.2.3)
+  - AFNetworking/Serialization (2.2.3)
+  - AFNetworking/UIKit (2.2.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - CRToast (0.0.6)
+  - DAKeyboardControl (2.3.0)
   - Facebook-iOS-SDK (3.13.1)
   - JSMessagesViewController (4.0.4):
     - JSQSystemSoundPlayer
   - JSONKit (1.5pre)
   - JSQSystemSoundPlayer (1.4.0)
-  - Parse (1.2.18):
+  - Parse (1.2.19):
     - Facebook-iOS-SDK (~> 3.11)
   - PHFComposeBarView (2.0.1):
     - PHFDelegateChain (~> 1.0)
@@ -35,6 +36,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 2.2.0)
   - CRToast (~> 0.0)
+  - DAKeyboardControl
   - Facebook-iOS-SDK
   - JSMessagesViewController (~> 4.0.3)
   - JSONKit
@@ -44,13 +46,14 @@ DEPENDENCIES:
   - TTTAttributedLabel
 
 SPEC CHECKSUMS:
-  AFNetworking: 0121f4b69be3fa58d1ab317866e036e12ac9651d
+  AFNetworking: ae513199cca79e9d7af2708ccabe2ed075550c42
   CRToast: 7def6720179d7c861b06222a82a4ad4bdfe476f0
+  DAKeyboardControl: 219d6e32b9343eb85151255c43b1f238d8f0bbf7
   Facebook-iOS-SDK: 47ae9e54684c84f93d75d4e6ab47cd031abdf406
   JSMessagesViewController: 6b59dec2b679ee6a8c6d9c9f1d5d9748abf4c05c
   JSONKit: b1f52f3f522b8602307769511d4fb47c6f856159
   JSQSystemSoundPlayer: 28ccd01a92a0cebc6de6361e8499011b4cb6dab7
-  Parse: 6dd57f2af9f89dc6facc755cec4e96f8b739b1fb
+  Parse: 3739f0b211c49115bad96d6b0969b804d4da2f24
   PHFComposeBarView: 9c9cff294c865550606ad873c5bd51d046fedadf
   PHFDelegateChain: 2c80836ba0c1b2ca4b5e6d3fa241343465e0eb70
   PubNub: 617df10280cca88551f12f5e9a0f4a48fd27272e

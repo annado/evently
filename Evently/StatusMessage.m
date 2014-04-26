@@ -8,6 +8,7 @@
 
 #import "StatusMessage.h"
 #import "JSONKit.h"
+#import "PubNub.h"
 
 @implementation StatusMessage
 
@@ -34,11 +35,11 @@
     return message;
 }
 
-- (void)updateStatusForUser:(User *)user event:(Event *)event statusMessage:(StatusMessage *)statusMessage {
++ (void)updateStatusForUser:(User *)user event:(Event *)event statusMessage:(StatusMessage *)statusMessage {
     [PubNub sendMessage:[statusMessage serializeMessage] toChannel:event.statusChannel compressed:YES];
 }
 
-- (void)getStatusesForEvent:(Event *)event withCompletion:(void (^)(NSArray *statusMessages, NSError *error))block {
++ (void)getStatusesForEvent:(Event *)event withCompletion:(void (^)(NSArray *statusMessages, NSError *error))block {
     [PubNub requestFullHistoryForChannel:event.statusChannel withCompletionBlock:^(NSArray *pnMessages, PNChannel *channel, PNDate *startDate, PNDate *endDate, PNError *error) {
         if (error) {
             NSLog(@"Failed to replay channel: %@", [error description]);
@@ -54,7 +55,7 @@
     }];
 }
 
-- (void)latestStatusForEvent:(Event *)event withCompletion:(void (^)(StatusMessage *statusMessage, NSError *error))block {
++ (void)latestStatusForEvent:(Event *)event withCompletion:(void (^)(StatusMessage *statusMessage, NSError *error))block {
     PNDate *from = [PNDate dateWithDate:[NSDate dateWithTimeIntervalSince1970:0]];
     [PubNub requestHistoryForChannel:event.statusChannel from:from limit:1 reverseHistory:YES withCompletionBlock:^(NSArray *pnMessages, PNChannel *pnChannel, PNDate *startDate, PNDate *endDate, PNError *error) {
         if (error) {

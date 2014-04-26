@@ -16,6 +16,7 @@
 #import "UserEventLocation.h"
 #import "StatusMessage.h"
 #import "EventDetailViewController.h"
+#import "DAKeyboardControl.h"
 
 @interface EventMapViewController ()
 @property (strong, nonatomic) PHFComposeBarView *composeBarView;
@@ -31,7 +32,10 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Details" style:UIBarButtonItemStylePlain target:self action:@selector(onDetailsButton)];
+        UIBarButtonItem *chatButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ChatIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(onDetailsButton)];
+        UIBarButtonItem *detailsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"InfoIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(onDetailsButton)];
+        
+        self.navigationItem.rightBarButtonItems = @[chatButton, detailsButton];
         self.attendeeAnnotations = [[NSMutableDictionary alloc] init];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -60,6 +64,7 @@
     self = [super init];
     if (self) {
         _event = event;
+        self.title = _event.name;
     }
     return self;
 }
@@ -71,9 +76,17 @@
     [self.view addSubview:self.composeBarView];
     
     [self addPinForEventLocation];
-    
+
     [UserEventLocation userEventLocationsForEvent:_event withCompletion:^(NSArray *userEventLocations, NSError *error) {
         [self addPinsForUserEventLocations:userEventLocations];
+    }];
+    
+     __weak PHFComposeBarView *weakTextView = _composeBarView;
+    [self.view addKeyboardPanningWithActionHandler:^(CGRect keyboardFrameInView) {
+        NSLog(@"keyboardFrameInView: %f", keyboardFrameInView.origin.y);
+        CGRect textViewFrame = weakTextView.frame;
+        textViewFrame.origin.y = keyboardFrameInView.origin.y - textViewFrame.size.height;
+        weakTextView.frame = textViewFrame;
     }];
 }
 
@@ -82,7 +95,7 @@
         // Bootstrap the locations and then subscribe to events
         [UserEventLocation userEventLocationsForEvent:self.event withCompletion:^(NSArray *userEventLocations, NSError *error) {
             // Get the latest user event location
-            NSLog(@"Bootstrapping locations with %i existing user event locations", userEventLocations.count);
+            NSLog(@"Bootstrapping with %d existing user event locations", userEventLocations.count);
             [self addPinsForUserEventLocations:userEventLocations];
             
             // Subscribe to pubnub
@@ -167,6 +180,23 @@
         // this is only a problem if there is only 1 pin
         self.mapView.region = MKCoordinateRegionMake(_event.location.latLon.coordinate, MKCoordinateSpanMake(0.005, 0.005));
     }
+}
+
+- (void)addPinForUserEventLocation:(UserEventLocation *)userEventLocation {
+    EventAttendeeAnnotation *annotation = [[EventAttendeeAnnotation alloc] initWithUserEventLocation:userEventLocation];
+    [self.mapView addAnnotation:annotation];
+}
+     
+- (void)addPinsForUserEventLocations
+{
+    [UserEventLocation userEventLocationsForEvent:_event withCompletion:^(NSArray *userEventLocations, NSError *error) {
+        for (UserEventLocation *userEventLocation in userEventLocations) {
+            [self addPinForUserEventLocation:userEventLocation];
+        }
+        if (userEventLocations.count > 0) {
+            [self zoomToFitAnnotations:YES];
+        }
+    }];
 }
 
 - (void)addPinForUserLocation:(User *)user location:(CLLocationCoordinate2D)coordinate
