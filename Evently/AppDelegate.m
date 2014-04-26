@@ -143,8 +143,6 @@ const NSTimeInterval kBackgroundPollInterval = 60*10;
 
 - (void)updateRootViewController
 {
-//    self.window.rootViewController = [[MessagesViewController alloc] init];
-//    return;
     if ([[User currentUser] isLoggedIn]) {
         EventListViewController *eventListViewController = [[EventListViewController alloc] init];
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:eventListViewController];
