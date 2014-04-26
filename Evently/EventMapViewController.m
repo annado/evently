@@ -100,31 +100,30 @@
             NSLog(@"Bootstrapping with %d existing user event locations", userEventLocations.count);
             [self addPinsForUserEventLocations:userEventLocations];
             
-            // Subscribe to pubnub
-            [PubNub subscribeOnChannel:self.event.locationChannel];
-            [[PNObservationCenter defaultCenter] addMessageReceiveObserver:self withBlock:^(PNMessage *message) {
-                if ([message.channel.name isEqualToString:self.event.locationChannel.name]) {
-                    LocationMessage *locationMessage = [LocationMessage deserializeMessage:message.message];
-                    [self processLocationMessage:locationMessage];
-                }
+            [StatusMessage getStatusesForEvent:self.event withCompletion:^(NSArray *statusMessages, NSError *error) {
+                NSLog(@"Bootstrapping statuses with %i existing statuses", statusMessages.count);
+                [self bootstrapStatusMessages:statusMessages];
+                
+                // Subscribe to pubnub locations
+                [PubNub subscribeOnChannel:self.event.statusChannel];
+                [[PNObservationCenter defaultCenter] addMessageReceiveObserver:self withBlock:^(PNMessage *pnMessage) {
+                    if ([pnMessage.channel.name isEqualToString:self.event.statusChannel.name]) {
+                        StatusMessage *statusMessage = [StatusMessage deserializeMessage:pnMessage.message];
+                        [self processStatusMessage:statusMessage];
+                    }
+                }];
+                NSLog(@"Subscribed to channel %@", self.event.statusChannel.name);
+                
+                // Subscribe to pubnub statuses
+                [PubNub subscribeOnChannel:self.event.locationChannel];
+                [[PNObservationCenter defaultCenter] addMessageReceiveObserver:self withBlock:^(PNMessage *message) {
+                    if ([message.channel.name isEqualToString:self.event.locationChannel.name]) {
+                        LocationMessage *locationMessage = [LocationMessage deserializeMessage:message.message];
+                        [self processLocationMessage:locationMessage];
+                    }
+                }];
+                NSLog(@"Subscribed to channel %@ near (%f, %F)", self.event.locationChannel.name, self.event.location.latLon.coordinate.latitude, self.event.location.latLon.coordinate.longitude);
             }];
-            NSLog(@"Subscribed to channel %@ near (%f, %F)", self.event.locationChannel.name, self.event.location.latLon.coordinate.latitude, self.event.location.latLon.coordinate.longitude);
-        }];
-        
-        // Bootstrap the statuses and then subscribe for updates
-        [StatusMessage getStatusesForEvent:self.event withCompletion:^(NSArray *statusMessages, NSError *error) {
-            NSLog(@"Bootstrapping statuses with %i existing statuses", statusMessages.count);
-            self.statusMessages = statusMessages;
-            
-            // Subscribe to pubnub
-            [PubNub subscribeOnChannel:self.event.statusChannel];
-            [[PNObservationCenter defaultCenter] addMessageReceiveObserver:self withBlock:^(PNMessage *pnMessage) {
-                if ([pnMessage.channel.name isEqualToString:self.event.statusChannel.name]) {
-                    StatusMessage *statusMessage = [StatusMessage deserializeMessage:pnMessage.message];
-                    [self processStatusMessage:statusMessage];
-                }
-            }];
-            NSLog(@"Subscribed to channel %@", self.event.statusChannel.name);
         }];
     }
     
@@ -176,7 +175,7 @@
 
 - (void)processStatusMessage:(StatusMessage *)statusMessage {
     NSLog(@"StatusMessage: %@, %@", statusMessage.userFacebookID, statusMessage.text);
-    EventAttendeeAnnotation *annotation = [self getAnnotationFor:[User currentUser]];
+    EventAttendeeAnnotation *annotation = [self getAnnotationFor:[User currentUser].facebookID];
     [self setStatusForAnnotation:annotation status:statusMessage.text];
 }
 
@@ -242,10 +241,25 @@
     }
 }
 
-- (EventAttendeeAnnotation *)getAnnotationFor:(User *)user;
+- (EventAttendeeAnnotation *)getAnnotationFor:(NSString *)userFacebookID
 {
-    NSString *facebookID = user.facebookID;
-    return self.attendeeAnnotations[facebookID];
+    return self.attendeeAnnotations[userFacebookID];
+}
+
+- (void)bootstrapStatusMessages:(NSArray *)statusMessages {
+    self.statusMessages = statusMessages;
+    
+    NSMutableDictionary *latestMessageByUserId = [[NSMutableDictionary alloc] init];
+    for (StatusMessage *statusMessage in self.statusMessages) {
+        latestMessageByUserId[statusMessage.userFacebookID] = statusMessage;
+    }
+    
+    for (NSString *userFacebookId in latestMessageByUserId) {
+        StatusMessage *message = latestMessageByUserId[userFacebookId];
+        EventAttendeeAnnotation *annotation = [self getAnnotationFor:userFacebookId];
+        [self setStatusForAnnotation:annotation status:message.text];
+    }
+    
 }
 
 - (void)animateCoordinateChange:(id <MKAnnotation>)annotation location:(CLLocationCoordinate2D)coordinate
