@@ -184,8 +184,10 @@
 - (void)geofenceMonitor:(GeofenceMonitor *)geofenceMonitor didEnterRegion:(CLRegion *)region {
     NSLog(@"Entered Region - %@", region.identifier);
     [Event eventForFacebookID:region.identifier withIncludeAttendees:NO withCompletion:^(Event *event, NSError *error) {
-        [event checkinCurrentUser];
-        [self fireLocalNotificationWithMessage:[NSString stringWithFormat:@"You've been checked in to %@", event.name]];
+        if (![[User currentUser] isCheckedInToEvent:event]) {
+            [event checkinCurrentUser];
+            [self fireLocalNotificationWithMessage:[NSString stringWithFormat:@"You've been checked in to %@", event.name]];
+        }
     }];
 }
 
