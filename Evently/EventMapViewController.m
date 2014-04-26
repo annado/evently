@@ -118,9 +118,9 @@
             
             // Subscribe to pubnub
             [PubNub subscribeOnChannel:self.event.statusChannel];
-            [[PNObservationCenter defaultCenter] addMessageReceiveObserver:self withBlock:^(PNMessage *message) {
-                if ([message.channel.name isEqualToString:self.event.statusChannel.name]) {
-                    StatusMessage *statusMessage = [StatusMessage deserializeMessage:message.message];
+            [[PNObservationCenter defaultCenter] addMessageReceiveObserver:self withBlock:^(PNMessage *pnMessage) {
+                if ([pnMessage.channel.name isEqualToString:self.event.statusChannel.name]) {
+                    StatusMessage *statusMessage = [StatusMessage deserializeMessage:pnMessage.message];
                     [self processStatusMessage:statusMessage];
                 }
             }];
@@ -170,18 +170,19 @@
     
     CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(locationMessage.latitude, locationMessage.longitude);
     [User findUserWithFacebookID:locationMessage.userFacebookId completion:^(User *user, NSError *error) {
-        [self addPinForUserLocation:user location:coordinate];
+        [self addAnnotationForUser:user location:coordinate];
     }];
 }
 
 - (void)processStatusMessage:(StatusMessage *)statusMessage {
     NSLog(@"StatusMessage: %@, %@", statusMessage.userFacebookID, statusMessage.text);
-    // TODO
+    EventAttendeeAnnotation *annotation = [self getAnnotationFor:[User currentUser]];
+    [self setStatusForAnnotation:annotation status:statusMessage.text];
 }
 
 - (void)addPinsForUserEventLocations:(NSArray *)userEventLocations {
     for (UserEventLocation *userEventLocation in userEventLocations) {
-        [self addPinForUserLocation:userEventLocation.user location:[userEventLocation coordinate]];
+        [self addAnnotationForUser:userEventLocation.user location:[userEventLocation coordinate]];
     }
     if (userEventLocations.count > 0) {
         [self zoomToFitAnnotations:YES];
@@ -217,7 +218,7 @@
     }];
 }
 
-- (void)addPinForUserLocation:(User *)user location:(CLLocationCoordinate2D)coordinate
+- (void)addAnnotationForUser:(User *)user location:(CLLocationCoordinate2D)coordinate
 {
     if (self.attendeeAnnotations[user.facebookID]) {
         // update coordinates
@@ -241,11 +242,10 @@
     }
 }
 
-- (EventAttendeeAnnotation *)getAnnotationForCurrentUser
+- (EventAttendeeAnnotation *)getAnnotationFor:(User *)user;
 {
-    NSString *facebookID = [User currentUser].facebookID;
-    EventAttendeeAnnotation *annotation = self.attendeeAnnotations[facebookID];
-    return annotation;
+    NSString *facebookID = user.facebookID;
+    return self.attendeeAnnotations[facebookID];
 }
 
 - (void)animateCoordinateChange:(id <MKAnnotation>)annotation location:(CLLocationCoordinate2D)coordinate
@@ -295,10 +295,6 @@
 - (void)composeBarViewDidPressButton:(PHFComposeBarView *)composeBarView
 {
     NSString *status = composeBarView.text;
-//    EventAttendeeAnnotation *annotation = [self getAnnotationForCurrentUser];
-//    if (annotation) {
-//        [self setStatusForAnnotation:annotation status:status];
-//    }
     StatusMessage *message = [StatusMessage statusMessageWithText:status userFacebookID:[User currentUser].facebookID userFullName:[User currentUser].name date:[NSDate date]];
     [StatusMessage updateStatusForUser:[User currentUser] event:self.event statusMessage:message];
     

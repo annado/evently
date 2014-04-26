@@ -21,9 +21,7 @@
     return self.userFullName;
 }
 
-+ (StatusMessage *)deserializeMessage:(NSString *)serialized {
-    NSArray *parts = [serialized objectFromJSONString];
-    
++ (StatusMessage *)deserializeMessage:(NSArray *)parts {    
     StatusMessage *message = [[StatusMessage alloc] init];
     message.userFacebookID = parts[0];
     message.userFullName = parts[1];
