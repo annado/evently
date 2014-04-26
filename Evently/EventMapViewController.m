@@ -15,6 +15,7 @@
 #import "UserEventLocation.h"
 
 #import "EventDetailViewController.h"
+#import "DAKeyboardControl.h"
 
 @interface EventMapViewController ()
 @property (strong, nonatomic) PHFComposeBarView *composeBarView;
@@ -70,9 +71,17 @@
     [self.view addSubview:self.composeBarView];
     
     [self addPinForEventLocation];
-    
+
     [UserEventLocation userEventLocationsForEvent:_event withCompletion:^(NSArray *userEventLocations, NSError *error) {
         [self addPinsForUserEventLocations:userEventLocations];
+    }];
+    
+     __weak PHFComposeBarView *weakTextView = _composeBarView;
+    [self.view addKeyboardPanningWithActionHandler:^(CGRect keyboardFrameInView) {
+        NSLog(@"keyboardFrameInView: %f", keyboardFrameInView.origin.y);
+        CGRect textViewFrame = weakTextView.frame;
+        textViewFrame.origin.y = keyboardFrameInView.origin.y - textViewFrame.size.height;
+        weakTextView.frame = textViewFrame;
     }];
 }
 
@@ -82,7 +91,7 @@
         [UserEventLocation userEventLocationsForEvent:self.event withCompletion:^(NSArray *userEventLocations, NSError *error) {
             
             // Get the latest user event location
-            NSLog(@"Bootstrapping with %i existing user event locations", userEventLocations.count);
+            NSLog(@"Bootstrapping with %d existing user event locations", userEventLocations.count);
             [self addPinsForUserEventLocations:userEventLocations];
             
             // Subscribe to pub sub
@@ -147,6 +156,23 @@
         // this is only a problem if there is only 1 pin
         self.mapView.region = MKCoordinateRegionMake(_event.location.latLon.coordinate, MKCoordinateSpanMake(0.005, 0.005));
     }
+}
+
+- (void)addPinForUserEventLocation:(UserEventLocation *)userEventLocation {
+    EventAttendeeAnnotation *annotation = [[EventAttendeeAnnotation alloc] initWithUserEventLocation:userEventLocation];
+    [self.mapView addAnnotation:annotation];
+}
+     
+- (void)addPinsForUserEventLocations
+{
+    [UserEventLocation userEventLocationsForEvent:_event withCompletion:^(NSArray *userEventLocations, NSError *error) {
+        for (UserEventLocation *userEventLocation in userEventLocations) {
+            [self addPinForUserEventLocation:userEventLocation];
+        }
+        if (userEventLocations.count > 0) {
+            [self zoomToFitAnnotations:YES];
+        }
+    }];
 }
 
 - (void)addPinForUserLocation:(User *)user location:(CLLocationCoordinate2D)coordinate

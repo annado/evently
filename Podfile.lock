@@ -19,6 +19,7 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - CRToast (0.0.6)
+  - DAKeyboardControl (2.3.0)
   - Facebook-iOS-SDK (3.13.1)
   - JSMessagesViewController (4.0.4):
     - JSQSystemSoundPlayer
@@ -34,6 +35,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 2.2.0)
   - CRToast (~> 0.0)
+  - DAKeyboardControl
   - Facebook-iOS-SDK
   - JSMessagesViewController (~> 4.0.3)
   - Parse (~> 1.2.18)
@@ -44,6 +46,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: 0121f4b69be3fa58d1ab317866e036e12ac9651d
   CRToast: 7def6720179d7c861b06222a82a4ad4bdfe476f0
+  DAKeyboardControl: 219d6e32b9343eb85151255c43b1f238d8f0bbf7
   Facebook-iOS-SDK: 47ae9e54684c84f93d75d4e6ab47cd031abdf406
   JSMessagesViewController: 6b59dec2b679ee6a8c6d9c9f1d5d9748abf4c05c
   JSQSystemSoundPlayer: 28ccd01a92a0cebc6de6361e8499011b4cb6dab7
