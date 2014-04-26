@@ -44,6 +44,12 @@
     return self;
 }
 
+- (void)setStatus:(NSString *)status
+{
+    _status = status;
+    _title = status;
+}
+
 - (EventAttendeeAnnotationView *)annotationView
 {
     EventAttendeeAnnotationView *annotationView = [[EventAttendeeAnnotationView alloc] initWithAnnotation:self reuseIdentifier:@"EventAttendeeAnnotationView"];

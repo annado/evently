@@ -17,6 +17,7 @@
 #import "EventDetailViewController.h"
 
 @interface EventMapViewController ()
+@property (strong, nonatomic) PHFComposeBarView *composeBarView;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (nonatomic, strong) Event *event;
 @property (nonatomic, strong) PNChannel *eventChannel;
@@ -31,8 +32,26 @@
     if (self) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Details" style:UIBarButtonItemStylePlain target:self action:@selector(onDetailsButton)];
         self.attendeeAnnotations = [[NSMutableDictionary alloc] init];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillToggle:)
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillToggle:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
     }
     return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
 }
 
 - (id)initWithEvent:(Event *)event
@@ -48,6 +67,7 @@
 {
     [super viewDidLoad];
     self.mapView.delegate = self;
+    [self.view addSubview:self.composeBarView];
     
     [self addPinForEventLocation];
     [self addPinsForEventCheckins];
@@ -86,17 +106,6 @@
 {
     EventDetailViewController *eventDetailViewController = [[EventDetailViewController alloc] initWithEvent:_event];
     [self.navigationController pushViewController:eventDetailViewController animated:YES];
-}
-
-- (void)onShowComposer
-{
-    ComposerViewController *composerViewController = [[ComposerViewController alloc] init];
-    UINavigationController *navigationController = [[UINavigationController alloc]
-                                                    initWithRootViewController:composerViewController];
-    composerViewController.delegate = self;
-    self.modalPresentationStyle = UIModalPresentationCurrentContext;
-
-    [self presentViewController:navigationController animated:YES completion: nil];
 }
 
 - (void)processLocationMessage:(LocationMessage *)locationMessage {
@@ -154,6 +163,23 @@
     }
 }
 
+- (void)setStatusForAnnotation:(EventAttendeeAnnotation *)annotation status:(NSString *)status
+{
+    if (annotation) {
+        [self.mapView deselectAnnotation:annotation animated:NO];
+        [self zoomToFitAnnotation:annotation animated:YES];
+        annotation.status = status;
+        [self.mapView selectAnnotation:annotation animated:YES];
+    }
+}
+
+- (EventAttendeeAnnotation *)getAnnotationForCurrentUser
+{
+    NSString *facebookID = [User currentUser].facebookID;
+    EventAttendeeAnnotation *annotation = self.attendeeAnnotations[facebookID];
+    return annotation;
+}
+
 - (void)animateCoordinateChange:(id <MKAnnotation>)annotation location:(CLLocationCoordinate2D)coordinate
 {
     [UIView animateWithDuration:1.0 animations:^{
@@ -180,13 +206,71 @@
     return [visibleAnnotations containsObject:annotation];
 }
 
-#pragma mark - ComposerViewDelegate methods
-- (void)composeViewController:(ComposerViewController *)composerViewController
-                       posted:(NSString *)status
+#pragma mark - ComposeBar methods
+- (PHFComposeBarView *)composeBarView
 {
-    if (!status) {
-        [self dismissViewControllerAnimated:YES completion:nil];
+    if (!_composeBarView) {
+        CGRect viewBounds = [self.view bounds];
+        CGRect frame = CGRectMake(0.0f,
+                                  viewBounds.size.height - PHFComposeBarViewInitialHeight,
+                                  viewBounds.size.width,
+                                  PHFComposeBarViewInitialHeight);
+        _composeBarView = [[PHFComposeBarView alloc] initWithFrame:frame];
+        [_composeBarView setMaxLinesCount:5];
+        [_composeBarView setPlaceholder:@"Share your status"];
+        [_composeBarView setUtilityButtonImage:[UIImage imageNamed:@"Camera"]];
+        [_composeBarView setDelegate:self];
+        _composeBarView.buttonTintColor = [UIColor orangeColor];
     }
+    return _composeBarView;
+}
+
+- (void)composeBarViewDidPressButton:(PHFComposeBarView *)composeBarView
+{
+    NSString *status = composeBarView.text;
+    EventAttendeeAnnotation *annotation = [self getAnnotationForCurrentUser];
+    if (annotation) {
+        [self setStatusForAnnotation:annotation status:status];
+    }
+    [composeBarView setText:@"" animated:YES];
+    [composeBarView resignFirstResponder];
+}
+
+- (void)composeBarViewDidPressUtilityButton:(PHFComposeBarView *)composeBarView
+{
+    
+}
+
+- (void)keyboardWillToggle:(NSNotification *)notification {
+    NSDictionary* userInfo = [notification userInfo];
+    NSTimeInterval duration;
+    UIViewAnimationCurve animationCurve;
+    CGRect startFrame;
+    CGRect endFrame;
+    [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&duration];
+    [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey]    getValue:&animationCurve];
+    [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey]        getValue:&startFrame];
+    [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey]          getValue:&endFrame];
+    
+    NSInteger signCorrection = 1;
+    if (startFrame.origin.y < 0 || startFrame.origin.x < 0 || endFrame.origin.y < 0 || endFrame.origin.x < 0)
+        signCorrection = -1;
+    
+    CGFloat widthChange  = (endFrame.origin.x - startFrame.origin.x) * signCorrection;
+    CGFloat heightChange = (endFrame.origin.y - startFrame.origin.y) * signCorrection;
+    
+    CGFloat sizeChange = UIInterfaceOrientationIsLandscape([self interfaceOrientation]) ? widthChange : heightChange;
+    
+    CGRect newContainerFrame = [self.view frame];
+    newContainerFrame.size.height += sizeChange;
+    
+    [UIView animateWithDuration:duration
+                          delay:0
+                        options:(animationCurve << 16)|UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         [self.view setFrame:newContainerFrame];
+                     }
+                     completion:nil];
 }
 
 #pragma mark - MKMapViewDelegate methods
