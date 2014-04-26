@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import "ComposerViewController.h"
 
-@interface EventMapViewController : UIViewController <MKMapViewDelegate>
+@interface EventMapViewController : UIViewController <MKMapViewDelegate,
+    ComposerViewDelegate>
 - (id)initWithEvent:(Event *)event;
 @end

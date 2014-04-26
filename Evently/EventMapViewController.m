@@ -6,14 +6,15 @@
 //  Copyright (c) 2014 Evently. All rights reserved.
 //
 
+#import "EventCheckin.h"
+#import "LocationMessage.h"
+
 #import "EventMapViewController.h"
 #import "EventAttendeeAnnotation.h"
 #import "EventLocationAnnotation.h"
 #import "EventAttendeeAnnotationView.h"
 
 #import "EventDetailViewController.h"
-#import "EventCheckin.h"
-#import "LocationMessage.h"
 
 @interface EventMapViewController ()
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
@@ -48,13 +49,17 @@
     [super viewDidLoad];
     self.mapView.delegate = self;
     
+    [self addPinForEventLocation];
+
     [EventCheckin checkinsForEvent:_event withCompletion:^(NSArray *checkins, NSError *error) {
         for (int i = 0; i < checkins.count; i++) {
             [self addPinForEventCheckin:checkins[i]];
         }
+        if (checkins.count > 0) {
+            [self zoomToFitAnnotationsWithAnimation:YES];
+        }
     }];
 
-    [self addPinForEventLocation];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -90,7 +95,17 @@
 {
     EventDetailViewController *eventDetailViewController = [[EventDetailViewController alloc] initWithEvent:_event];
     [self.navigationController pushViewController:eventDetailViewController animated:YES];
+}
 
+- (void)onShowComposer
+{
+    ComposerViewController *composerViewController = [[ComposerViewController alloc] init];
+    UINavigationController *navigationController = [[UINavigationController alloc]
+                                                    initWithRootViewController:composerViewController];
+    composerViewController.delegate = self;
+    self.modalPresentationStyle = UIModalPresentationCurrentContext;
+
+    [self presentViewController:navigationController animated:YES completion: nil];
 }
 
 - (void)processLocationMessage:(LocationMessage *)locationMessage {
@@ -107,6 +122,10 @@
     if (_event.location.latLon) {
         EventLocationAnnotation *annotation = [[EventLocationAnnotation alloc] initWithEvent:_event];
         [self.mapView addAnnotation:annotation];
+        
+        // make the default region size smaller
+        // this is only a problem if there is only 1 pin
+        self.mapView.region = MKCoordinateRegionMake(_event.location.latLon.coordinate, MKCoordinateSpanMake(0.005, 0.005));
     }
 }
 
@@ -145,6 +164,15 @@
     [self.mapView showAnnotations:self.mapView.annotations animated:animated];
 }
 
+#pragma mark - ComposerViewDelegate methods
+- (void)composeViewController:(ComposerViewController *)composerViewController
+                       posted:(NSString *)status
+{
+    if (!status) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
 #pragma mark - MKMapViewDelegate methods
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
@@ -171,18 +199,17 @@
         
         return annotationView;
     } else if ([annotation isKindOfClass:[EventAttendeeAnnotation class]]) {
-        EventAttendeeAnnotation *location = (EventAttendeeAnnotation *)annotation;
-        EventAttendeeAnnotationView *annotationView = (EventAttendeeAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"EventAttendeeAnnotationView"];
+        EventAttendeeAnnotation *attendeeAnnotation = (EventAttendeeAnnotation *)annotation;
+        EventAttendeeAnnotationView *annotationView = (EventAttendeeAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:@"EventAttendeeAnnotationView"];
         
         if (annotationView) {
-            annotationView.annotation = location;
+            annotationView.annotation = attendeeAnnotation;
         } else {
-            annotationView = [location annotationView];
+            annotationView = [attendeeAnnotation annotationView];
         }
         
         return annotationView;
     }
-
     
     return nil;
 }
