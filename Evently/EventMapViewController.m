@@ -56,7 +56,7 @@
             [self addPinForEventCheckin:checkins[i]];
         }
         if (checkins.count > 0) {
-            [self zoomToFitAnnotationsWithAnimation:YES];
+            [self zoomToFitAnnotations:YES];
         }
     }];
 
@@ -134,7 +134,7 @@
     CLLocationCoordinate2D coordinate = _event.location.latLon.coordinate; // TODO
     EventAttendeeAnnotation *annotation = [[EventAttendeeAnnotation alloc] initWithEventCheckin:checkin location:coordinate];
     [self.mapView addAnnotation:annotation];
-    [self zoomToFitAnnotationsWithAnimation:YES];
+    [self zoomToFitAnnotations:YES];
 }
 
 - (void)addPinForUserLocation:(User *)user location:(CLLocationCoordinate2D)coordinate
@@ -147,7 +147,7 @@
         EventAttendeeAnnotation *annotation = [[EventAttendeeAnnotation alloc] initWithUser:user location:coordinate];
         [self.mapView addAnnotation:annotation];
         [self.attendeeAnnotations setObject:annotation forKey:user.facebookID];
-        [self zoomToFitAnnotationsWithAnimation:YES];
+        [self zoomToFitAnnotation:annotation animated:YES];
     }
 }
 
@@ -155,13 +155,28 @@
 {
     [UIView animateWithDuration:1.0 animations:^{
         annotation.coordinate = coordinate;
-        [self zoomToFitAnnotationsWithAnimation:YES];
+    } completion:^(BOOL finished) {
+        [self zoomToFitAnnotation:annotation animated:YES];
     }];
 }
 
-- (void)zoomToFitAnnotationsWithAnimation:(BOOL)animated
+- (void)zoomToFitAnnotation:(id <MKAnnotation>)annotation animated:(BOOL)animated
+{
+    if (![self isAnnotationVisible:annotation]) {
+        [self.mapView showAnnotations:self.mapView.annotations animated:animated];
+    }
+}
+
+- (void)zoomToFitAnnotations:(BOOL)animated
 {
     [self.mapView showAnnotations:self.mapView.annotations animated:animated];
+}
+
+- (BOOL)isAnnotationVisible:(id <MKAnnotation>)annotation
+{
+    MKMapRect visibleMapRect = self.mapView.visibleMapRect;
+    NSSet *visibleAnnotations = [self.mapView annotationsInMapRect:visibleMapRect];
+    return [visibleAnnotations containsObject:annotation];
 }
 
 #pragma mark - ComposerViewDelegate methods
@@ -177,7 +192,7 @@
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
-    [self zoomToFitAnnotationsWithAnimation:YES];
+    [self zoomToFitAnnotations:YES];
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id < MKAnnotation >)annotation
