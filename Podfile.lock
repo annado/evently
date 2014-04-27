@@ -31,6 +31,7 @@ PODS:
     - PHFDelegateChain (~> 1.0)
   - PHFDelegateChain (1.0.1)
   - PubNub (3.6.1)
+  - SMCalloutView (2.0)
   - TTTAttributedLabel (1.9.5)
 
 DEPENDENCIES:
@@ -43,6 +44,7 @@ DEPENDENCIES:
   - Parse (~> 1.2.18)
   - PHFComposeBarView (~> 2.0.1)
   - PubNub (= 3.6.1)
+  - SMCalloutView (~> 2.0)
   - TTTAttributedLabel
 
 SPEC CHECKSUMS:
@@ -57,6 +59,7 @@ SPEC CHECKSUMS:
   PHFComposeBarView: 9c9cff294c865550606ad873c5bd51d046fedadf
   PHFDelegateChain: 2c80836ba0c1b2ca4b5e6d3fa241343465e0eb70
   PubNub: 617df10280cca88551f12f5e9a0f4a48fd27272e
+  SMCalloutView: 1b8d1de1232d73b4f4a195c9238e84384b070470
   TTTAttributedLabel: 6154fd2407a03fb8d71abfa36f4710fff26a168e
 
 COCOAPODS: 0.32.1

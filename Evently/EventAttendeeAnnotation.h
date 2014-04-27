@@ -9,10 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 #import "UserEventLocation.h"
+#import "ImageWithCalloutAnnotationView.h"
 
-@class EventAttendeeAnnotationView;
-
-@interface EventAttendeeAnnotation : NSObject <MKAnnotation>
+@interface EventAttendeeAnnotation : NSObject <MKAnnotation, ImageAnnotation>
 
 @property (nonatomic, strong) User *user;
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;
@@ -20,7 +19,5 @@
 
 - (id)initWithUserEventLocation:(UserEventLocation *)userEventLocation;
 - (id)initWithUser:(User *)user coordinate:(CLLocationCoordinate2D)coordinate;
-
-- (EventAttendeeAnnotationView *)annotationView;
 
 @end

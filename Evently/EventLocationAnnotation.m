@@ -8,7 +8,7 @@
 
 #import "UIImageView+AFNetworking.h"
 #import "EventLocationAnnotation.h"
-#import "EventAttendeeAnnotationView.h"
+#import "ImageWithCalloutAnnotationView.h"
 
 @interface EventLocationAnnotation ()
 @property (nonatomic, strong) Event *event;
@@ -28,13 +28,8 @@
     return self;
 }
 
-- (EventAttendeeAnnotationView *)annotationView
-{
-    EventAttendeeAnnotationView *annotationView = [[EventAttendeeAnnotationView alloc] initWithAnnotation:self reuseIdentifier:@"EventLocationAnnotationView"];
-    annotationView.enabled = YES;
-    annotationView.canShowCallout = YES;
-    [annotationView.imageView setImageWithURL:[_event coverPhotoURL]];
-    return annotationView;
+- (NSURL *)urlForImage {
+    return [self.event coverPhotoURL];
 }
 
 @end

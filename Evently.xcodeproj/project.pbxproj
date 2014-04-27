@@ -49,9 +49,9 @@
 		58450C9019063B08004376E7 /* EventMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C8E19063B08004376E7 /* EventMapViewController.m */; };
 		58450C9119063B08004376E7 /* EventMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58450C8F19063B08004376E7 /* EventMapViewController.xib */; };
 		58450C9719063C54004376E7 /* EventLocationAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C9619063C54004376E7 /* EventLocationAnnotation.m */; };
-		58450C9D1907473F004376E7 /* EventAttendeeAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C9C1907473F004376E7 /* EventAttendeeAnnotationView.m */; };
+		58450C9D1907473F004376E7 /* ImageWithCalloutAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C9C1907473F004376E7 /* ImageWithCalloutAnnotationView.m */; };
 		58450CA019074797004376E7 /* EventAttendeeAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450C9F19074797004376E7 /* EventAttendeeAnnotation.m */; };
-		58450CA4190773E5004376E7 /* EventAttendeeAnnotationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58450CA3190773E5004376E7 /* EventAttendeeAnnotationView.xib */; };
+		58450CA4190773E5004376E7 /* ImageWithCalloutAnnotationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58450CA3190773E5004376E7 /* ImageWithCalloutAnnotationView.xib */; };
 		58450CA8190B2990004376E7 /* ComposerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58450CA6190B2990004376E7 /* ComposerViewController.m */; };
 		58450CA9190B2990004376E7 /* ComposerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58450CA7190B2990004376E7 /* ComposerViewController.xib */; };
 		58450CAE190B373F004376E7 /* FakeComposerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58450CAD190B373F004376E7 /* FakeComposerView.xib */; };
@@ -147,11 +147,11 @@
 		58450C8F19063B08004376E7 /* EventMapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventMapViewController.xib; sourceTree = "<group>"; };
 		58450C9519063C54004376E7 /* EventLocationAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventLocationAnnotation.h; sourceTree = "<group>"; };
 		58450C9619063C54004376E7 /* EventLocationAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventLocationAnnotation.m; sourceTree = "<group>"; };
-		58450C9B1907473F004376E7 /* EventAttendeeAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventAttendeeAnnotationView.h; sourceTree = "<group>"; };
-		58450C9C1907473F004376E7 /* EventAttendeeAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventAttendeeAnnotationView.m; sourceTree = "<group>"; };
+		58450C9B1907473F004376E7 /* ImageWithCalloutAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageWithCalloutAnnotationView.h; sourceTree = "<group>"; };
+		58450C9C1907473F004376E7 /* ImageWithCalloutAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageWithCalloutAnnotationView.m; sourceTree = "<group>"; };
 		58450C9E19074797004376E7 /* EventAttendeeAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventAttendeeAnnotation.h; sourceTree = "<group>"; };
 		58450C9F19074797004376E7 /* EventAttendeeAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventAttendeeAnnotation.m; sourceTree = "<group>"; };
-		58450CA3190773E5004376E7 /* EventAttendeeAnnotationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventAttendeeAnnotationView.xib; sourceTree = "<group>"; };
+		58450CA3190773E5004376E7 /* ImageWithCalloutAnnotationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageWithCalloutAnnotationView.xib; sourceTree = "<group>"; };
 		58450CA5190B2990004376E7 /* ComposerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComposerViewController.h; sourceTree = "<group>"; };
 		58450CA6190B2990004376E7 /* ComposerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComposerViewController.m; sourceTree = "<group>"; };
 		58450CA7190B2990004376E7 /* ComposerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComposerViewController.xib; sourceTree = "<group>"; };
@@ -358,9 +358,9 @@
 				58001AEC18FB0122007ECAF9 /* EventDetailHeader.h */,
 				58001AED18FB0122007ECAF9 /* EventDetailHeader.m */,
 				58001AF118FB0171007ECAF9 /* EventDetailHeader.xib */,
-				58450C9B1907473F004376E7 /* EventAttendeeAnnotationView.h */,
-				58450C9C1907473F004376E7 /* EventAttendeeAnnotationView.m */,
-				58450CA3190773E5004376E7 /* EventAttendeeAnnotationView.xib */,
+				58450C9B1907473F004376E7 /* ImageWithCalloutAnnotationView.h */,
+				58450C9C1907473F004376E7 /* ImageWithCalloutAnnotationView.m */,
+				58450CA3190773E5004376E7 /* ImageWithCalloutAnnotationView.xib */,
 				58001AF318FB01DA007ECAF9 /* EventRSVPCell.h */,
 				58001AF418FB01DA007ECAF9 /* EventRSVPCell.m */,
 				58001AF518FB01DA007ECAF9 /* EventRSVPCell.xib */,
@@ -487,7 +487,7 @@
 				58450CA9190B2990004376E7 /* ComposerViewController.xib in Resources */,
 				FE4D9A1A18F3D7E0003351C3 /* EventCell.xib in Resources */,
 				580A1D3518EB50C10011A042 /* Images.xcassets in Resources */,
-				58450CA4190773E5004376E7 /* EventAttendeeAnnotationView.xib in Resources */,
+				58450CA4190773E5004376E7 /* ImageWithCalloutAnnotationView.xib in Resources */,
 				58001AEB18FA19CB007ECAF9 /* EventDetailViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -562,7 +562,7 @@
 				58001AF618FB01DA007ECAF9 /* EventRSVPCell.m in Sources */,
 				58001AEE18FB0122007ECAF9 /* EventDetailHeader.m in Sources */,
 				58001B0518FE4986007ECAF9 /* UserCheckedInCell.m in Sources */,
-				58450C9D1907473F004376E7 /* EventAttendeeAnnotationView.m in Sources */,
+				58450C9D1907473F004376E7 /* ImageWithCalloutAnnotationView.m in Sources */,
 				58450C8819047876004376E7 /* EventNotification.m in Sources */,
 				58001AEA18FA19CB007ECAF9 /* EventDetailViewController.m in Sources */,
 				FE1F022A1904DAFC004F6410 /* GeofenceMonitor.m in Sources */,

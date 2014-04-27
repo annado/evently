@@ -8,14 +8,11 @@
 
 #import "UIImageView+AFNetworking.h"
 #import "EventAttendeeAnnotation.h"
-#import "EventAttendeeAnnotationView.h"
+#import "ImageWithCalloutAnnotationView.h"
 #import "UserEventLocation.h"
+#import "SMCalloutView.h"
 
 @interface EventAttendeeAnnotation ()
-
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *subtitle;
-
 @end
 
 @implementation EventAttendeeAnnotation
@@ -38,19 +35,12 @@
     return self;
 }
 
-- (void)setStatus:(NSString *)status
-{
-    _status = status;
-    _title = status;
+- (NSURL *)urlForImage {
+    return [self.user avatarURL];
 }
 
-- (EventAttendeeAnnotationView *)annotationView
-{
-    EventAttendeeAnnotationView *annotationView = [[EventAttendeeAnnotationView alloc] initWithAnnotation:self reuseIdentifier:@"EventAttendeeAnnotationView"];
-    annotationView.enabled = YES;
-    annotationView.canShowCallout = YES;
-    [annotationView.imageView setImageWithURL:[_user avatarURL]];
-    return annotationView;
+- (NSString *)textForCallout {
+    return self.status;
 }
 
 @end

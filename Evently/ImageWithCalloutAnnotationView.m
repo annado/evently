@@ -6,13 +6,15 @@
 //  Copyright (c) 2014 Evently. All rights reserved.
 //
 #import "UIImageView+AFNetworking.h"
-#import "EventAttendeeAnnotationView.h"
+#import "ImageWithCalloutAnnotationView.h"
 #import "EventAttendeeAnnotation.h"
+#import "SMCalloutView.h"
 
-@interface EventAttendeeAnnotationView ()
+@interface ImageWithCalloutAnnotationView ()
+@property (nonatomic, strong) SMCalloutView *calloutView;
 @end
 
-@implementation EventAttendeeAnnotationView
+@implementation ImageWithCalloutAnnotationView
 
 - (id)initWithAnnotation:(id <MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -30,13 +32,32 @@
         self.opaque = NO;
 
         // Pull in nib
-        UIView *containerView = [[NSBundle mainBundle] loadNibNamed:@"EventAttendeeAnnotationView" owner:self options:nil][0];
+        UIView *containerView = [[NSBundle mainBundle] loadNibNamed:@"ImageWithCalloutAnnotationView" owner:self options:nil][0];
         containerView.frame = self.bounds;
         [self addSubview:containerView];
         
         [self setAvatarStyle];
+        
+        self.calloutView = [SMCalloutView platformCalloutView];
     }
     return self;
+}
+
+- (void)updateCallout {
+    NSString *calloutText = nil;
+    if ([self.annotation conformsToProtocol:@protocol(ImageAnnotation)]) {
+        id<ImageAnnotation> imageAnnotation = (id<ImageAnnotation>)self.annotation;
+        if ([imageAnnotation respondsToSelector:@selector(textForCallout)]) {
+            calloutText = [imageAnnotation textForCallout];
+        }
+    }
+    
+    self.calloutView.title = calloutText;
+    if (calloutText) {
+        [self.calloutView presentCalloutFromRect:self.bounds inView:self constrainedToView:self.mapView animated:NO];
+    } else {
+        [self.calloutView dismissCalloutAnimated:NO];
+    }
 }
 
 - (void)setAvatarStyle

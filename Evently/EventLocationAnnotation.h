@@ -8,11 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
+#import "ImageWithCalloutAnnotationView.h"
 
-@class EventAttendeeAnnotationView;
-
-@interface EventLocationAnnotation : NSObject <MKAnnotation>
+@interface EventLocationAnnotation : NSObject <MKAnnotation, ImageAnnotation>
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 - (id)initWithEvent:(Event *)event;
-- (MKPinAnnotationView *)annotationView;
 @end

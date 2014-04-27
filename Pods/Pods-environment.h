@@ -109,6 +109,12 @@
 #define COCOAPODS_VERSION_MINOR_PubNub 6
 #define COCOAPODS_VERSION_PATCH_PubNub 1
 
+// SMCalloutView
+#define COCOAPODS_POD_AVAILABLE_SMCalloutView
+#define COCOAPODS_VERSION_MAJOR_SMCalloutView 2
+#define COCOAPODS_VERSION_MINOR_SMCalloutView 0
+#define COCOAPODS_VERSION_PATCH_SMCalloutView 0
+
 // TTTAttributedLabel
 #define COCOAPODS_POD_AVAILABLE_TTTAttributedLabel
 #define COCOAPODS_VERSION_MAJOR_TTTAttributedLabel 1

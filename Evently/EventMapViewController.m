@@ -11,7 +11,7 @@
 #import "EventMapViewController.h"
 #import "EventAttendeeAnnotation.h"
 #import "EventLocationAnnotation.h"
-#import "EventAttendeeAnnotationView.h"
+#import "ImageWithCalloutAnnotationView.h"
 
 #import "UserEventLocation.h"
 #import "StatusMessage.h"
@@ -19,6 +19,8 @@
 #import "DAKeyboardControl.h"
 #import "MessagesViewController.h"
 #import "PubNub.h"
+#import "SMCalloutView.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface EventMapViewController ()
 @property (strong, nonatomic) PHFComposeBarView *composeBarView;
@@ -104,7 +106,7 @@
                 NSLog(@"Bootstrapping statuses with %i existing statuses", statusMessages.count);
                 [self bootstrapStatusMessages:statusMessages];
                 
-                // Subscribe to pubnub locations
+                // Subscribe to pubnub statuses
                 [PubNub subscribeOnChannel:self.event.statusChannel];
                 [[PNObservationCenter defaultCenter] addMessageReceiveObserver:self withBlock:^(PNMessage *pnMessage) {
                     if ([pnMessage.channel.name isEqualToString:self.event.statusChannel.name]) {
@@ -114,7 +116,7 @@
                 }];
                 NSLog(@"Subscribed to channel %@", self.event.statusChannel.name);
                 
-                // Subscribe to pubnub statuses
+                // Subscribe to pubnub locations
                 [PubNub subscribeOnChannel:self.event.locationChannel];
                 [[PNObservationCenter defaultCenter] addMessageReceiveObserver:self withBlock:^(PNMessage *message) {
                     if ([message.channel.name isEqualToString:self.event.locationChannel.name]) {
@@ -234,10 +236,10 @@
 - (void)setStatusForAnnotation:(EventAttendeeAnnotation *)annotation status:(NSString *)status
 {
     if (annotation) {
-        [self.mapView deselectAnnotation:annotation animated:NO];
         [self zoomToFitAnnotation:annotation animated:YES];
         annotation.status = status;
-        [self.mapView selectAnnotation:annotation animated:YES];
+        ImageWithCalloutAnnotationView *annotationView = (ImageWithCalloutAnnotationView*)[self.mapView viewForAnnotation:annotation];
+        [annotationView updateCallout];
     }
 }
 
@@ -357,26 +359,21 @@
         return nil;
     
     // Handle any custom annotations.
-    if ([annotation isKindOfClass:[EventLocationAnnotation class]]) {
-        EventLocationAnnotation *location = (EventLocationAnnotation *)annotation;
-        MKPinAnnotationView *annotationView = (MKPinAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"EventLocationAnnotationView"];
+    if ([annotation isKindOfClass:[EventLocationAnnotation class]] || [annotation isKindOfClass:[EventAttendeeAnnotation class]]) {
+        ImageWithCalloutAnnotationView *annotationView = (ImageWithCalloutAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:@"ImageWithCalloutAnnotationView"];
         
         if (annotationView) {
-            annotationView.annotation = location;
+            annotationView.annotation = annotation;
         } else {
-            annotationView = [location annotationView];
+            annotationView = [[ImageWithCalloutAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"ImageWithCalloutAnnotationView"];
+            annotationView.enabled = YES;
+            annotationView.canShowCallout = NO;
+            annotationView.mapView = mapView;
         }
-        
-        return annotationView;
-    } else if ([annotation isKindOfClass:[EventAttendeeAnnotation class]]) {
-        EventAttendeeAnnotation *attendeeAnnotation = (EventAttendeeAnnotation *)annotation;
-        EventAttendeeAnnotationView *annotationView = (EventAttendeeAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:@"EventAttendeeAnnotationView"];
-        
-        if (annotationView) {
-            annotationView.annotation = attendeeAnnotation;
-        } else {
-            annotationView = [attendeeAnnotation annotationView];
-        }
+        [annotationView updateCallout];
+        NSAssert([annotation conformsToProtocol:@protocol(ImageAnnotation)], @"Don't know how to get image for a %@ annotation", [annotation class]);
+        id<ImageAnnotation> imageAnnotation = (id<ImageAnnotation>)annotation;
+        [annotationView.imageView setImageWithURL:[imageAnnotation urlForImage]];
         
         return annotationView;
     }
