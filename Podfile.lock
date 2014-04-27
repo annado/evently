@@ -23,7 +23,6 @@ PODS:
   - Facebook-iOS-SDK (3.13.1)
   - JSMessagesViewController (4.0.4):
     - JSQSystemSoundPlayer
-  - JSONKit (1.5pre)
   - JSQSystemSoundPlayer (1.4.0)
   - Parse (1.2.19):
     - Facebook-iOS-SDK (~> 3.11)
@@ -40,7 +39,6 @@ DEPENDENCIES:
   - DAKeyboardControl
   - Facebook-iOS-SDK
   - JSMessagesViewController (~> 4.0.3)
-  - JSONKit
   - Parse (~> 1.2.18)
   - PHFComposeBarView (~> 2.0.1)
   - PubNub (= 3.6.1)
@@ -53,7 +51,6 @@ SPEC CHECKSUMS:
   DAKeyboardControl: 219d6e32b9343eb85151255c43b1f238d8f0bbf7
   Facebook-iOS-SDK: 47ae9e54684c84f93d75d4e6ab47cd031abdf406
   JSMessagesViewController: 6b59dec2b679ee6a8c6d9c9f1d5d9748abf4c05c
-  JSONKit: b1f52f3f522b8602307769511d4fb47c6f856159
   JSQSystemSoundPlayer: 28ccd01a92a0cebc6de6361e8499011b4cb6dab7
   Parse: 3739f0b211c49115bad96d6b0969b804d4da2f24
   PHFComposeBarView: 9c9cff294c865550606ad873c5bd51d046fedadf

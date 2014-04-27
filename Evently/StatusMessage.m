@@ -7,18 +7,17 @@
 //
 
 #import "StatusMessage.h"
-#import "JSONKit.h"
 #import "PubNub.h"
 
 @implementation StatusMessage
 
 - (NSString *)serializeMessage {
-    NSArray *parts = @[self.userFacebookID, self.userFullName, self.text, @([self.date timeIntervalSince1970])];
-    return [parts JSONString];
-}
-
-- (NSString *)getSender {
-    return self.userFullName;
+    return [NSString stringWithFormat:@"[\"%@\", \"%@\", \"%@\", %f]",
+            self.userFacebookID,
+            [self.userFullName stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""],
+            [self.text stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""],
+            [self.date timeIntervalSince1970]
+            ];
 }
 
 + (StatusMessage *)deserializeMessage:(NSArray *)parts {    
@@ -26,6 +25,7 @@
     message.userFacebookID = parts[0];
     message.userFullName = parts[1];
     message.text = parts[2];
+    message.sender = message.userFullName;
     
     NSTimeInterval interval = [parts[3] intValue];
     message.date = [NSDate dateWithTimeIntervalSince1970:interval];
@@ -38,11 +38,13 @@
     message.text = text;
     message.userFacebookID = userFacebookID;
     message.userFullName = userFullName;
+    message.sender = userFullName;
     message.date = date;
     return message;
 }
 
-+ (void)updateStatusForUser:(User *)user event:(Event *)event statusMessage:(StatusMessage *)statusMessage {
++ (void)updateStatusForUser:(User *)user event:(Event *)event text:(NSString *)text {
+    StatusMessage *statusMessage = [StatusMessage statusMessageWithText:text userFacebookID:user.facebookID userFullName:user.name date:[NSDate date]];
     [PubNub sendMessage:[statusMessage serializeMessage] toChannel:event.statusChannel compressed:YES];
 }
 

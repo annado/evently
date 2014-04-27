@@ -23,11 +23,14 @@
 #import "UIImageView+AFNetworking.h"
 
 @interface EventMapViewController ()
+
 @property (strong, nonatomic) PHFComposeBarView *composeBarView;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+
 @property (nonatomic, strong) Event *event;
 @property (nonatomic, strong) NSMutableDictionary *attendeeAnnotations;
-@property (nonatomic, strong) NSArray *statusMessages;
+@property (nonatomic, strong) NSMutableArray *statusMessages;
+
 @end
 
 @implementation EventMapViewController
@@ -87,7 +90,6 @@
     
      __weak PHFComposeBarView *weakTextView = _composeBarView;
     [self.view addKeyboardPanningWithActionHandler:^(CGRect keyboardFrameInView) {
-        NSLog(@"keyboardFrameInView: %f", keyboardFrameInView.origin.y);
         CGRect textViewFrame = weakTextView.frame;
         textViewFrame.origin.y = keyboardFrameInView.origin.y - textViewFrame.size.height;
         weakTextView.frame = textViewFrame;
@@ -99,32 +101,24 @@
         // Bootstrap the locations and then subscribe to events
         [UserEventLocation userEventLocationsForEvent:self.event withCompletion:^(NSArray *userEventLocations, NSError *error) {
             // Get the latest user event location
-            NSLog(@"Bootstrapping with %d existing user event locations", userEventLocations.count);
             [self addPinsForUserEventLocations:userEventLocations];
             
             [StatusMessage getStatusesForEvent:self.event withCompletion:^(NSArray *statusMessages, NSError *error) {
-                NSLog(@"Bootstrapping statuses with %i existing statuses", statusMessages.count);
                 [self bootstrapStatusMessages:statusMessages];
                 
-                // Subscribe to pubnub statuses
-                [PubNub subscribeOnChannel:self.event.statusChannel];
+                // Observe events
                 [[PNObservationCenter defaultCenter] addMessageReceiveObserver:self withBlock:^(PNMessage *pnMessage) {
-                    if ([pnMessage.channel.name isEqualToString:self.event.statusChannel.name]) {
+                    NSString *channelName = pnMessage.channel.name;
+                    if ([channelName isEqualToString:self.event.statusChannel.name]) {
                         StatusMessage *statusMessage = [StatusMessage deserializeMessage:pnMessage.message];
                         [self processStatusMessage:statusMessage];
-                    }
-                }];
-                NSLog(@"Subscribed to channel %@", self.event.statusChannel.name);
-                
-                // Subscribe to pubnub locations
-                [PubNub subscribeOnChannel:self.event.locationChannel];
-                [[PNObservationCenter defaultCenter] addMessageReceiveObserver:self withBlock:^(PNMessage *message) {
-                    if ([message.channel.name isEqualToString:self.event.locationChannel.name]) {
-                        LocationMessage *locationMessage = [LocationMessage deserializeMessage:message.message];
+                    } else if ([channelName isEqualToString:self.event.locationChannel.name]) {
+                        LocationMessage *locationMessage = [LocationMessage deserializeMessage:pnMessage.message];
                         [self processLocationMessage:locationMessage];
                     }
                 }];
-                NSLog(@"Subscribed to channel %@ near (%f, %F)", self.event.locationChannel.name, self.event.location.latLon.coordinate.latitude, self.event.location.latLon.coordinate.longitude);
+                
+                NSLog(@"EventMapViewController: started observing event %@ near (%f, %F)", self.event.facebookID, self.event.location.latLon.coordinate.latitude, self.event.location.latLon.coordinate.longitude);
             }];
         }];
     }
@@ -137,10 +131,10 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    // Stop observing events
     if (self.event) {
-        [PubNub unsubscribeFromChannel:self.event.locationChannel];
         [[PNObservationCenter defaultCenter] removeMessageReceiveObserver:self];
-        NSLog(@"Unsubscribed from channel %@", self.event.locationChannel);
+        NSLog(@"EventMapViewController: stopped observing event: %@", self.event.facebookID);
     }
 
     [self.navigationController.navigationBar setBackgroundImage:nil
@@ -163,12 +157,12 @@
 }
 
 - (void)onChatButton {
-    [self.navigationController pushViewController:[[MessagesViewController alloc] init] animated:YES];
+    MessagesViewController *messagesViewController = [[MessagesViewController alloc] init];
+    messagesViewController.event = self.event;
+    [self.navigationController pushViewController:messagesViewController animated:YES];
 }
 
 - (void)processLocationMessage:(LocationMessage *)locationMessage {
-    NSLog(@"LocationMessage: %@ at (%f, %f)", locationMessage.userFacebookId, locationMessage.latitude, locationMessage.longitude);
-    
     CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(locationMessage.latitude, locationMessage.longitude);
     [User findUserWithFacebookID:locationMessage.userFacebookId completion:^(User *user, NSError *error) {
         [self addAnnotationForUser:user location:coordinate];
@@ -176,9 +170,9 @@
 }
 
 - (void)processStatusMessage:(StatusMessage *)statusMessage {
-    NSLog(@"StatusMessage: %@, %@", statusMessage.userFacebookID, statusMessage.text);
     EventAttendeeAnnotation *annotation = [self getAnnotationFor:statusMessage.userFacebookID];
     [self setStatusForAnnotation:annotation status:statusMessage.text];
+    [self.statusMessages addObject:statusMessage];
 }
 
 - (void)addPinsForUserEventLocations:(NSArray *)userEventLocations {
@@ -249,13 +243,15 @@
 }
 
 - (void)bootstrapStatusMessages:(NSArray *)statusMessages {
-    self.statusMessages = statusMessages;
-    
+    self.statusMessages = [statusMessages mutableCopy];
+
+    // Get the latest status message by user
     NSMutableDictionary *latestMessageByUserId = [[NSMutableDictionary alloc] init];
     for (StatusMessage *statusMessage in self.statusMessages) {
         latestMessageByUserId[statusMessage.userFacebookID] = statusMessage;
     }
     
+    // Set the annotation status call outs
     for (NSString *userFacebookId in latestMessageByUserId) {
         StatusMessage *message = latestMessageByUserId[userFacebookId];
         EventAttendeeAnnotation *annotation = [self getAnnotationFor:userFacebookId];
@@ -311,9 +307,7 @@
 - (void)composeBarViewDidPressButton:(PHFComposeBarView *)composeBarView
 {
     NSString *status = composeBarView.text;
-    StatusMessage *message = [StatusMessage statusMessageWithText:status userFacebookID:[User currentUser].facebookID userFullName:[User currentUser].name date:[NSDate date]];
-    [StatusMessage updateStatusForUser:[User currentUser] event:self.event statusMessage:message];
-    
+    [StatusMessage updateStatusForUser:[User currentUser] event:self.event text:status];
     [composeBarView setText:@"" animated:YES];
     [composeBarView resignFirstResponder];
 }

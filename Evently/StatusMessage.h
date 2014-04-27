@@ -15,11 +15,11 @@
 @property (nonatomic, strong) NSString *userFullName;
 
 - (NSString *)serializeMessage;
-+ (StatusMessage *)deserializeMessage:(NSString *)serialized;
++ (StatusMessage *)deserializeMessage:(NSArray *)parts;
 
 + (StatusMessage *)statusMessageWithText:(NSString *)text userFacebookID:(NSString *)userFacebookID userFullName:(NSString *)userFullName date:(NSDate *)date;
 
-+ (void)updateStatusForUser:(User *)user event:(Event *)event statusMessage:(StatusMessage *)statusMessage;
++ (void)updateStatusForUser:(User *)user event:(Event *)event text:(NSString *)text;
 + (void)getStatusesForEvent:(Event *)event withCompletion:(void (^)(NSArray *statusMessages, NSError *error))block;
 + (void)latestStatusForEvent:(Event *)event withCompletion:(void (^)(StatusMessage *statusMessage, NSError *error))block;;
 
