@@ -150,17 +150,19 @@ class Actor
   end
 
   def get_user_event_location
-    query = Parse::Query.new("UserEventLocation")
-    query.eq("eventFacebookID", @event_id)
-    query.eq("user", get_user)
+    unless @user_event_location
+      query = Parse::Query.new("UserEventLocation")
+      query.eq("eventFacebookID", @event_id)
+      query.eq("user", get_user)
 
-    event_location = PARSE_MUTEX.synchronize { query.get.first }
-    unless event_location
-      event_location = Parse::Object.new("UserEventLocation")
-      event_location["user"] = get_user
-      event_location["eventFacebookID"] = @event_id
+      @user_event_location = PARSE_MUTEX.synchronize { query.get.first }
+      unless @user_event_location
+        @user_event_location = Parse::Object.new("UserEventLocation")
+        @user_event_location["user"] = get_user
+        @user_event_location["eventFacebookID"] = @event_id
+      end
     end
-    event_location
+    @user_event_location
   end
 
   def get_user
