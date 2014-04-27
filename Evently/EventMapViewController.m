@@ -163,6 +163,8 @@
 }
 
 - (void)processLocationMessage:(LocationMessage *)locationMessage {
+    NSLog(@"Received location for %@ at (%f, %f)", locationMessage.userFacebookId, locationMessage.latitude, locationMessage.longitude);
+    
     CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(locationMessage.latitude, locationMessage.longitude);
     [User findUserWithFacebookID:locationMessage.userFacebookId completion:^(User *user, NSError *error) {
         [self addAnnotationForUser:user location:coordinate];
