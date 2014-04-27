@@ -62,10 +62,11 @@
 
 - (void)setAvatarStyle
 {
-    self.imageView.layer.cornerRadius = 25;
+    self.pinView.image = [UIImage imageNamed:@"PinIcon"];
+    self.pinView.image = [self.pinView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.pinView.tintColor = [UIColor colorWithRed:242.0/255 green:133.0/255 blue:0 alpha:0.8];
+    self.imageView.layer.cornerRadius = 19;
     self.imageView.clipsToBounds = YES;
-    self.imageView.layer.borderColor = [UIColor colorWithRed:242.0/255 green:133.0/255 blue:0 alpha:0.6].CGColor;
-    self.imageView.layer.borderWidth = 3.0;
 }
 
 /*
