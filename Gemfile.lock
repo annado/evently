@@ -1,0 +1,31 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    eventmachine (1.0.3)
+    iron_core (1.0.3)
+      rest (>= 2.6.4)
+    iron_mq (5.0.1)
+      iron_core (>= 0.5.1)
+    json (1.8.1)
+    net-http-persistent (2.9.4)
+    netrc (0.7.7)
+    parse-ruby-client (0.2.0)
+      iron_mq
+      patron
+    patron (0.4.18)
+    pubnub (3.5.3)
+      eventmachine
+      json
+      net-http-persistent
+    rest (2.7.1)
+      net-http-persistent (>= 2.9.1)
+      rest_client (>= 1.7.1)
+    rest_client (1.7.3)
+      netrc (~> 0.7.7)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  parse-ruby-client (~> 0.2.0)
+  pubnub (~> 3.5.3)
