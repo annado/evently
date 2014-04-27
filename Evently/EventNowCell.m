@@ -64,7 +64,7 @@
     self.timeLabel.text = [self.timeFormatter stringFromDate:event.startTime];
     [self.coverImage setImageWithURL:event.coverPhotoURL];
     
-    self.attendingCountLabel.text = [NSString stringWithFormat:@"%i", [event.attendingUsers count]];
+    self.attendingCountLabel.text = [NSString stringWithFormat:@"%i", (int)[event.attendingUsers count]];
     
     // TODO refactor this into model, use a more efficient query
 //    [UserEventLocation userEventLocationsForEvent:event withCompletion:^(NSArray *userEventLocations, NSError *error) {

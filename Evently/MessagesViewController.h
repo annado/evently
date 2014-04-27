@@ -11,6 +11,6 @@
 
 @interface MessagesViewController : JSMessagesViewController <JSMessagesViewDelegate, JSMessagesViewDataSource>
 
-@property (strong, nonatomic) NSMutableArray *messages;
+@property (strong, nonatomic) Event *event;
 
 @end

@@ -103,8 +103,8 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (!error) {
             NSDictionary *userData = (NSDictionary *)result;
-            self[@"name"] = userData[@"name"];
-            self[@"facebookID"] = userData[@"id"];
+            self.name = userData[@"name"];
+            self.facebookID = userData[@"id"];
             [self saveInBackground];
         }
         block(error);
@@ -113,7 +113,7 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
 
 - (NSURL *)avatarURL
 {
-    return [User avatarURL:self[@"facebookID"]];
+    return [User avatarURL:self.facebookID];
 }
 
 + (void)logOut

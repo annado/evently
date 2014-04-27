@@ -198,17 +198,27 @@ const NSTimeInterval kBackgroundPollInterval = 60*10;
             [[RealtimeLocationManager sharedInstance] stopUpdatingLocation];
         }
 
-        // Set up event channels
-        self.eventChannels = [[NSMutableArray alloc] init];
-        for (Event *event in self.nowEvents) {
-            PNChannel *eventChannel = [PNChannel channelWithName:event.facebookID];
-            [self.eventChannels addObject:eventChannel];
-        }
+        [self setPubnubSubscriptions];
         
         if (completionBlock) {
             completionBlock(events, error);
         }
     }];
+}
+
+- (void)setPubnubSubscriptions {
+    // Cleanup previous subscriptions
+    if (self.eventChannels) {
+        [PubNub unsubscribeFromChannels:self.eventChannels];
+    }
+    
+    // Set new subscriptions
+    self.eventChannels = [[NSMutableArray alloc] init];
+    for (Event *event in self.nowEvents) {
+        [self.eventChannels addObject:event.locationChannel];
+        [self.eventChannels addObject:event.statusChannel];
+    }
+    [PubNub subscribeOnChannels:self.eventChannels];
 }
 
 - (void)publishLocation:(CLLocation *)location {

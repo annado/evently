@@ -10,7 +10,6 @@
 #import <MapKit/MapKit.h>
 
 @protocol ComposerViewDelegate;
-
 @interface ComposerViewController : UIViewController <MKMapViewDelegate>
 @property (nonatomic, weak) id<ComposerViewDelegate> delegate;
 @end
