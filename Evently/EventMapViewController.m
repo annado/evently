@@ -175,7 +175,7 @@
 
 - (void)processStatusMessage:(StatusMessage *)statusMessage {
     NSLog(@"StatusMessage: %@, %@", statusMessage.userFacebookID, statusMessage.text);
-    EventAttendeeAnnotation *annotation = [self getAnnotationFor:[User currentUser].facebookID];
+    EventAttendeeAnnotation *annotation = [self getAnnotationFor:statusMessage.userFacebookID];
     [self setStatusForAnnotation:annotation status:statusMessage.text];
 }
 
