@@ -17,4 +17,5 @@ DerivedData
 *.hmap
 *.xccheckout
 script/*.log
+*.log
 
