@@ -12,6 +12,7 @@
 #import "EventAttendeeAnnotation.h"
 #import "EventLocationAnnotation.h"
 #import "ImageWithCalloutAnnotationView.h"
+#import "MapManager.h"
 
 #import "UserEventLocation.h"
 #import "StatusMessage.h"
@@ -20,16 +21,13 @@
 #import "MessagesViewController.h"
 #import "PubNub.h"
 #import "SMCalloutView.h"
-#import "UIImageView+AFNetworking.h"
 
 @interface EventMapViewController ()
 
 @property (strong, nonatomic) PHFComposeBarView *composeBarView;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
-
+@property (nonatomic, strong) MapManager *mapManager;
 @property (nonatomic, strong) Event *event;
-@property (nonatomic, strong) NSMutableDictionary *attendeeAnnotations;
-@property (nonatomic, strong) NSMutableArray *statusMessages;
 
 @end
 
@@ -43,7 +41,7 @@
         UIBarButtonItem *detailsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"InfoIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(onDetailsButton)];
         
         self.navigationItem.rightBarButtonItems = @[chatButton, detailsButton];
-        self.attendeeAnnotations = [[NSMutableDictionary alloc] init];
+        // self.attendeeAnnotations = [[NSMutableDictionary alloc] init];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillToggle:)
@@ -79,17 +77,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.mapView.delegate = self;
-    [self.view addSubview:self.composeBarView];
     
-    [self addPinForEventLocation];
-
-    [UserEventLocation userEventLocationsForEvent:_event withCompletion:^(NSArray *userEventLocations, NSError *error) {
-        [self addPinsForUserEventLocations:userEventLocations];
-    }];
+    // Custom initialization
+    self.mapManager = [[MapManager alloc] initWithMapView:self.mapView event:self.event];
+    [self.view addSubview:self.composeBarView];
     
      __weak PHFComposeBarView *weakTextView = _composeBarView;
     [self.view addKeyboardPanningWithActionHandler:^(CGRect keyboardFrameInView) {
+        NSLog(@"Keyboard panning: %i", keyboardFrameInView.origin.y);
         CGRect textViewFrame = weakTextView.frame;
         textViewFrame.origin.y = keyboardFrameInView.origin.y - textViewFrame.size.height;
         weakTextView.frame = textViewFrame;
@@ -100,8 +95,7 @@
     if (self.event) {
         // Bootstrap the locations and then subscribe to events
         [UserEventLocation userEventLocationsForEvent:self.event withCompletion:^(NSArray *userEventLocations, NSError *error) {
-            // Get the latest user event location
-            [self addPinsForUserEventLocations:userEventLocations];
+            [self.mapManager bootstrapFromUserEventLocations:userEventLocations];
             
             [StatusMessage getStatusesForEvent:self.event withCompletion:^(NSArray *statusMessages, NSError *error) {
                 [self bootstrapStatusMessages:statusMessages];
@@ -164,131 +158,29 @@
 
 - (void)processLocationMessage:(LocationMessage *)locationMessage {
     NSLog(@"Received location for %@ at (%f, %f)", locationMessage.userFacebookId, locationMessage.latitude, locationMessage.longitude);
-    
-    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(locationMessage.latitude, locationMessage.longitude);
-    [User findUserWithFacebookID:locationMessage.userFacebookId completion:^(User *user, NSError *error) {
-        [self addAnnotationForUser:user location:coordinate];
-    }];
+    [self.mapManager updateUserLocation:locationMessage.userFacebookId latitude:locationMessage.latitude longitude:locationMessage.longitude];
 }
 
 - (void)processStatusMessage:(StatusMessage *)statusMessage {
-    EventAttendeeAnnotation *annotation = [self getAnnotationFor:statusMessage.userFacebookID];
-    [self setStatusForAnnotation:annotation status:statusMessage.text];
-    [self.statusMessages addObject:statusMessage];
-}
-
-- (void)addPinsForUserEventLocations:(NSArray *)userEventLocations {
-    for (UserEventLocation *userEventLocation in userEventLocations) {
-        [self addAnnotationForUser:userEventLocation.user location:[userEventLocation coordinate]];
-    }
-    if (userEventLocations.count > 0) {
-        [self zoomToFitAnnotations:YES];
-    }
-}
-
-- (void)addPinForEventLocation
-{
-    if (_event.location.latLon) {
-        EventLocationAnnotation *annotation = [[EventLocationAnnotation alloc] initWithEvent:_event];
-        [self.mapView addAnnotation:annotation];
-        
-        // make the default region size smaller
-        // this is only a problem if there is only 1 pin
-        self.mapView.region = MKCoordinateRegionMake(_event.location.latLon.coordinate, MKCoordinateSpanMake(0.005, 0.005));
-    }
-}
-
-- (void)addPinForUserEventLocation:(UserEventLocation *)userEventLocation {
-    EventAttendeeAnnotation *annotation = [[EventAttendeeAnnotation alloc] initWithUserEventLocation:userEventLocation];
-    [self.mapView addAnnotation:annotation];
-}
-     
-- (void)addPinsForUserEventLocations
-{
-    [UserEventLocation userEventLocationsForEvent:_event withCompletion:^(NSArray *userEventLocations, NSError *error) {
-        for (UserEventLocation *userEventLocation in userEventLocations) {
-            [self addPinForUserEventLocation:userEventLocation];
-        }
-        if (userEventLocations.count > 0) {
-            [self zoomToFitAnnotations:YES];
-        }
-    }];
-}
-
-- (void)addAnnotationForUser:(User *)user location:(CLLocationCoordinate2D)coordinate
-{
-    if (self.attendeeAnnotations[user.facebookID]) {
-        // update coordinates
-        EventAttendeeAnnotation *annotation = self.attendeeAnnotations[user.facebookID];
-        [self animateCoordinateChange:annotation location:coordinate];
-    } else {
-        EventAttendeeAnnotation *annotation = [[EventAttendeeAnnotation alloc] initWithUser:user coordinate:coordinate];
-        [self.mapView addAnnotation:annotation];
-        [self.attendeeAnnotations setObject:annotation forKey:user.facebookID];
-        [self zoomToFitAnnotation:annotation animated:YES];
-    }
-}
-
-- (void)setStatusForAnnotation:(EventAttendeeAnnotation *)annotation status:(NSString *)status
-{
-    if (annotation) {
-        [self zoomToFitAnnotation:annotation animated:YES];
-        annotation.status = status;
-        ImageWithCalloutAnnotationView *annotationView = (ImageWithCalloutAnnotationView*)[self.mapView viewForAnnotation:annotation];
-        [annotationView updateCallout];
-    }
-}
-
-- (EventAttendeeAnnotation *)getAnnotationFor:(NSString *)userFacebookID
-{
-    return self.attendeeAnnotations[userFacebookID];
+    [self.mapManager updateUserStatus:statusMessage.userFacebookID text:statusMessage.text];
 }
 
 - (void)bootstrapStatusMessages:(NSArray *)statusMessages {
-    self.statusMessages = [statusMessages mutableCopy];
-
     // Get the latest status message by user
     NSMutableDictionary *latestMessageByUserId = [[NSMutableDictionary alloc] init];
-    for (StatusMessage *statusMessage in self.statusMessages) {
+    for (StatusMessage *statusMessage in statusMessages) {
         latestMessageByUserId[statusMessage.userFacebookID] = statusMessage;
     }
     
     // Set the annotation status call outs
     for (NSString *userFacebookId in latestMessageByUserId) {
         StatusMessage *message = latestMessageByUserId[userFacebookId];
-        EventAttendeeAnnotation *annotation = [self getAnnotationFor:userFacebookId];
-        [self setStatusForAnnotation:annotation status:message.text];
+        [self.mapManager updateUserStatus:userFacebookId text:message.text];
     }
-    
-}
-
-- (void)animateCoordinateChange:(id <MKAnnotation>)annotation location:(CLLocationCoordinate2D)coordinate
-{
-    [UIView animateWithDuration:1.0 animations:^{
-        annotation.coordinate = coordinate;
-    }];
-}
-
-- (void)zoomToFitAnnotation:(id <MKAnnotation>)annotation animated:(BOOL)animated
-{
-    if (![self isAnnotationVisible:annotation]) {
-        [self.mapView showAnnotations:self.mapView.annotations animated:animated];
-    }
-}
-
-- (void)zoomToFitAnnotations:(BOOL)animated
-{
-    [self.mapView showAnnotations:self.mapView.annotations animated:animated];
-}
-
-- (BOOL)isAnnotationVisible:(id <MKAnnotation>)annotation
-{
-    MKMapRect visibleMapRect = self.mapView.visibleMapRect;
-    NSSet *visibleAnnotations = [self.mapView annotationsInMapRect:visibleMapRect];
-    return [visibleAnnotations containsObject:annotation];
 }
 
 #pragma mark - ComposeBar methods
+
 - (PHFComposeBarView *)composeBarView
 {
     if (!_composeBarView) {
@@ -315,6 +207,8 @@
 }
 
 - (void)keyboardWillToggle:(NSNotification *)notification {
+    NSLog(@"Keyboard about to toggle");
+    
     NSDictionary* userInfo = [notification userInfo];
     NSTimeInterval duration;
     UIViewAnimationCurve animationCurve;
@@ -344,37 +238,6 @@
                          [self.view setFrame:newContainerFrame];
                      }
                      completion:nil];
-}
-
-#pragma mark - MKMapViewDelegate methods
-
-- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id < MKAnnotation >)annotation
-{
-    // If the annotation is the user location, just return nil.
-    if ([annotation isKindOfClass:[MKUserLocation class]])
-        return nil;
-    
-    // Handle any custom annotations.
-    if ([annotation isKindOfClass:[EventLocationAnnotation class]] || [annotation isKindOfClass:[EventAttendeeAnnotation class]]) {
-        ImageWithCalloutAnnotationView *annotationView = (ImageWithCalloutAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:@"ImageWithCalloutAnnotationView"];
-        
-        if (annotationView) {
-            annotationView.annotation = annotation;
-        } else {
-            annotationView = [[ImageWithCalloutAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"ImageWithCalloutAnnotationView"];
-            annotationView.enabled = YES;
-            annotationView.canShowCallout = NO;
-            annotationView.mapView = mapView;
-        }
-        [annotationView updateCallout];
-        NSAssert([annotation conformsToProtocol:@protocol(ImageAnnotation)], @"Don't know how to get image for a %@ annotation", [annotation class]);
-        id<ImageAnnotation> imageAnnotation = (id<ImageAnnotation>)annotation;
-        [annotationView.imageView setImageWithURL:[imageAnnotation urlForImage]];
-        
-        return annotationView;
-    }
-    
-    return nil;
 }
 
 @end
