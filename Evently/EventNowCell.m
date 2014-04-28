@@ -62,7 +62,11 @@
     
     self.titleLabel.text = event.name;
     self.timeLabel.text = [self.timeFormatter stringFromDate:event.startTime];
-    [self.coverImage setImageWithURL:event.coverPhotoURL];
+    if (_event.coverPhotoURL) {
+        [self.coverImage setImageWithURL:event.coverPhotoURL];
+    } else {
+        self.coverImage.image = [UIImage imageNamed:@"EventPlaceholder"];
+    }
     
     self.attendingCountLabel.text = [NSString stringWithFormat:@"%i", (int)[event.attendingUsers count]];
     

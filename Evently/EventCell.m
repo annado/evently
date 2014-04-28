@@ -69,7 +69,7 @@
     if (event.coverPhotoURL) {
         [self.eventImage setImageWithURL:event.coverPhotoURL];
     } else {
-        self.eventImage.image = nil;
+        self.eventImage.image = [UIImage imageNamed:@"EventPlaceholder"];
     }
 
     [self setAttendanceStatus];

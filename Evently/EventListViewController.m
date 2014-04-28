@@ -168,7 +168,7 @@ const NSInteger kUpcomingSection = 1;
     if (indexPath.section == kHappeningNowSection) {
         return 160;
     } else {
-        return 66.0;
+        return 62;
     }
 }
 
