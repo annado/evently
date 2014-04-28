@@ -60,7 +60,7 @@ const NSTimeInterval kBackgroundPollInterval = 60*10;
     
     [self.window makeKeyAndVisible];
     
-    [application setMinimumBackgroundFetchInterval:kBackgroundPollInterval];
+//    [application setMinimumBackgroundFetchInterval:kBackgroundPollInterval];
 
     return YES;
 }
@@ -70,12 +70,12 @@ const NSTimeInterval kBackgroundPollInterval = 60*10;
     [self publishLocation:location];
 }
 
-- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    NSLog(@"perform Background Fetch...");
-    [self loadEventsWithCompletion:^(NSArray *events, NSError *error) {
-        completionHandler(UIBackgroundFetchResultNewData);
-    }];
-}
+//- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+//    NSLog(@"perform Background Fetch...");
+//    [self loadEventsWithCompletion:^(NSArray *events, NSError *error) {
+//        completionHandler(UIBackgroundFetchResultNewData);
+//    }];
+//}
 
 - (void)initParse
 {
@@ -121,8 +121,10 @@ const NSTimeInterval kBackgroundPollInterval = 60*10;
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    NSLog(@"stop updating location");
+    [[RealtimeLocationManager sharedInstance] stopUpdatingLocation];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
