@@ -11,6 +11,7 @@
 		3B00387B18FDD4A7004CDE83 /* EventNowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B00387918FDD4A7004CDE83 /* EventNowCell.xib */; };
 		3B2C7FFE1908C08200D9F28C /* LocationMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B2C7FFD1908C08200D9F28C /* LocationMessage.m */; };
 		3B319252190C621700F7E70F /* StatusMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B319251190C621700F7E70F /* StatusMessage.m */; };
+		3B4FE267190E1C5D001924F2 /* MapManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B4FE266190E1C5D001924F2 /* MapManager.m */; };
 		3B8828CA18F0FE1F00D5E87C /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828C918F0FE1F00D5E87C /* Event.m */; };
 		3B8828CD18F23B3700D5E87C /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828CC18F23B3700D5E87C /* Location.m */; };
 		3B8828D318F24CB600D5E87C /* UserEventLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B8828D218F24CB600D5E87C /* UserEventLocation.m */; };
@@ -89,6 +90,8 @@
 		3B2C7FFD1908C08200D9F28C /* LocationMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationMessage.m; sourceTree = "<group>"; };
 		3B319250190C621700F7E70F /* StatusMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusMessage.h; sourceTree = "<group>"; };
 		3B319251190C621700F7E70F /* StatusMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusMessage.m; sourceTree = "<group>"; };
+		3B4FE265190E1C5D001924F2 /* MapManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapManager.h; sourceTree = "<group>"; };
+		3B4FE266190E1C5D001924F2 /* MapManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapManager.m; sourceTree = "<group>"; };
 		3B8828C818F0FE1F00D5E87C /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		3B8828C918F0FE1F00D5E87C /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		3B8828CB18F23B3700D5E87C /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
@@ -342,6 +345,8 @@
 				FE00A1EA190C36C4004D6DDC /* RealtimeLocationManager.m */,
 				3B319250190C621700F7E70F /* StatusMessage.h */,
 				3B319251190C621700F7E70F /* StatusMessage.m */,
+				3B4FE265190E1C5D001924F2 /* MapManager.h */,
+				3B4FE266190E1C5D001924F2 /* MapManager.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -562,6 +567,7 @@
 				58001AF618FB01DA007ECAF9 /* EventRSVPCell.m in Sources */,
 				58001AEE18FB0122007ECAF9 /* EventDetailHeader.m in Sources */,
 				58001B0518FE4986007ECAF9 /* UserCheckedInCell.m in Sources */,
+				3B4FE267190E1C5D001924F2 /* MapManager.m in Sources */,
 				58450C9D1907473F004376E7 /* ImageWithCalloutAnnotationView.m in Sources */,
 				58450C8819047876004376E7 /* EventNotification.m in Sources */,
 				58001AEA18FA19CB007ECAF9 /* EventDetailViewController.m in Sources */,

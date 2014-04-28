@@ -10,7 +10,8 @@
 #import <MapKit/MapKit.h>
 #import "PHFComposeBarView.h"
 
-@interface EventMapViewController : UIViewController <MKMapViewDelegate,
-    PHFComposeBarViewDelegate>
+@interface EventMapViewController : UIViewController <PHFComposeBarViewDelegate>
+
 - (id)initWithEvent:(Event *)event;
+
 @end
