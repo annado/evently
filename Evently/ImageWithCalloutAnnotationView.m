@@ -12,6 +12,7 @@
 
 @interface ImageWithCalloutAnnotationView ()
 @property (nonatomic, strong) SMCalloutView *calloutView;
+@property (nonatomic, strong) UILabel *calloutLabel;
 @end
 
 @implementation ImageWithCalloutAnnotationView
@@ -39,6 +40,9 @@
         [self setAvatarStyle];
         
         self.calloutView = [SMCalloutView platformCalloutView];
+        self.calloutLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
+        self.calloutLabel.font = [self.calloutLabel.font fontWithSize:12];
+        self.calloutView.titleView = self.calloutLabel;
     }
     return self;
 }
@@ -52,7 +56,7 @@
         }
     }
     
-    self.calloutView.title = calloutText;
+    self.calloutLabel.text = calloutText;
     if (calloutText) {
         [self.calloutView presentCalloutFromRect:self.bounds inView:self constrainedToView:self.mapView animated:NO];
     } else {
