@@ -156,7 +156,6 @@ static NSString *CheckinCellIdentifier = @"UserCheckedInCell";
         return [EventRSVPCell heightForEvent:_event];
     } else {
         // TODO get height based on number of facebook attendees
-        NSLog(@"Got collection view height");
         return 180;
     }
 }
