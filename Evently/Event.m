@@ -93,6 +93,11 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
     return self;
 }
 
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
+{
+    return ([key isEqual:@"userAttendanceStatus"]) ? NO : YES;
+}
+
 - (void)setFacebookID:(NSString *)facebookID {
     _facebookID = facebookID;
     _locationChannel = [PNChannel channelWithName:[NSString stringWithFormat:@"%@_location", self.facebookID]];
@@ -239,7 +244,7 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
 - (void)setUserAttendanceStatus:(NSInteger)userAttendanceStatus
 {
     NSString *path = [NSString stringWithFormat:@"/%@/%@", _facebookID, [Event suffixForStatus:userAttendanceStatus]];
-
+    [self willChangeValueForKey:@"userAttendanceStatus"];
     if (path) {
         [FBRequestConnection startWithGraphPath:path
                                      parameters:nil
@@ -251,6 +256,8 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
                                                   ) {
                                   NSLog(@"updatedRSVP to: %@", path);
                                   _userAttendanceStatus = userAttendanceStatus;
+                                  [self didChangeValueForKey:@"userAttendanceStatus"];
+
                                   if (error) {
                                       NSLog(@"failed: %@", error);
                                   }

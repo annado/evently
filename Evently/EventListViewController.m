@@ -133,6 +133,7 @@ const NSInteger kUpcomingSection = 1;
         return eventNowCell;
     } else if (indexPath.section == kUpcomingSection) {
         EventCell *eventCell = [self.tableView dequeueReusableCellWithIdentifier:@"EventCell" forIndexPath:indexPath];
+        eventCell.delegate = self;
         Event *event = [AppDelegate sharedInstance].upcomingEvents[indexPath.row];
         eventCell.event = event;
         return eventCell;
@@ -140,6 +141,24 @@ const NSInteger kUpcomingSection = 1;
         NSLog(@"Invalid table view section %@", indexPath);
         return nil;
     }
+}
+
+#pragma mark - SWTableViewCell methods
+- (void)swipeableTableViewCell:(EventCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index
+{
+    switch (index) {
+        case 0:
+            cell.event.userAttendanceStatus = EventAttendanceYes;
+            break;
+        case 1:
+            cell.event.userAttendanceStatus = EventAttendanceMaybe;
+            break;
+        case 2:
+            cell.event.userAttendanceStatus = EventAttendanceNo;
+        default:
+            break;
+    }
+    [cell hideUtilityButtonsAnimated:YES];
 }
 
 #pragma mark - UITableViewDelegate

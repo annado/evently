@@ -6,58 +6,59 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="67" id="KGk-i7-Jjw" customClass="EventCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="67"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EventCell" rowHeight="65" id="KGk-i7-Jjw" customClass="EventCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i00-SW-G0I">
-                        <rect key="frame" x="69" y="11" width="80" height="17"/>
+                        <rect key="frame" x="71" y="11" width="199" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VSR-kr-8YW">
-                        <rect key="frame" x="69" y="29" width="62" height="15"/>
+                        <rect key="frame" x="71" y="29" width="199" height="15"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WSy-TM-buI">
-                        <rect key="frame" x="7" y="5" width="56" height="56"/>
+                        <rect key="frame" x="1" y="2" width="60" height="60"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="56" id="MYG-HE-hDa"/>
-                            <constraint firstAttribute="width" constant="56" id="RAV-SV-G6H"/>
+                            <constraint firstAttribute="height" constant="60" id="MYG-HE-hDa"/>
+                            <constraint firstAttribute="width" constant="60" id="RAV-SV-G6H"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attendance status: Attending" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LQU-Fa-MP7">
-                        <rect key="frame" x="69" y="46" width="163" height="15"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1ee-BN-HJr">
+                        <rect key="frame" x="275" y="17" width="30" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="8As-Eh-GWq"/>
+                            <constraint firstAttribute="width" constant="30" id="m4e-hd-2nX"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="WSy-TM-buI" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="4iw-0G-AaN"/>
-                    <constraint firstItem="VSR-kr-8YW" firstAttribute="leading" secondItem="LQU-Fa-MP7" secondAttribute="leading" id="8SX-Ir-dTh"/>
-                    <constraint firstItem="LQU-Fa-MP7" firstAttribute="top" secondItem="VSR-kr-8YW" secondAttribute="bottom" constant="2" id="9Ym-6K-a8Q"/>
-                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="i00-SW-G0I" secondAttribute="trailing" constant="10" id="Cvm-dg-sTR"/>
-                    <constraint firstItem="i00-SW-G0I" firstAttribute="leading" secondItem="WSy-TM-buI" secondAttribute="trailing" constant="6" id="azn-M9-AlE"/>
+                    <constraint firstAttribute="centerY" secondItem="WSy-TM-buI" secondAttribute="centerY" id="44O-pI-ObP"/>
+                    <constraint firstAttribute="trailing" secondItem="1ee-BN-HJr" secondAttribute="trailing" constant="15" id="Co1-I0-Mks"/>
+                    <constraint firstItem="i00-SW-G0I" firstAttribute="leading" secondItem="WSy-TM-buI" secondAttribute="trailing" constant="10" id="azn-M9-AlE"/>
                     <constraint firstItem="VSR-kr-8YW" firstAttribute="top" secondItem="i00-SW-G0I" secondAttribute="bottom" constant="1" id="bqQ-67-6GM"/>
                     <constraint firstItem="VSR-kr-8YW" firstAttribute="leading" secondItem="i00-SW-G0I" secondAttribute="leading" id="e2c-qA-srg"/>
-                    <constraint firstItem="WSy-TM-buI" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="7" id="n1T-aY-DAp"/>
-                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="VSR-kr-8YW" secondAttribute="trailing" constant="10" id="nyD-pb-Hus"/>
+                    <constraint firstAttribute="centerY" secondItem="1ee-BN-HJr" secondAttribute="centerY" id="jC2-V3-bCH"/>
+                    <constraint firstItem="WSy-TM-buI" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="1" id="n1T-aY-DAp"/>
+                    <constraint firstItem="1ee-BN-HJr" firstAttribute="leading" secondItem="VSR-kr-8YW" secondAttribute="trailing" constant="5" id="s0g-d4-CRC"/>
                     <constraint firstItem="i00-SW-G0I" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="sOO-dn-WZJ"/>
+                    <constraint firstItem="1ee-BN-HJr" firstAttribute="leading" secondItem="i00-SW-G0I" secondAttribute="trailing" constant="5" id="uyf-xA-Nik"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="attendanceLabel" destination="LQU-Fa-MP7" id="4y6-wo-hcA"/>
+                <outlet property="attendanceIcon" destination="1ee-BN-HJr" id="yQl-Tm-6fF"/>
                 <outlet property="eventImage" destination="WSy-TM-buI" id="RiK-3h-Xk7"/>
                 <outlet property="eventNameLabel" destination="i00-SW-G0I" id="1qF-qB-LWn"/>
                 <outlet property="eventTimeLabel" destination="VSR-kr-8YW" id="FXh-LY-g74"/>

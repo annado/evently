@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <SWTableViewCell/SWTableViewCell.h>
 
-@interface EventListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface EventListViewController : UIViewController <UITableViewDataSource,
+    UITableViewDelegate,
+    SWTableViewCellDelegate>
 
 @end

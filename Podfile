@@ -11,4 +11,5 @@ pod 'PubNub', '3.6.1'
 pod 'PHFComposeBarView', '~> 2.0.1'
 pod 'JSMessagesViewController', '~> 4.0.3'
 pod 'DAKeyboardControl'
-pod 'SMCalloutView', '~> 2.0'
+pod 'SMCalloutView', '~> 2.0', :inhibit_warnings => true
+pod 'SWTableViewCell'

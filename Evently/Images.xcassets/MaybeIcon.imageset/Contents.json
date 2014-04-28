@@ -2,12 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "ios7-help-30x30.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "ios7-help-30x30.png"
+      "filename" : "ios7-help@2x.png"
     }
   ],
   "info" : {

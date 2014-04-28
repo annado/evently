@@ -108,6 +108,12 @@
 #define COCOAPODS_VERSION_MINOR_SMCalloutView 0
 #define COCOAPODS_VERSION_PATCH_SMCalloutView 0
 
+// SWTableViewCell
+#define COCOAPODS_POD_AVAILABLE_SWTableViewCell
+#define COCOAPODS_VERSION_MAJOR_SWTableViewCell 0
+#define COCOAPODS_VERSION_MINOR_SWTableViewCell 2
+#define COCOAPODS_VERSION_PATCH_SWTableViewCell 8
+
 // TTTAttributedLabel
 #define COCOAPODS_POD_AVAILABLE_TTTAttributedLabel
 #define COCOAPODS_VERSION_MAJOR_TTTAttributedLabel 1
