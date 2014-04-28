@@ -37,7 +37,11 @@
     self.eventNameLabel.text = event.name;
     self.eventTimeLabel.text = [self.event displayDate];
     self.attendanceLabel.text = [NSString stringWithFormat:@"Attendance status: %@", self.event.displayUserAttendanceStatus];
-    [self.eventImage setImageWithURL:event.coverPhotoURL];
+    if (event.coverPhotoURL) {
+        [self.eventImage setImageWithURL:event.coverPhotoURL];
+    } else {
+        self.eventImage.image = nil;
+    }
 }
 
 @end

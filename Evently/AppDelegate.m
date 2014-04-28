@@ -150,6 +150,7 @@ const NSTimeInterval kBackgroundPollInterval = 60*10;
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:eventListViewController];
         self.window.rootViewController = navController;
     } else {
+        [[RealtimeLocationManager sharedInstance] stopUpdatingLocation];
         self.window.rootViewController = [[SignInViewController alloc] init];
     }
 }
