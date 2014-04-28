@@ -15,10 +15,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *coverImage;
+@property (weak, nonatomic) IBOutlet UIView *blurView;
 
 @property (nonatomic, strong) NSDateFormatter *timeFormatter;
 
-@property (weak, nonatomic) IBOutlet UIButton *checkInButton;
 @property (weak, nonatomic) IBOutlet UILabel *checkedInCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *attendingCountLabel;
 
@@ -48,6 +48,8 @@
         imageView.layer.cornerRadius = 20.0;
         imageView.layer.masksToBounds = YES;
     }
+
+    [self setBlurView];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -69,22 +71,13 @@
     }
     
     self.attendingCountLabel.text = [NSString stringWithFormat:@"%i", (int)[event.attendingUsers count]];
-    
-    // TODO refactor this into model, use a more efficient query
-//    [UserEventLocation userEventLocationsForEvent:event withCompletion:^(NSArray *userEventLocations, NSError *error) {
-//        if (!error) {
-//            NSInteger checkinCount = [userEventLocations count];
-//            self.checkedInCountLabel.text = [NSString stringWithFormat:@"%i", checkinCount];
-//            for (int i = 0; i < [self.checkedInUserImages count] && i < checkinCount; i++) {
-//                UserEventLocation *userEventLocation = userEventLocations[i];
-//                [checkIn[@"user"] fetchIfNeededInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-//                    User *user = (User *)object;
-//                    [self.checkedInUserImages[i] setImageWithURL:[user avatarURL]];
-//                }];
-//            }
-//        }
-//    }];
-    
+}
+
+- (void)setBlurView {
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = self.blurView.bounds;
+    gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], (id)[[UIColor blackColor] CGColor], nil];
+    [self.blurView.layer insertSublayer:gradient atIndex:0];
 }
 
 @end
