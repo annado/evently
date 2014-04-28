@@ -39,7 +39,7 @@
     self.maybeIcon = [UIImage imageNamed:@"MaybeIcon"];
     self.noIcon = [UIImage imageNamed:@"NoIcon"];
     
-    self.attendanceIcon.layer.cornerRadius = 15.0;
+    self.attendanceIcon.layer.cornerRadius = 10.0;
     self.attendanceIcon.layer.masksToBounds = YES;
     
     [self setUtilityButtons];
@@ -73,8 +73,6 @@
     }
 
     [self setAttendanceStatus];
-    [self.eventImage setImageWithURL:event.coverPhotoURL];
-    
     [self.event addObserver:self forKeyPath:@"userAttendanceStatus" options:NSKeyValueObservingOptionNew context:nil];
 }
 
@@ -102,6 +100,7 @@
     if (iconImage) {
         self.attendanceIcon.image = iconImage;
         self.attendanceIcon.backgroundColor = backgroundColor;
+        self.attendanceIcon.alpha = 0.8;
         self.attendanceIcon.tintColor = [UIColor whiteColor];
         self.attendanceIcon.image = [self.attendanceIcon.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     }
