@@ -84,7 +84,6 @@
     
      __weak PHFComposeBarView *weakTextView = _composeBarView;
     [self.view addKeyboardPanningWithActionHandler:^(CGRect keyboardFrameInView) {
-        NSLog(@"Keyboard panning: %i", keyboardFrameInView.origin.y);
         CGRect textViewFrame = weakTextView.frame;
         textViewFrame.origin.y = keyboardFrameInView.origin.y - textViewFrame.size.height;
         weakTextView.frame = textViewFrame;
