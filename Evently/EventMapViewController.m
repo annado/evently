@@ -41,7 +41,6 @@
         UIBarButtonItem *detailsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"InfoIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(onDetailsButton)];
         
         self.navigationItem.rightBarButtonItems = @[chatButton, detailsButton];
-        // self.attendeeAnnotations = [[NSMutableDictionary alloc] init];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillToggle:)
@@ -53,15 +52,6 @@
                                                    object:nil];
     }
     return self;
-}
-
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillShowNotification
-                                                  object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillHideNotification
-                                                  object:nil];
 }
 
 - (id)initWithEvent:(Event *)event
@@ -88,9 +78,7 @@
         textViewFrame.origin.y = keyboardFrameInView.origin.y - textViewFrame.size.height;
         weakTextView.frame = textViewFrame;
     }];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
+    
     if (self.event) {
         // Bootstrap the locations and then subscribe to events
         [UserEventLocation userEventLocationsForEvent:self.event withCompletion:^(NSArray *userEventLocations, NSError *error) {
@@ -115,7 +103,24 @@
             }];
         }];
     }
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
     
+    // Stop observing events
+    if (self.event) {
+        [[PNObservationCenter defaultCenter] removeMessageReceiveObserver:self];
+        NSLog(@"EventMapViewController: stopped observing event: %@", self.event.facebookID);
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
                                                   forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = [UIImage new];
@@ -124,12 +129,6 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    // Stop observing events
-    if (self.event) {
-        [[PNObservationCenter defaultCenter] removeMessageReceiveObserver:self];
-        NSLog(@"EventMapViewController: stopped observing event: %@", self.event.facebookID);
-    }
-
     [self.navigationController.navigationBar setBackgroundImage:nil
                                                   forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = nil;

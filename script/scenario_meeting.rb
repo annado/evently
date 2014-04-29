@@ -1,8 +1,8 @@
 require_relative "actor"
 
-EVENT_ID = "758176670901588"
-LATITUDE = 37.790630
-LONGITUDE = -122.402344
+EVENT_ID = "703885286319620"
+LATITUDE = 37.770481
+LONGITUDE = -122.404289
 
 ning = Actor.new("300255", "Ning Liang", EVENT_ID)
 ning.queue_set_location(LATITUDE - 0.002, LONGITUDE + 0.004)

@@ -179,7 +179,9 @@ NSInteger AttendanceStatuses[] = { EventAttendanceYes, EventAttendanceMaybe, Eve
 
 }
 
-- (BOOL)computeIsHappeningNow {    
+- (BOOL)computeIsHappeningNow {
+    return YES;
+    
     if (_date) {
         return [self isToday:_date];
     } else {
