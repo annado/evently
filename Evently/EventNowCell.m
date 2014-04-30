@@ -19,9 +19,6 @@
 
 @property (nonatomic, strong) NSDateFormatter *timeFormatter;
 
-@property (weak, nonatomic) IBOutlet UILabel *checkedInCountLabel;
-@property (weak, nonatomic) IBOutlet UILabel *attendingCountLabel;
-
 @property (weak, nonatomic) IBOutlet UIImageView *checkedInUserImage1;
 @property (weak, nonatomic) IBOutlet UIImageView *checkedInUserImage2;
 @property (weak, nonatomic) IBOutlet UIImageView *checkedInUserImage3;
@@ -70,7 +67,7 @@
         self.coverImage.image = [UIImage imageNamed:@"EventPlaceholder"];
     }
     
-    self.attendingCountLabel.text = [NSString stringWithFormat:@"%i", (int)[event.attendingUsers count]];
+//    self.attendingCountLabel.text = [NSString stringWithFormat:@"%i", (int)[event.attendingUsers count]];
 }
 
 - (void)setBlurView {

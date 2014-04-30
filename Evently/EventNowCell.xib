@@ -21,20 +21,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="160"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </view>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="miz-yN-A9Z">
-                        <rect key="frame" x="20" y="50" width="9" height="26"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="21"/>
-                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kea-cC-c8E">
-                        <rect key="frame" x="20" y="50" width="9" height="26"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="21"/>
-                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Happening Event" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="cqq-qc-FsH">
                         <rect key="frame" x="10" y="116" width="300" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -86,13 +72,10 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="DZV-he-Q7n" secondAttribute="trailing" constant="20" id="27N-1z-6W0"/>
-                    <constraint firstItem="miz-yN-A9Z" firstAttribute="top" secondItem="qUo-vV-3hj" secondAttribute="bottom" id="2FB-ep-PKt"/>
                     <constraint firstItem="qUo-vV-3hj" firstAttribute="bottom" secondItem="7Zf-Ms-ifh" secondAttribute="bottom" id="57j-ss-JeH"/>
                     <constraint firstItem="sOa-ye-YgB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="8M8-iq-o0H"/>
                     <constraint firstItem="DZV-he-Q7n" firstAttribute="top" secondItem="cqq-qc-FsH" secondAttribute="bottom" constant="2" id="97U-9S-AP4"/>
-                    <constraint firstItem="kea-cC-c8E" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="DNE-il-Go6"/>
                     <constraint firstAttribute="bottom" secondItem="DZV-he-Q7n" secondAttribute="bottom" constant="8" id="DcT-7H-qMe"/>
-                    <constraint firstItem="miz-yN-A9Z" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="Erd-aC-0bV"/>
                     <constraint firstAttribute="trailing" secondItem="bZI-gM-yId" secondAttribute="trailing" constant="10" id="Lcc-aT-9G9"/>
                     <constraint firstItem="bZI-gM-yId" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="NTK-FR-C98"/>
                     <constraint firstItem="bZI-gM-yId" firstAttribute="bottom" secondItem="dh6-vX-zmc" secondAttribute="bottom" id="RAi-IT-BIn"/>
@@ -104,7 +87,6 @@
                     <constraint firstAttribute="trailing" secondItem="sOa-ye-YgB" secondAttribute="trailing" id="eAm-PF-V3t"/>
                     <constraint firstItem="dh6-vX-zmc" firstAttribute="leading" secondItem="7Zf-Ms-ifh" secondAttribute="trailing" constant="5" id="eQx-HZ-KsC"/>
                     <constraint firstAttribute="trailing" secondItem="cqq-qc-FsH" secondAttribute="trailing" constant="10" id="fRt-JI-Oiq"/>
-                    <constraint firstItem="kea-cC-c8E" firstAttribute="top" secondItem="qUo-vV-3hj" secondAttribute="bottom" id="hb0-MQ-2I8"/>
                     <constraint firstItem="7Zf-Ms-ifh" firstAttribute="leading" secondItem="qUo-vV-3hj" secondAttribute="trailing" constant="5" id="hnq-gh-RlD"/>
                     <constraint firstItem="JcV-DI-Dtw" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="lYy-uQ-xfx"/>
                     <constraint firstAttribute="bottom" secondItem="sOa-ye-YgB" secondAttribute="bottom" id="ljh-cJ-Nn7"/>
@@ -114,9 +96,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="attendingCountLabel" destination="kea-cC-c8E" id="chl-uB-lQQ"/>
                 <outlet property="blurView" destination="sOa-ye-YgB" id="Fsl-y3-vTV"/>
-                <outlet property="checkedInCountLabel" destination="miz-yN-A9Z" id="LJa-K7-LCZ"/>
                 <outlet property="checkedInUserImage1" destination="qUo-vV-3hj" id="wxe-ra-wGK"/>
                 <outlet property="checkedInUserImage2" destination="7Zf-Ms-ifh" id="tgL-rd-fw9"/>
                 <outlet property="checkedInUserImage3" destination="dh6-vX-zmc" id="vog-JT-wnv"/>
