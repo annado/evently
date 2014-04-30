@@ -26,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *pinView;
 @property (nonatomic, weak) MKMapView *mapView;
 
+- (void)setPinTintColor:(UIColor *)pinTintColor;
 - (void)updateCallout;
 
 @end

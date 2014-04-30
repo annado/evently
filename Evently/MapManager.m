@@ -44,6 +44,7 @@
     if (self.attendeeAnnotations[userFacebookID]) {
         EventAttendeeAnnotation *annotation = self.attendeeAnnotations[userFacebookID];
         [self animateCoordinateChange:annotation location:coordinate];
+        [self zoomToFitAnnotations:YES];
     } else {
         [User findUserWithFacebookID:userFacebookID completion:^(User *user, NSError *error) {
             [self addAnnotationForUser:user latitude:latitude longitude:longitude];
@@ -55,7 +56,7 @@
 - (void)updateUserStatus:(NSString *)userFacebookID text:(NSString *)text {
     EventAttendeeAnnotation *annotation = self.attendeeAnnotations[userFacebookID];
     if (annotation) {
-        annotation.status = text;
+        annotation.status = [text isEqual:[NSNull null]] ? nil : text;
         ImageWithCalloutAnnotationView *annotationView = (ImageWithCalloutAnnotationView*)[self.mapView viewForAnnotation:annotation];
         [annotationView updateCallout];
         [self zoomToFitAnnotations:YES];
@@ -80,6 +81,9 @@
 
 - (void)zoomToFitAnnotations:(BOOL)animated {
     [self.mapView showAnnotations:self.mapView.annotations animated:animated];
+    for (id<MKAnnotation> annotation in self.mapView.annotations) {
+        [(ImageWithCalloutAnnotationView*)[self.mapView viewForAnnotation:annotation] updateCallout];
+    }
 }
 
 - (void)addPinForEventLocation
@@ -120,10 +124,18 @@
             annotationView.enabled = YES;
             annotationView.canShowCallout = NO;
             annotationView.mapView = mapView;
+            annotationView.centerOffset = CGPointMake(0, -26);
         }
         [annotationView updateCallout];
+        BOOL isCurrentUser = NO;
+        if ([annotation isKindOfClass:[EventAttendeeAnnotation class]]) {
+            if ([((EventAttendeeAnnotation*)annotation).user.facebookID isEqualToString:[User currentUser].facebookID]) {
+                isCurrentUser = YES;
+            }
+        }
         NSAssert([annotation conformsToProtocol:@protocol(ImageAnnotation)], @"Don't know how to get image for a %@ annotation", [annotation class]);
         id<ImageAnnotation> imageAnnotation = (id<ImageAnnotation>)annotation;
+        [annotationView setPinTintColor:isCurrentUser ? [UIColor colorWithRed:0.0/255 green:122.0/255 blue:255/255 alpha:0.8] : nil];
         [annotationView.imageView setImageWithURL:[imageAnnotation urlForImage]];
         
         return annotationView;
