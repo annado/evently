@@ -102,6 +102,7 @@
             if (!userEventLocation.arrivalTime) {
                 userEventLocation.latitude = event.location.latLon.coordinate.latitude;
                 userEventLocation.longitude = event.location.latLon.coordinate.longitude;
+                userEventLocation.locationUpdateTimestamp = now;
                 userEventLocation.arrivalTime = now;
                 [userEventLocation saveInBackground];
             }

@@ -155,8 +155,7 @@ static NSString *CheckinCellIdentifier = @"UserCheckedInCell";
     } else if (indexPath.row == 1) {
         return [EventRSVPCell heightForEvent:_event];
     } else {
-        // TODO get height based on number of facebook attendees
-        return 180;
+        return [UserGridCell heightForNumberOfItems:_event.attendingUsers.count];
     }
 }
 

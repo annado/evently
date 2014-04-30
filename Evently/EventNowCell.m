@@ -19,7 +19,6 @@
 
 @property (nonatomic, strong) NSDateFormatter *timeFormatter;
 
-@property (weak, nonatomic) IBOutlet UILabel *checkedInCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *attendingCountLabel;
 
 @property (weak, nonatomic) IBOutlet UIImageView *checkedInUserImage1;
@@ -47,6 +46,10 @@
     for (UIImageView *imageView in self.checkedInUserImages) {
         imageView.layer.cornerRadius = 20.0;
         imageView.layer.masksToBounds = YES;
+        imageView.layer.borderWidth = 2.0;
+        imageView.layer.borderColor = [UIColor colorWithRed:242.0/255 green:133.0/255 blue:0 alpha:0.8].CGColor;
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        imageView.hidden = YES;
     }
 
     [self setBlurView];
@@ -71,6 +74,20 @@
     }
     
     self.attendingCountLabel.text = [NSString stringWithFormat:@"%i", (int)[event.attendingUsers count]];
+    
+
+    for (UIImageView *userImageVIew in self.checkedInUserImages) {
+        userImageVIew.hidden = YES;
+    }
+    
+    [UserEventLocation usersAtEvent:_event withCompletion:^(NSArray *users, NSError *error) {
+        for (int i = 0; i < self.checkedInUserImages.count && i < users.count; i++) {
+            User *user = users[i];
+            UIImageView *imageView = self.checkedInUserImages[self.checkedInUserImages.count - i - 1];
+            [imageView setImageWithURL:[user avatarURL]];
+            imageView.hidden = NO;
+        }
+    }];
 }
 
 - (void)setBlurView {

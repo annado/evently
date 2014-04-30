@@ -13,4 +13,6 @@
 @property (nonatomic, strong) NSString *gridTitle;
 @property (nonatomic, strong) NSArray *userFacebookIds;
 
++ (CGFloat)heightForNumberOfItems:(NSInteger)numItems;
+
 @end

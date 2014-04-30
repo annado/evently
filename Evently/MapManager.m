@@ -47,7 +47,6 @@
     } else {
         [User findUserWithFacebookID:userFacebookID completion:^(User *user, NSError *error) {
             [self addAnnotationForUser:user latitude:latitude longitude:longitude];
-            [self zoomToFitAnnotations:YES];
         }];
     }
 }

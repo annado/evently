@@ -116,7 +116,6 @@
             <connections>
                 <outlet property="attendingCountLabel" destination="kea-cC-c8E" id="chl-uB-lQQ"/>
                 <outlet property="blurView" destination="sOa-ye-YgB" id="Fsl-y3-vTV"/>
-                <outlet property="checkedInCountLabel" destination="miz-yN-A9Z" id="LJa-K7-LCZ"/>
                 <outlet property="checkedInUserImage1" destination="qUo-vV-3hj" id="wxe-ra-wGK"/>
                 <outlet property="checkedInUserImage2" destination="7Zf-Ms-ifh" id="tgL-rd-fw9"/>
                 <outlet property="checkedInUserImage3" destination="dh6-vX-zmc" id="vog-JT-wnv"/>

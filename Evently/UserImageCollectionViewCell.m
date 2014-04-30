@@ -29,8 +29,10 @@
 - (void)setUserImageURL:(NSURL *)userImageURL {
     _userImageURL = userImageURL;
     [self.userImageView setImageWithURL:userImageURL];
-    self.userImageView.layer.cornerRadius = 10.0;
+    self.userImageView.layer.cornerRadius = 25.0;
     self.userImageView.layer.masksToBounds = YES;
+    self.userImageView.contentMode = UIViewContentModeScaleAspectFill;
+
 }
 
 /*
