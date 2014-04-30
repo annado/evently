@@ -45,7 +45,7 @@
         imageView.layer.cornerRadius = 20.0;
         imageView.layer.masksToBounds = YES;
         imageView.layer.borderWidth = 2.0;
-        imageView.layer.borderColor = [UIColor colorWithRed:242.0/255 green:133.0/255 blue:0 alpha:0.8].CGColor;
+        imageView.layer.borderColor = [UIColor whiteColor].CGColor; // [UIColor colorWithRed:242.0/255 green:133.0/255 blue:0 alpha:0.8].CGColor;
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.hidden = YES;
     }
