@@ -19,8 +19,6 @@
 
 @property (nonatomic, strong) NSDateFormatter *timeFormatter;
 
-@property (weak, nonatomic) IBOutlet UILabel *attendingCountLabel;
-
 @property (weak, nonatomic) IBOutlet UIImageView *checkedInUserImage1;
 @property (weak, nonatomic) IBOutlet UIImageView *checkedInUserImage2;
 @property (weak, nonatomic) IBOutlet UIImageView *checkedInUserImage3;
@@ -72,9 +70,6 @@
     } else {
         self.coverImage.image = [UIImage imageNamed:@"EventPlaceholder"];
     }
-    
-    self.attendingCountLabel.text = [NSString stringWithFormat:@"%i", (int)[event.attendingUsers count]];
-    
 
     for (UIImageView *userImageVIew in self.checkedInUserImages) {
         userImageVIew.hidden = YES;
@@ -88,6 +83,7 @@
             imageView.hidden = NO;
         }
     }];
+
 }
 
 - (void)setBlurView {

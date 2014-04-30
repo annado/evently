@@ -31,12 +31,12 @@ static const NSString *EventIDKey = @"event.facebookID";
 
 - (void)scheduleLocalNotification
 {
-    if ([self localNotificationExists]) {
+    if ([self localNotificationExists] || [self hadNotification:_event]) {
         return;
     }
     
     NSDate *itemDate = _event.isDateOnly ? _event.date : _event.startTime;
-
+    
     if (!itemDate || [DateHelper dateIsOlderThanNow:itemDate]) {
         return;
     }
@@ -60,6 +60,9 @@ static const NSString *EventIDKey = @"event.facebookID";
     
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
     self.notification = localNotif;
+    
+    NSArray *notifs = [[self getNotifications] arrayByAddingObject:_event.facebookID];
+    [[NSUserDefaults standardUserDefaults] setObject:notifs forKey:@"localEventNotifications"];
 }
 
 - (BOOL)localNotificationExists
@@ -115,5 +118,20 @@ static const NSString *EventIDKey = @"event.facebookID";
                                                                    ]
                               };
     [CRToastManager showNotificationWithOptions:options completionBlock:nil];
+}
+
+- (NSArray *)getNotifications
+{
+    NSArray *notifs = [[NSUserDefaults standardUserDefaults] objectForKey:@"localEventNotifications"];
+    if (!notifs || notifs.count == 0) {
+        notifs = @[];
+    }
+    return notifs;
+}
+
+- (BOOL)hadNotification:(Event *)event
+{
+    NSArray *notifs = [self getNotifications];
+    return [notifs containsObject:event.facebookID];
 }
 @end
