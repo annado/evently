@@ -72,14 +72,21 @@
 }
 
 - (void)processMessage:(StatusMessage *)statusMessage {
-    [self.messages addObject:statusMessage];
-    [self reloadData:YES];
+    if (statusMessage.text != (id)[NSNull null]) {
+        [self.messages addObject:statusMessage];
+        [self reloadData:YES];
+    }
 }
 
 - (void)setEvent:(Event *)event {
     _event = event;
     [StatusMessage getStatusesForEvent:event withCompletion:^(NSArray *statusMessages, NSError *error) {
-        self.messages = [statusMessages mutableCopy];
+        self.messages = [[NSMutableArray alloc] init];
+        for (StatusMessage * statusMessage in statusMessages) {
+            if (statusMessage.text != (id)[NSNull null]) {
+                [self.messages addObject:statusMessage];
+            }
+        }
         [self reloadData:NO];
     }];
 }
