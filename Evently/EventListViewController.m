@@ -44,7 +44,7 @@ const NSInteger kUpcomingSection = 1;
     [self.refreshControl addTarget:self action:@selector(loadEvents) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.refreshControl];
     if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
-        [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+        [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 5, 0, 0)];
     }
     
     UINib *eventCell = [UINib nibWithNibName:@"EventCell" bundle:nil];
