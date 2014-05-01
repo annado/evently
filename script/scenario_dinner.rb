@@ -21,6 +21,7 @@ Actor2.new({l => "Liron Yahdav", n => "Ning Liang", a => "Anna Do"}, EVENT_ID)
   .queue_set_status('Wrapping up some work, on my way soon', a)
   .queue_wait_for_input
   .queue_move(37.760232, -122.426062, 1, n)
+  .queue_set_status(nil, a)
   .queue_move(37.769154, -122.426877, 1, n)
   .queue_move(37.774073, -122.420611, 1, n)
   .queue_wait(1)
