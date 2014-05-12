@@ -38,6 +38,8 @@ class Actor2
 
     @latitude = {}
     @longitude = {}
+
+    @move_threads = []
   end
 
   def queue_set_location(lat, lng, user_id)
@@ -58,9 +60,10 @@ class Actor2
     self
   end
 
-  def queue_wait_for_input
+  def queue_wait_for_input(msg=nil)
     @actions.push({
-      type: :wait_for_input
+      type: :wait_for_input,
+      message: msg
     })
     self
   end
@@ -85,6 +88,10 @@ class Actor2
     self
   end
 
+  def queue_clear_status(user_id)
+    queue_set_status(nil, user_id)
+  end
+
   def start_running
     return if @runner
     @runner = Thread.new do
@@ -93,7 +100,7 @@ class Actor2
           when :set_location then set_location(action[:latitude], action[:longitude], action[:user_id])
           when :set_status then set_status(action[:text], action[:user_id])
           when :wait then sleep(action[:duration])
-          when :wait_for_input then puts "Press enter to continue"; gets
+          when :wait_for_input then puts (action[:message] || "Press enter to continue"); gets
           when :move then move(action[:latitude], action[:longitude], action[:duration], action[:user_id])
           else
             puts "Invalid action: #{action.inspect}"
@@ -107,6 +114,7 @@ class Actor2
 
   def wait_until_done
     @runner.join if @runner
+    @move_threads.each(&:join)
     self
   end
 
@@ -137,14 +145,19 @@ class Actor2
   end
 
   def move(lat_end, lng_end, duration, user_id)
-    lat_interval = (lat_end - @latitude[user_id]) / duration
-    lng_interval = (lng_end - @longitude[user_id]) / duration
+    time_interval = 1.0
+    steps = duration / time_interval
+    lat_interval = (lat_end - @latitude[user_id]) / steps
+    lng_interval = (lng_end - @longitude[user_id]) / steps
 
     # Basically a timer
-    duration.times do
-      sleep 1
-      set_location(@latitude[user_id] + lat_interval, @longitude[user_id] + lng_interval, user_id)
+    thread = Thread.new do
+      duration.times do
+        sleep time_interval
+        set_location(@latitude[user_id] + lat_interval, @longitude[user_id] + lng_interval, user_id)
+      end
     end
+    @move_threads.push(thread)
   end
 
   def set_status(text, user_id)
@@ -158,7 +171,7 @@ class Actor2
 
   def log_event(env)
     time = Time.at(env.timetoken.to_i / 10000000)
-    puts "#{time}: broadcasted message #{env.message.inspect}"
+    # puts "#{time}: broadcasted message #{env.message.inspect}"
   end
 
   def get_user_event_location(user_id)
