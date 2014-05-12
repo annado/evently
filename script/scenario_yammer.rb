@@ -115,3 +115,7 @@ actors.queue_wait_for_input("Press enter to start moving")
   .queue_move(37.777050, -122.417099, LEG_DURATION, n)
   .start_running
   .wait_until_done
+
+actors.queue_set_status("Let's do this :-)!", a)
+  .start_running
+  .wait_until_done
