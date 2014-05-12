@@ -41,7 +41,7 @@ actors.queue_wait_for_input("Press enter to do initial setup")
 ### Initial leg of movement
 
 puts "Leg 1"
-actors.queue_set_status("I'm setting up for demo day", a) # Anna notifies people she is setting up
+actors.queue_wait_for_input("Anna post a status then press enter: I'm setting up for demo day") # .queue_set_status("I'm setting up for demo day", a)
   .queue_wait_for_input("Enter for next status")
   .queue_set_status("I'm on the bus", l)
   .queue_wait_for_input("Enter for next status")
@@ -106,7 +106,7 @@ puts "Leg 3 done"
 ### Arrival leg
 puts "Arrival leg"
 actors.queue_clear_status(n)
-  .queue_set_status("It's starting, guys!!", a)
+  .queue_wait_for_input("Anna post a status then press enter: It's starting, guys!!") # .queue_set_status("It's starting, guys!!", a)
   .start_running
   .wait_until_done
 
