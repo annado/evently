@@ -1,6 +1,6 @@
 require_relative "actor2"
 
-EVENT_ID = "692714194123608"
+EVENT_ID = "1445752462330827"
 LATITUDE = 37.788200
 LONGITUDE = -122.411924
 
@@ -30,13 +30,9 @@ Actor2.new({l => "Liron Yahdav", n => "Ning Liang", a => "Anna Do"}, EVENT_ID)
   .queue_set_status("Did you hear from Liron?", n)
   .queue_wait_for_input
   .queue_set_status("Nope", a)
-  .queue_wait_for_input
-  .queue_set_status("I'm straggling as usual", l)
-  .queue_wait_for_input
-  .queue_set_status('On my way now', l)
+  .queue_wait_for_input #.queue_set_status("I'm straggling as usual", l) #.queue_wait_for_input
   .queue_set_location(37.783842, -122.399068, l)
-  .queue_set_location(37.782180, -122.410569, a)
-  .queue_set_status('On my way now', l)
+  .queue_set_location(37.782180, -122.410569, a) #.queue_set_status("On my way now", l)
   .queue_wait_for_input
   .queue_set_status("It's moving again, there soon!", n)
   .queue_move(37.786318, -122.423229, 3, n)
